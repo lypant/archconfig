@@ -1,0 +1,24 @@
+# These are settings to prepare VirtualBox machine on which the system will be installed
+
+# Name
+ArchVB
+
+# Memory size
+1024 MB
+
+# Hard drive
+Create a virtual hard drive now
+
+# Hard drive file type
+VDI (VirtualBox Disk Image)
+
+# Storage on physical hard drive
+Dynamically allocated
+
+# File location and size
+~/VirtualBox VMs/ArchVB/ArchVB.vdi
+16 GB
+
+# Arch Linux iso image
+archlinux-2013.08.01-dual.iso
+
