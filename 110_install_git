@@ -1,0 +1,9 @@
+# Install git
+sudo pacman -S git
+
+# Configure basic settings
+git config --global core.editor "vim"
+git config --global user.name "<user_name>"
+git config --global user.email "<user_email>"
+git config --global color.ui true
+
