@@ -1,4 +1,6 @@
 # Copy dotfiles
 cp ~/archconfig/dotfiles/.bashrc ~/.bashrc
 cp ~/archconfig/dotfiles/.Xdefaults ~/.Xdefaults
+cp ~/archconfig/dotfiles/.vimrc ~/.vimrc
+cp -r ~/archconfig/dotfiles/.vim ~
 
