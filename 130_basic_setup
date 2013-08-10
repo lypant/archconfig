@@ -1,0 +1,28 @@
+# Update package list
+sudo pacman -Syy
+
+# Install git
+sudo pacman -S git
+
+# Configure basic settings
+git config --global core.editor "vim"
+git config --global user.name "Adam Szczygieł"
+git config --global user.email "lypant@tlen.pl"
+git config --global color.ui true
+
+# Clone archconfig repo
+cd ~
+git clone https://github.com/lypant/archconfig
+
+# Go to the local copy of repo
+cd archconfig
+
+# Add branches which we are interested in
+git branch --track first_automation origin/first_automation
+
+# Checkout the branch we are interested in
+git checkout first_automation
+
+# Launch the script
+~/archconfig/140_script
+
