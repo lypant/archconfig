@@ -1,0 +1,24 @@
+# Install abs
+sudo pacman -S abs
+
+# Install dwm using abs
+sudo abs community/dwm
+cp -r /var/abs/community/dwm ~/dwm
+cd ~/dwm
+makepkg -i
+
+# Add entry to ~/.xinitrc to start dwm on X startup
+vim ~/.xinitrc
+	exec dwm
+
+# Install dmenu
+sudo pacman -S dmenu
+
+# NOTE:
+# 	To exit from dwm hit Shift + Alt + q
+
+# Create an alias for easier dwm rebuilding after source code edit
+vim ~/.bashrc
+alias redwm='cd ~/dwm; makepkg -g >> PKGBUILD; makepkg -efi --noconfirm; killall dwm'
+# TODO - Check alternative way of (re)configuration with git
+
