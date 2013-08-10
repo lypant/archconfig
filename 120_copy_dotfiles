@@ -1,0 +1,4 @@
+# Copy dotfiles
+cp ~/archconfig/dotfiles/.bashrc ~/.bashrc
+cp ~/archconfig/dotfiles/.Xdefaults ~/.Xdefaults
+
