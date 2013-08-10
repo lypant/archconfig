@@ -1,0 +1,13 @@
+# Add regular user
+useradd -m -g users -G wheel,storage,power -s /bin/bash adam
+
+# Set password
+passwd adam
+
+# Add user to sudoers
+visudo
+#adam ALL=(ALL) ALL
+
+# Shut down to do VBox snapshot and log as a regular user
+shutdown -h 0
+
