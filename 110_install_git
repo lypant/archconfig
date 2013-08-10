@@ -10,6 +10,9 @@ git config --global color.ui true
 # Clone archconfig repo
 git clone https://github.con/lypant/archconfig
 
+# Go to the local copy of repo
+cd archconfig
+
 # Add branches which we are interested in
 git branch --track virtualbox origin/virtualbox
 git branch --track dwm origin/dwm
