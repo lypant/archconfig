@@ -7,7 +7,6 @@ git config --global user.name "<user_name>"
 git config --global user.email "<user_email>"
 git config --global color.ui true
 
-<<<<<<< HEAD
 # Clone archconfig repo
 git clone https://github.con/lypant/archconfig
 
@@ -15,5 +14,6 @@ git clone https://github.con/lypant/archconfig
 git branch --track virtualbox origin/virtualbox
 git branch --track dwm origin/dwm
 
-=======
->>>>>>> ad82de8705ad40bcf26542207a18701624d7365e
+# Checkout the branch we are interested in
+git checkout dwm
+
