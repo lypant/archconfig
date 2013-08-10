@@ -1,0 +1,4 @@
+# Install urxvt
+# TODO - consider patched version (font width bug fixed) - rxvt-unicode-patched
+sudo pacman -S rxvt-unicode
+
