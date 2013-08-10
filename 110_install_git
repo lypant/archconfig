@@ -8,7 +8,7 @@ git config --global user.email "<user_email>"
 git config --global color.ui true
 
 # Clone archconfig repo
-git clone https://github.con/lypant/archconfig
+git clone https://github.com/lypant/archconfig
 
 # Go to the local copy of repo
 cd archconfig
