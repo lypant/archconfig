@@ -18,11 +18,14 @@ git clone https://github.com/lypant/archconfig
 cd archconfig
 
 # Add branches which we are interested in
-git branch --track first_automation origin/first_automation
+git branch --track dwm origin/dwm
 
 # Checkout the branch we are interested in
-git checkout first_automation
+git checkout dwm
+
+# Change access rights for the script
+chmod +x 140_script
 
 # Launch the script
-~/archconfig/140_script
+~/140_script
 
