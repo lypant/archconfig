@@ -17,9 +17,6 @@ git branch --track dwm_automation origin/dwm_automation
 # Checkout the branch we are interested in
 git checkout dwm_automation
 
-# Change access rights for the script
-chmod +x 160_script
-
 # Launch the script
-./160_script
+./050_automated_script.sh
 
