@@ -12,10 +12,10 @@ git clone https://github.com/lypant/archconfig
 cd archconfig
 
 # Add branches which we are interested in
-git branch --track dwm_automation origin/dwm_automation
+git branch --track dwm_early origin/dwm_early
 
 # Checkout the branch we are interested in
-git checkout dwm_automation
+git checkout dwm_early
 
 # Launch the script
 ./050_automated_script.sh
