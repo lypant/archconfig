@@ -11,11 +11,14 @@ sudo cp ~/archconfig/files/virtualbox.conf /etc/modules-load.d/
 #makepkg -i
 
 # Get, make and install dwm
-git clone http://git.suckless.org/dwm
-cd dwm
-sed -i 's/PREFIX = \/usr\/local/PREFIX = \/usr/g' config.mk
-sed -i 's/X11INC = \/usr\/X11R6\/include/X11INC = \/usr\/include\/X11/g' config.mk
-sed -i 's/X11LIB = \/usr\/X11R6\/lib/X11LIB = \/usr\/lib\/X11/g' config.mk
+git clone http://git.suckless.org/dwm ~/dwm
+cd ~/dwm
+git checkout 4fb31e0 -b my_adjustments
+sed -i 's/PREFIX = \/usr\/local/PREFIX = \/usr/g' ~/dwm/config.mk
+sed -i 's/X11INC = \/usr\/X11R6\/include/X11INC = \/usr\/include\/X11/g' ~/dwm/config.mk
+sed -i 's/X11LIB = \/usr\/X11R6\/lib/X11LIB = \/usr\/lib\/X11/g' ~/dwm/config.mk
+sed -i 's/*termcmd[] = { "st", NULL }/*termcmd[] = { "urxvt", NULL }/g' ~/dwm/config.def.h
+git commit -a -m "My adjustments"
 sudo make clean install
 
 # Copy the dotfiles
