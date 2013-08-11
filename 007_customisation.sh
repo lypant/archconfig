@@ -15,13 +15,10 @@ sudo pacman -S --noconfirm vim alsa-utils xorg-server xorg-server-utils xorg-xin
 sudo modprobe -a vboxguest vboxsf vboxvideo
 
 # Create config file with modules to be loaded
-#sudo cp ~/archconfig/files/virtualbox.conf /etc/modules-load.d/
 sudo cp /etc/archconfig/files/virtualbox.conf /etc/modules-load.d/
 
 # Copy the dotfiles
-#cp ~/archconfig/dotfiles/.* ~
 cp /etc/archconfig/dotfiles/.* ~
-#cp -r ~/archconfig/dotfiles/.vim ~
 cp -r /etc/archconfig/dotfiles/.vim ~
 
 # Get, make and install dwm
