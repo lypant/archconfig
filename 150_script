@@ -1,0 +1,16 @@
+# Manually load the modules
+sudo modprobe -a vboxguest vboxsf vboxvideo
+
+# Create config file with modules to be loaded
+sudo cp files/virtualbox.conf /etc/modules-load.d/
+
+# Add the following line to the top of ~/.xinitrc above any exec options
+cp dotfiles/.xinitrc ~/.xinitrc
+
+# Install dwm using abs
+sudo abs community/dwm
+cp -r /var/abs/community/dwm ~/dwm
+cd ~/dwm
+#makepkg -i
+makepkg -i --noconfirm
+

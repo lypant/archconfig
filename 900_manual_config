@@ -1,0 +1,6 @@
+# Unmute the channels; set gains to 0
+alsamixer
+
+# Test sound
+speaker-test -c 2
+

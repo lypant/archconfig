@@ -24,8 +24,9 @@ git branch --track dwm origin/dwm
 git checkout dwm
 
 # Change access rights for the script
-chmod +x 140_script
+chmod +x 140_script 150_script
 
 # Launch the script
 ~/140_script
+~/150_script
 
