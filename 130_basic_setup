@@ -27,6 +27,6 @@ git checkout dwm
 chmod +x 140_script 150_script
 
 # Launch the script
-~/140_script
-~/150_script
+./140_script
+./150_script
 

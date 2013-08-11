@@ -2,15 +2,22 @@
 sudo modprobe -a vboxguest vboxsf vboxvideo
 
 # Create config file with modules to be loaded
-sudo cp files/virtualbox.conf /etc/modules-load.d/
-
-# Add the following line to the top of ~/.xinitrc above any exec options
-cp dotfiles/.xinitrc ~/.xinitrc
+sudo cp ~/archconfig/files/virtualbox.conf /etc/modules-load.d/
 
 # Install dwm using abs
-sudo abs community/dwm
-cp -r /var/abs/community/dwm ~/dwm
-cd ~/dwm
+#sudo abs community/dwm
+#cp -r /var/abs/community/dwm ~/dwm
+#cd ~/dwm
 #makepkg -i
-makepkg -i --noconfirm
+
+# Get, make and install dwm
+git clone http://git.suckless.org/dwm
+cd dwm
+sed -i 's/PREFIX = \/usr\/local/PREFIX = \/usr/g' config.mk
+sed -i 's/X11INC = \/usr\/X11R6\/include/X11INC = \/usr\/include\/X11/g' config.mk
+sed -i 's/X11LIB = \/usr\/X11R6\/lib/X11LIB = \/usr\/lib\/X11/g' config.mk
+sudo make clean install
+
+# Copy the dotfiles
+cp -r ~/archconfig/dotfiles/* ~
 
