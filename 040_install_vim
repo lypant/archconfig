@@ -1,6 +1,0 @@
-# Update package list
-sudo pacman -Syy
-
-# Install vim
-sudo pacman -S vim
-

@@ -1,3 +1,0 @@
-# Install Xorg
-sudo pacman -S xorg-server xorg-server-utils xorg-xinit mesa
-

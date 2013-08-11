@@ -15,6 +15,9 @@ sudo cp ~/archconfig/files/virtualbox.conf /etc/modules-load.d/
 cp ~/archconfig/dotfiles/.* ~
 cp -r ~/archconfig/dotfiles/.vim ~
 
+# Copy other files
+sudo cp ~/archconfig/files/virtualbox.conf  /etc/modules-load.d/virtualbox.conf
+
 # Get, make and install dwm
 git clone http://git.suckless.org/dwm ~/dwm
 cd ~/dwm
