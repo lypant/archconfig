@@ -2,5 +2,6 @@
 arch-chroot /mnt
 
 # Launch next script
-/archconfig/004_config_base_system.sh
+#/archconfig/004_config_base_system.sh
+/etc/archconfig/004_config_base_system.sh
 

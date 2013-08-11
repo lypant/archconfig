@@ -58,4 +58,5 @@ echo Setting root password
 passwd
 
 echo DONE
+echo Continue with next instructions
 
