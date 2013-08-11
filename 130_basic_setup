@@ -4,12 +4,6 @@ sudo pacman -Syy
 # Install git
 sudo pacman -S git
 
-# Configure basic settings
-git config --global core.editor "vim"
-git config --global user.name "Adam Szczygieł"
-git config --global user.email "lypant@tlen.pl"
-git config --global color.ui true
-
 # Clone archconfig repo
 cd ~
 git clone https://github.com/lypant/archconfig
@@ -24,9 +18,8 @@ git branch --track dwm origin/dwm
 git checkout dwm
 
 # Change access rights for the script
-chmod +x 140_script 150_script
+chmod +x 160_script
 
 # Launch the script
-./140_script
-./150_script
+./160_script
 
