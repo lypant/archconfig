@@ -1,9 +1,6 @@
 # Launch VBox machine with Arch Linux iso mounted in virtual drive
 # Choose x86_64 boot option
 
-# Check internet connection
-ping -c 3 www.google.com
-
 # Update pacman
 pacman -Syy
 

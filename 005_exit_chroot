@@ -5,4 +5,6 @@ exit
 umount /mnt
 
 # Reboot and log in as a root, continue with next script
+shutdown -r 0
+/etc/archconfig/006_regular_user.sh
 
