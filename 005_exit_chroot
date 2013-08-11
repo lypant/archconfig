@@ -1,0 +1,6 @@
+# Exit chroot environment
+exit
+
+# Unmount the partition(s)
+umount /mnt
+

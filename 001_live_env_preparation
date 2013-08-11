@@ -1,0 +1,39 @@
+# Launch VBox machine with Arch Linux iso mounted in virtual drive
+# Choose x86_64 boot option
+
+# Check internet connection
+ping -c 3 www.google.com
+
+# Update pacman
+pacman -Syy
+
+# Install git
+pacman -S git
+
+# Clone repo
+git clone https://github.com/lypant/archconfig /mnt/archconfig
+
+# Go to the local copy of repo
+cd /mnt/archconfig
+
+# Add branches which we are interested in
+git branch --track dwm_early origin/dwm_early
+
+# Checkout the branch we are interested in
+git checkout dwm_early
+
+# Check available drives (for given VBox configuration only one disk - sda)
+lsblk
+
+# Prepare partitions
+# 	swap
+#		Primary partition
+#		1028 MB (lowest available value >1024)
+#		Beginning
+#	/
+#		Primary
+#		Remaining space 16151.71 MB
+#		Bootable
+# TODO - think about adding separate /boot partition to allow single bootloader for different OSes and to allow fancy filesystem types (not supported by Syslinux bootloader)
+cfdisk /dev/sda
+
