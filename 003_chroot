@@ -1,3 +1,6 @@
 # Chroot
 arch-chroot /mnt
 
+# Launch next script
+/archconfig/004_config_base_system.sh
+

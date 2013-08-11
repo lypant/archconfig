@@ -21,3 +21,21 @@ pacstrap -i /mnt base base-devel
 echo Generating fstab
 genfstab -L -p /mnt >> /mnt/etc/fstab
 
+# Clone repository again - it was wiped out during pacstrapping
+echo Clonning the repo again
+git clone https://github.com/lypant/archconfig /mnt/archconfig
+
+# Go to the local copy of repo
+echo Entering the repo
+cd /mnt/archconfig
+
+# Add branches which we are interested in
+echo Setting branch tracking
+git branch --track dwm_early origin/dwm_early
+
+# Checkout the branch we are interested in
+echo Checking out the repo
+git checkout dwm_early
+
+echo DONE
+

@@ -57,3 +57,5 @@ sed -i 's/sda3/sda2/g' /boot/syslinux/syslinux.cfg
 echo Setting root password
 passwd
 
+echo DONE
+

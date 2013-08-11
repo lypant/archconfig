@@ -37,3 +37,6 @@ lsblk
 # TODO - think about adding separate /boot partition to allow single bootloader for different OSes and to allow fancy filesystem types (not supported by Syslinux bootloader)
 cfdisk /dev/sda
 
+# Launch next script
+./002_install_base_system.sh
+
