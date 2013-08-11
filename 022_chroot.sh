@@ -1,54 +1,11 @@
-# Launch VBox machine with Arch Linux iso mounted in virtual drive
-# Choose x86_64 boot option
-
-# Check internet connection
-ping -c 3 www.google.com
-
-# Check available drives (for given VBox configuration only one disk - sda)
-lsblk
-
-# Prepare partitions
-# 	swap
-#		Primary partition
-#		1028 MB (lowest available value >1024)
-#		Beginning
-#	/
-#		Primary
-#		Remaining space 16151.71 MB
-#		Bootable
-# TODO - think about adding separate /boot partition to allow single bootloader for different OSes and to allow fancy filesystem types (not supported by Syslinux bootloader)
-cfdisk /dev/sda
-
-############################################ PROCEED WITH SCRIPTS !
-
-# Create file systems
-mkswap /dev/sda1
-swapon /dev/sda1
-mkfs.ext4 /dev/sda2
-
-# Mount the partitions
-mount /dev/sda2 /mnt
-
-# Select a mirror
-cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.original
-rankmirrors -n 5 /etc/pacman.d/mirrorlist.original > /etc/pacman.d/mirrorlist
-
-# Install the base system
-pacstrap -i /mnt base base-devel
-
-# Generate fstab (-L is for labels, -U is for UIDs)
-genfstab -L -p /mnt >> /mnt/etc/fstab
-
-# Optional - check generated file
-# vi /mnt/etc/fstab
-
 # Chroot and configure the base system
 arch-chroot /mnt
 
 # Set locales
 # Uncomment en_US.UTF-8 UTF-8
 # Uncomment pl_PL.UTF-8 UTF-8
-vi /etc/locale.gen
+sed -i 's/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g' /etc/locale.gen
+sed -i 's/#pl_PL.UTF-8 UTF-8/pl_PL.UTF-8 UTF-8/g' /etc/locale.gen
 
 # Generate locales
 locale-gen
@@ -62,7 +19,8 @@ export LANG=en_US.UTF-8
 # TODO - think about setting necessary kernel params/switches etc to allow smooth initialization
 # KEYMAP=pl
 # FONT=Lat2-Terminus16
-vi /etc/vconsole.conf
+echo KEYMAP=pl > /etc/vconsole.conf
+echo FONT=Lat2-Terminus16 >> /etc/vconsole.conf
 
 # Set time zone
 ln -s /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
@@ -83,14 +41,16 @@ systemctl enable dhcpcd@enp0s3.service
 
 # TODO - optional - create initial ramdisk environment (check arch wiki for details)
 
-# Set root password
-passwd
-
 # Install and configure a bootloader (Syslinux is chosen here)
 pacman -S syslinux
 syslinux-install_update -i -a -m
 # Verify that used partitions are correct (usually there is a need for adjustments)
-vi /boot/syslinux/syslinux.cfg
+#vi /boot/syslinux/syslinux.cfg
+sed -i 's/sda3/sda2/g' /boot/syslinux/syslinux.cfg
+
+# Set root password
+echo "Provide root password:"
+passwd
 
 # Exit chroot environment
 exit
@@ -99,7 +59,8 @@ exit
 umount /mnt
 
 # Shutdown (or reboot if no need to make a VBox snapshot etc.)
-shutdown -h 0
+#shutdown -h 0
+echo "Ready to shutdown"
 
 # Remove arch linux iso image from VBox virtual drive
 
