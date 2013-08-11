@@ -1,3 +1,7 @@
+# Configure pacman
+# Display total download progress
+sudo sed -i 's/#TotalDownload/TotalDownload/g' /etc/pacman.conf
+
 # Install packets
-sudo pacman -S vim alsa-utils xorg-server xorg-server-utils xorg-xinit mesa virtualbox-guest-utils dmenu rxvt-unicode
+sudo pacman -S vim alsa-utils xorg-server xorg-server-utils xorg-xinit mesa virtualbox-guest-utils dmenu rxvt-unicode ttf-inconsolata ttf-dejavu
 
