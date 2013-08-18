@@ -1,0 +1,3 @@
+# Run customisation script (do not use sudo!)
+/etc/archconfig/080_customisation.sh
+

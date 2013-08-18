@@ -8,11 +8,9 @@ pacman -Syy
 pacman -S git
 
 # Clone repo
-#git clone https://github.com/lypant/archconfig /mnt/archconfig
 git clone https://github.com/lypant/archconfig /tmp/archconfig
 
 # Go to the local copy of repo
-#cd /mnt/archconfig
 cd /tmp/archconfig
 
 # Add branches which we are interested in
@@ -37,5 +35,5 @@ lsblk
 cfdisk /dev/sda
 
 # Launch next script
-./002_install_base_system.sh
+./030_install_base_system.sh
 

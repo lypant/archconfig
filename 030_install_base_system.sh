@@ -23,12 +23,10 @@ genfstab -L -p /mnt >> /mnt/etc/fstab
 
 # Clone repository again - it was wiped out during pacstrapping
 echo Clonning the repo again
-#git clone https://github.com/lypant/archconfig /mnt/archconfig
 git clone https://github.com/lypant/archconfig /mnt/etc/archconfig
 
 # Go to the local copy of repo
 echo Entering the repo
-#cd /mnt/archconfig
 cd /mnt/etc/archconfig
 
 # Add branches which we are interested in
