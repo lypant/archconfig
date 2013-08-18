@@ -1,0 +1,16 @@
+After installing base system /mnt/archconfig gets deleted.
+It is necessary to clone the repo again.
+Although - different set of scripts will be necessary.
+This allows for creating different branches for different stages.
+But maybe it is overkill and it is better to have everything in one place.
+
+
+!!! Maybe clone to other location - e.g. /var/archconfig ???
+Probably this would not be overwritten during pacstrapping
+
+
+!!! Don't forget to remove archconfig from first location when installation is done
+Or think where it could be installed to keep it there even when installation is complete
+
+!!! Use script parameter to pass host and user names
+
