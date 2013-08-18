@@ -18,3 +18,7 @@ Or think where it could be installed to keep it there even when installation is 
 
 Split customisation into different layers - e.g. programs, eye candy etc.
 
+!? Consider providing ready mirrorlist instead of ranking - to speed up installation process
+
+Add echo commands before each step of script
+
