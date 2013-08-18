@@ -22,3 +22,6 @@ Dynamically allocated
 # Arch Linux iso image
 archlinux-2013.08.01-dual.iso
 
+# To set custom video mode for terminal (available under vga=864 or vesa 360) run in host's terminal
+VBoxManage setextradata "ArchVB" "CustomVideoMode1" "1680x1050x24"
+

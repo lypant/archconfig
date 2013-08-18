@@ -14,3 +14,7 @@ Or think where it could be installed to keep it there even when installation is 
 
 !!! Use script parameter to pass host and user names
 
+!!! Use tee to produce logs when running config scripts !!!
+
+Split customisation into different layers - e.g. programs, eye candy etc.
+

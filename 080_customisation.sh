@@ -33,3 +33,19 @@ sed -i 's/"st"/"urxvt"/g' ~/build/dwm/config.def.h
 git commit -a -m "My adjustments"
 sudo make clean install
 
+# Custom video mode for terminal (1680x1050) - requires VBox setup at the beginning
+# Quiet mode - no logs during bootup
+# TODO - think about copying ready config files instead of sedding some settings like this one
+sudo sed -i 's/APPEND root=/dev/sda2 rw/APPEND root=/dev/sda2 rw vga=864 quiet/' /boot/syslinux/syslinux.cfg
+
+# Disable syslinux menu (automatic boot)
+sudo sed -i 's/UI menu.c32/#UI menu.c32/' /boot/syslinux/syslinux.cfg
+
+# Early terminal font
+sudo sed -i 's/HOOKS="base udev autodetect modconf block filesystems keyboard fsck"/HOOKS="base udev autodetect modconf block filesystems keyboard fsck consolefont keymap"/g' /etc/mkinitcpio.conf
+# Recreate the image
+sudo mkinitcpio -p linux
+
+# Welcome prompt
+sudo cp /etc/archconfig/files/issue /etc/issue
+
