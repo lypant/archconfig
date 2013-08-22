@@ -11,6 +11,7 @@
 # REPOSITORY CONFIGURATION
 
 REPOSITORY=https://raw.github.com/lypant/archconfig/automated
+FUNCTIONS_SCRIPT=/functions.sh
 INSTALL_SCRIPT=/install.sh
 DISK_PREPARATION_SCRIPT=/prepare_disk.sh
 
@@ -24,5 +25,8 @@ ROOT_PARTITION_SIZE=remaining
 USERNAME=adam
 
 # Install
-. <(curl -fsL "${REPOSITORY}${INSTALL_SCRIPT}"); echo "Tra la la!"
+#. <(curl -fsL "${REPOSITORY}${INSTALL_SCRIPT}"); echo "Tra la la!"
+
+# Load functions and then execute install script
+. <(curl -fsL "${REPOSITORY}${FUNCTIONS_SCRIPT}"); executeScript "${INSTALL_SCRIPT}"; echo "archconfig.sh finished"
 
