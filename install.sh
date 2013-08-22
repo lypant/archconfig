@@ -6,5 +6,5 @@
 echo "Hello, " $USERNAME
 
 echo Prepare HDD...
-bash ${DISK_PREPARATION_SCRIPT}
+executeScript "${DISK_PREPARATION_SCRIPT}"
 
