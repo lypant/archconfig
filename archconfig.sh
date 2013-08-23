@@ -8,7 +8,7 @@ REPOSITORY="https://raw.github.com/lypant/archconfig/experiments"
 
 HDD="/dev/sda"
 SWAP_SIZE="+1G"
-ROOT_SIZE="\n"	# Remaining space
+ROOT_SIZE=""	# Remaining space
 
 # First download script containing helper functions
 curl -o "functions.sh" -fsL "$REPOSITORY/functions.sh"
