@@ -14,7 +14,7 @@ n
 p
 1
 
-+$SWAP_SIZE
+$SWAP_SIZE
 t
 82
 n
