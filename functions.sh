@@ -9,6 +9,11 @@ anyKey ()
 
 downloadFile ()
 {
+	if [ $# -lt 2 ]; then
+		anyKey "Provide repository url and file name as parameters\nGiven params: $@"
+		return 1
+	fi
+
 	local URL=$1
 	local OUT=$2
 	local CMD="curl -o $OUT -fsL $URL"
@@ -17,8 +22,9 @@ downloadFile ()
 	local RESULT=$?
 
 	if [ "$RESULT" -gt 0 ]; then
-		#echo "Error" $RESULT
-		anykey "Failed to download $URL to $OUT : error $RESULT"
+		anyKey "Failed to download $URL to $OUT : error $RESULT"
 	fi
+
+	return $RESULT
 }
 
