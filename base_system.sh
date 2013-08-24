@@ -10,6 +10,10 @@ mkfs.ext4 /dev/sda2
 echo Mounting partitions
 mount /dev/sda2 /mnt
 
+# Update livecd pacman
+echo Update pacman on live cd
+pacman -Syy
+
 # Select a mirror
 echo Setting pacman mirrors - this can take a while
 cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.original
@@ -25,7 +29,10 @@ genfstab -L -p /mnt >> /mnt/etc/fstab
 
 # chroot and run script to work in chrooted environment
 echo Chroot and run chrooted script
-arch-chroot /mnt chrooted.sh
+mkdir /mnt/etc/archconfig
+cp chrooted.sh /mnt/etc/chrooted.sh
+chmod +x /mnt/etc/chrooted.sh
+arch-chroot /mnt /etc/chrooted.sh
 
 echo After chroot
 

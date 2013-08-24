@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo chrooted script started !!!
+
 # Set locales
 echo Setting locales
 sed -i 's/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g' /etc/locale.gen
@@ -60,5 +62,5 @@ echo Setting root password
 passwd
 
 echo Done with chrooted script, exiting chroot
-exit
+#exit
 
