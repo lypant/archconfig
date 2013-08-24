@@ -19,6 +19,8 @@ source functions.sh
 # Load other scripts
 downloadFile "$REPOSITORY/install.sh" "install.sh"
 downloadFile "$REPOSITORY/partition_disk.sh" "partition_disk.sh"
+downloadFile "$REPOSITORY/base_system.sh" "base_system.sh"
+downloadFile "$REPOSITORY/chrooted.sh" "chrooted.sh"
 
 # Start executing scripts
 source install.sh
