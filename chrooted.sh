@@ -62,5 +62,4 @@ echo Setting root password
 passwd
 
 echo Done with chrooted script, exiting chroot
-#exit
 
