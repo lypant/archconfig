@@ -22,13 +22,11 @@ downloadFile ()
 	if [ -n "$CMD" ] && [ ! -e "$OUT" ]; then
 		eval "$CMD"
 		RESULT=$?
+		if [ "$RESULT" -gt 0 ]; then
+			anyKey "Failed to download $URL to $OUT : error $RESULT"
+		fi
 	else
 		echo "File $OUT already exists, skipping"
-		RESULT=2
-	fi
-
-	if [ "$RESULT" -gt 0 ]; then
-		anyKey "Failed to download $URL to $OUT : error $RESULT"
 	fi
 
 	return $RESULT

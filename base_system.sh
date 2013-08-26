@@ -44,7 +44,7 @@ umount /mnt
 
 # Add regular user
 echo Adding regular user
-useradd -m -g users -G wheel, storage, power -s /bin/bash adam
+useradd -m -g users -G wheel,storage,power -s /bin/bash adam
 
 # Set password
 echo Setting password for regular user
