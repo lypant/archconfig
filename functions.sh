@@ -19,7 +19,7 @@ downloadFile ()
 	local CMD="curl -o $OUT --create-dirs -fsL $URL"
 	local RESULT=0
 
-	if [ -n "$CMD" ] && [ ! -e "$OUT"]; then
+	if [ -n "$CMD" ] && [ ! -e "$OUT" ]; then
 		eval "$CMD"
 		RESULT=$?
 	else
