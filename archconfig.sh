@@ -12,7 +12,7 @@ ROOT_SIZE=""	# Remaining space
 
 # First download script containing helper functions
 curl -o "/root/functions.sh" -fsL "$REPOSITORY/functions.sh"
-curl -o "/root/download_script.sh" -fsL "$REPOSITORY/download_script.sh"
+curl -o "/root/download_scripts.sh" -fsL "$REPOSITORY/download_scripts.sh"
 
 # Load that script
 source functions.sh

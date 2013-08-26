@@ -1,6 +1,6 @@
 #!/bin/bash
 
-local DEST_DIR=$1
+DEST_DIR=$1
 echo "Downloading scripts to $DEST_DIR"
 
 downloadFile "$REPOSITORY/archconfig.sh" "$DEST_DIR/archconfig.sh"
