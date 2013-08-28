@@ -34,7 +34,7 @@ downloadFile ()
 
 # $1 - statement checked for success
 # $2 - number of retries, optional
-repeat_until_success ()
+repeatUntilSuccess ()
 {
 	local RETRIES=0
 	local REPEAT=true

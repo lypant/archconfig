@@ -1,6 +1,8 @@
 #!/bin/bash
 
-echo chrooted script started !!!
+echo "$0 script started"
+
+source functions.sh
 
 # Set locales
 echo Setting locales
@@ -60,7 +62,7 @@ sed -i 's/sda3/sda2/g' /boot/syslinux/syslinux.cfg
 # Set root password
 echo Setting root password
 #passwd
-repeat_until_success "passwd" 5 || echo -e "\nERROR: password not changed\n"
+repeatUntilSuccess "passwd" 5 || echo -e "\nERROR: password not changed\n"
 
 echo Done with chrooted script, exiting chroot
 
