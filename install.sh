@@ -15,5 +15,9 @@ source partition_disk.sh
 
 #source post_chroot.sh
 
+#echo Unmounting partitions
+#umount /mnt
+
+
 echo "ENDING $0"
 

@@ -64,5 +64,18 @@ echo Setting root password
 #passwd
 repeatUntilSuccess "passwd" 5 || echo -e "\nERROR: password not changed\n"
 
+# Add regular user
+echo Adding regular user
+useradd -m -g users -G wheel,storage,power -s /bin/bash adam
+
+# Set password
+echo Setting password for regular user
+#passwd adam
+repeatUntilSuccess "passwd adam" 3 || echo -e "\nERROR: password unchanged\n"
+
+echo Adding user to sudoers
+# TODO - do it in a safer way... Here just for experiments
+echo "adam ALL=(ALL) ALL" >> /etc/sudoers
+
 echo Done with chrooted script, exiting chroot
 
