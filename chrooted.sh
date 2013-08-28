@@ -2,7 +2,7 @@
 
 echo "$0 script started"
 
-source functions.sh
+source /etc/archconfig/functions.sh
 
 # Set locales
 echo Setting locales
