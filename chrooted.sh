@@ -59,7 +59,8 @@ sed -i 's/sda3/sda2/g' /boot/syslinux/syslinux.cfg
 
 # Set root password
 echo Setting root password
-passwd
+#passwd
+repeat_until_success "passwd" 5 || echo -e "\nERROR: password not changed\n"
 
 echo Done with chrooted script, exiting chroot
 

@@ -32,3 +32,24 @@ downloadFile ()
 	return $RESULT
 }
 
+# $1 - statement checked for success
+# $2 - number of retries, optional
+repeat_until_success ()
+{
+	local RETRIES=0
+	local REPEAT=true
+
+	while $REPEAT; do
+		RETRIES=$((RETRIES+1))
+		eval "$1"
+		if [ "$?" -eq 0 ]; then
+			REPEAT=false
+		fi
+		if [ -n "$2" -a "$RETRIES" -gt "$2" ]; then
+			return 1
+		fi
+	done
+
+	return 0
+}
+
