@@ -1,3 +1,5 @@
+Redirect output of scripts to log files to be able to see what went wrong in case of a failure
+
 Add sudoers in a safe way
 
 Split configuration, download and install scripts so that download and installation can be separated easily and performed in steps?

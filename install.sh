@@ -15,7 +15,8 @@ arch-chroot /mnt /etc/archconfig/chrooted.sh
 
 source post_chroot.sh
 
-source customisation.sh
+# Run as a regular user
+#source customisation.sh
 
 echo "Ending install.sh"
 
