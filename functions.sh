@@ -53,3 +53,19 @@ repeatUntilSuccess ()
 	return 0
 }
 
+commentVar ()
+{
+	local VAR="$1"
+	local FILE="$2"
+
+	sed -i "s/^\(${VAR}.*\)$/#\1/" "${FILE}"
+}
+
+uncommentVar ()
+{
+	local VAR="$1"
+	local FILE="$2"
+
+	sed -i "s/^#\(${VAR}.*\)$/\1/" "${FILE}";
+}
+

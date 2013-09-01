@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "STARTING $0"
+echo "Starting install.sh"
 
 source partition_disk.sh
 source base_system.sh
@@ -15,5 +15,7 @@ arch-chroot /mnt /etc/archconfig/chrooted.sh
 
 source post_chroot.sh
 
-echo "ENDING $0"
+source customisation.sh
+
+echo "Ending install.sh"
 

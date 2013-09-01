@@ -9,6 +9,8 @@
 #echo -e $SWAP_SIZE
 #echo -e $ROOT_SIZE
 
+echo "Starting partition_disk.sh"
+
 cat << EOF | fdisk $HDD
 n
 p
@@ -29,4 +31,6 @@ a
 2
 w
 EOF
+
+echo "Ending partition_disk.sh"
 

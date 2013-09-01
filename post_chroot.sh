@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "STARTING $0"
+echo "Starting post_root.sh"
 
 echo Unmounting partitions
 umount /mnt
@@ -18,5 +18,5 @@ umount /mnt
 ## TODO - do it in a safer way... Here just for experiments
 #echo "adam ALL=(ALL) ALL" >> /etc/sudoers
 
-echo "ENDING $0"
+echo "Ending post_root.sh"
 

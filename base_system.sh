@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "STARTING $0"
+echo "Starting base_system.sh"
 
 # Create file systems
 echo Creating file systems
@@ -29,5 +29,5 @@ pacstrap -i /mnt base base-devel
 echo Generating fstab
 genfstab -L -p /mnt >> /mnt/etc/fstab
 
-echo "ENDING $0"
+echo "Ending base_system.sh"
 
