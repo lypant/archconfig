@@ -31,19 +31,23 @@ downloadFile "$REPOSITORY/files/dotfiles/.vimrc" "/home/adam/.vimrc" "--overwrit
 downloadFile "$REPOSITORY/files/dotfiles/.Xdefaults" "/home/adam/.Xdefaults" "--overwrite"
 downloadFile "$REPOSITORY/files/dotfiles/.xinitrc" "/home/adam/.xinitrc" "--overwrite"
 
-echo "Setting file ownership"
+echo "Setting dir and file ownership"
 chown "adam:users" "/etc/modules-load.d/virtualbox.conf"
 chown "adam:users" "/home/adam/.bash_profile"
 chown "adam:users" "/home/adam/.bashrc"
 chown "adam:users" "/home/adam/.gitconfig"
+chown "adam:users" "/home/adam/.vim"
 chown "adam:users" "/home/adam/.vim/colors/solarized.vim"
 chown "adam:users" "/home/adam/.vimrc"
 chown "adam:users" "/home/adam/.Xdefaults"
 chown "adam:users" "/home/adam/.xinitrc"
 
+
+
 echo "Installing dwm"
 DWM_BUILD_PATH="/home/adam/build/dwm"
 git clone http://git.suckless.org/dwm "$DWM_BUILD_PATH"
+chown "adam:users" "$DWM_BUILD_PATH"
 cd $DWM_BUILD_PATH
 git checkout 4fb31e0 -b my_adjustments
 sed -i 's/PREFIX = \/usr\/local/PREFIX = \/usr/g' "$DWM_BUILD_PATH/config.mk"

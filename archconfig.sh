@@ -10,9 +10,9 @@ curl -o "/root/functions.sh" -fsL "$REPOSITORY/functions.sh"
 curl -o "/root/download_scripts.sh" -fsL "$REPOSITORY/download_scripts.sh"
 
 # Allow for execution of downloaded scripts
-chmod +x "$REPOSITORY/settings.conf"
-chmod +x "$REPOSITORY/functions.sh"
-chmod +x "$REPOSITORY/download_scripts.sh"
+chmod +x "/root/settings.conf"
+chmod +x "/root/functions.sh"
+chmod +x "/root/download_scripts.sh"
 
 # Load settings
 source settings.conf
