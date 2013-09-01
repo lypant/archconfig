@@ -4,21 +4,18 @@
 
 REPOSITORY="https://raw.github.com/lypant/archconfig/experiments"
 
-# System settings
+# Download basic files 
+curl -o "/root/settings.conf" -fsL "$REPOSITORY/settings.conf"
+curl -o "/root/functions.sh" -fsL "$REPOSITORY/functions.sh"
+curl -o "/root/download_scripts.sh" -fsL "$REPOSITORY/download_scripts.sh"
 
-HDD="/dev/sda"
-SWAP_SIZE="+1G"
-ROOT_SIZE=""	# Remaining space
-CONSOLE_FONT="Lat2-Terminus16"
+# Load settings
+source settings.conf
 
 # Set font for livecd
 setfont $CONSOLE_FONT
 
-# First download script containing helper functions
-curl -o "/root/functions.sh" -fsL "$REPOSITORY/functions.sh"
-curl -o "/root/download_scripts.sh" -fsL "$REPOSITORY/download_scripts.sh"
-
-# Load that script
+# Load functions
 source functions.sh
 
 # Load other scripts

@@ -6,6 +6,7 @@ DEST_DIR=$1
 echo "Downloading scripts to $DEST_DIR"
 
 downloadFile "$REPOSITORY/archconfig.sh" "$DEST_DIR/archconfig.sh"
+downloadFile "$REPOSITORY/settings.conf" "$DEST_DIR/settings.conf"
 downloadFile "$REPOSITORY/functions.sh" "$DEST_DIR/functions.sh"
 downloadFile "$REPOSITORY/install.sh" "$DEST_DIR/install.sh"
 downloadFile "$REPOSITORY/partition_disk.sh" "$DEST_DIR/partition_disk.sh"

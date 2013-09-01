@@ -1,24 +1,25 @@
 #!/bin/bash
 
+source settings.conf
 source functions.sh
 
 echo "Starting customisation.sh"
 
 echo "Updating package list"
-sudo pacman -Syy
+pacman -Syy
 
 echo "Configuring pacman"
-sudo uncommentVar "TotalDownload" /etc/pacman.conf
+uncommentVar "TotalDownload" /etc/pacman.conf
 
 echo "Installing packets"
-sudo pacman -S --noconfirm vim alsa-utils xorg-server xorg-server-utils xorg-xinit mesa virtualbox-guest-utims dmenu rxvt-unicode ttf-inconsolata ttf-dejavu git
+pacman -S --noconfirm vim alsa-utils xorg-server xorg-server-utils xorg-xinit mesa virtualbox-guest-utils dmenu rxvt-unicode ttf-inconsolata ttf-dejavu git
 
 echo "Loading guest addition modules"
-sudo modprobe -a vboxguest vboxsf vboxvideo
+modprobe -a vboxguest vboxsf vboxvideo
 
 echo "Downloading config files" 
-sudo downloadFile "$REPOSITORY/files/virtualbox.conf" "/etc/modules-load.d/virtualbox.conf"
-sudo downloadFile "$REPOSITORY/files/issue" "/etc/issue"
+downloadFile "$REPOSITORY/files/virtualbox.conf" "/etc/modules-load.d/virtualbox.conf"
+downloadFile "$REPOSITORY/files/issue" "/etc/issue"
 
 downloadFile "$REPOSITORY/files/dotfiles/.bash_profile" "/home/adam/.bash_profile"
 downloadFile "$REPOSITORY/files/dotfiles/.bashrc" "/home/adam/.bashrc"
@@ -38,26 +39,26 @@ sed -i 's/X11INC = \/usr\/X11R6\/include/X11INC = \/usr\/include\/X11/g' "$DWM_B
 sed -i 's/X11LIB = \/usr\/X11R6\/lib/X11LIB = \/usr\/lib\/X11/g' "$DWM_BUILD_PATH/config.mk"
 sed -i 's/"st"/"urxvt"/g' "$DWM_BUILD_PATH/config.def.h"
 git commit -a -m "My adjustments"
-sudo make clean install
+make clean install
  
 # Custom video mode for terminal (1680x1050) - requires VBox setup at the beginning
 # Quiet mode - no logs during bootup
 # TODO - think about copying ready config files instead of sedding some settings like this one
 echo "Setting custom video mode for terminal"
-sudo sed -i 's/APPEND root=\/dev\/sda2 rw/APPEND root=\/dev\/sda2 rw vga=864 quiet/' /boot/syslinux/syslinux.cfg
+sed -i 's/APPEND root=\/dev\/sda2 rw/APPEND root=\/dev\/sda2 rw vga=864 quiet/' /boot/syslinux/syslinux.cfg
 
 # Disable syslinux menu (automatic boot)
 echo "Disabling syslinux menu"
-sudo commentVar UI /boot/syslinux/syslinux.cfg
+commentVar UI /boot/syslinux/syslinux.cfg
 
 # Early terminal font
 # TODO Replace with function adding new values to the list
 echo "Setting early terminal font"
-sudo sed -i 's/HOOKS="base udev autodetect modconf block filesystems keyboard fsck"/HOOKS="base ud    ev autodetect modconf block filesystems keyboard fsck consolefont keymap"/g' /etc/mkinitcpio.conf
+sed -i 's/HOOKS="base udev autodetect modconf block filesystems keyboard fsck"/HOOKS="base udev autodetect modconf block filesystems keyboard fsck consolefont keymap"/g' /etc/mkinitcpio.conf
 
 # Recreate the image
 echo "Recreating the image"
-sudo mkinitcpio -p linux
+mkinitcpio -p linux
 
 echo "Ending customisation.sh"
 
