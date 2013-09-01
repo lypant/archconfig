@@ -9,6 +9,11 @@ curl -o "/root/settings.conf" -fsL "$REPOSITORY/settings.conf"
 curl -o "/root/functions.sh" -fsL "$REPOSITORY/functions.sh"
 curl -o "/root/download_scripts.sh" -fsL "$REPOSITORY/download_scripts.sh"
 
+# Allow for execution of downloaded scripts
+chmod +x "$REPOSITORY/settings.conf"
+chmod +x "$REPOSITORY/functions.sh"
+chmod +x "$REPOSITORY/download_scripts.sh"
+
 # Load settings
 source settings.conf
 
@@ -24,5 +29,5 @@ source download_scripts.sh "/root"
 # Start executing scripts
 source install.sh
 
-echo "Reboot, log in as a regular user and launch /etc/archconfig/customisation.sh"
+echo "Reboot, log in as a regular user and launch \"sudo /etc/archconfig/customisation.sh\""
 
