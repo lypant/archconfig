@@ -16,17 +16,31 @@ downloadFile ()
 
 	local URL=$1
 	local OUT=$2
+	local OVERWRITE=$3
+
 	local CMD="curl -o $OUT --create-dirs -fsL $URL"
+	local DOWNLOAD=false
 	local RESULT=0
 
-	if [ -n "$CMD" ] && [ ! -e "$OUT" ]; then
-		eval "$CMD"
-		RESULT=$?
-		if [ "$RESULT" -gt 0 ]; then
-			anyKey "Failed to download $URL to $OUT : error $RESULT"
+	if [ -n "$CMD" ]; then
+		if [ ! -e "$OUT" ]; then
+			DOWNLOAD=true
+		elif [ "$OVERWRITE" == "--overwrite" ]; then
+			DOWNLOAD=true
+			echo "File $OUT exists but overwrite flag set"
+		else
+			echo "File $OUT exists. Use --overwrite flag to replace"
+		fi
+
+		if $DOWNLOAD; then
+			eval "$CMD"
+			RESULT=$?
+			if [ "$RESULT" -gt 0 ]; then
+				anyKey "Failed to download $URL to $OUT : error $RESULT"
+			fi
 		fi
 	else
-		echo "File $OUT already exists, skipping"
+		echo "Empty command!"
 	fi
 
 	return $RESULT

@@ -1,7 +1,9 @@
 #!/bin/bash
 
-source settings.conf
-source functions.sh
+SCRIPTS_PATH="/etc/archconfig"
+
+source "$SCRIPTS_PATH/settings.conf"
+source "$SCRIPTS_PATH/functions.sh"
 
 echo "Starting customisation.sh"
 
@@ -18,16 +20,16 @@ echo "Loading guest addition modules"
 modprobe -a vboxguest vboxsf vboxvideo
 
 echo "Downloading config files" 
-downloadFile "$REPOSITORY/files/virtualbox.conf" "/etc/modules-load.d/virtualbox.conf"
-downloadFile "$REPOSITORY/files/issue" "/etc/issue"
+downloadFile "$REPOSITORY/files/virtualbox.conf" "/etc/modules-load.d/virtualbox.conf" "--overwrite"
+downloadFile "$REPOSITORY/files/issue" "/etc/issue" "--overwrite"
 
-downloadFile "$REPOSITORY/files/dotfiles/.bash_profile" "/home/adam/.bash_profile"
-downloadFile "$REPOSITORY/files/dotfiles/.bashrc" "/home/adam/.bashrc"
-downloadFile "$REPOSITORY/files/dotfiles/.gitconfig" "/home/adam/.gitconfig"
-downloadFile "$REPOSITORY/files/dotfiles/.vim/colors/solarized.vim" "/home/adam/.vim/colors/solarized.vim"
-downloadFile "$REPOSITORY/files/dotfiles/.vimrc" "/home/adam/.vimrc"
-downloadFile "$REPOSITORY/files/dotfiles/.Xdefaults" "/home/adam/.Xdefaults"
-downloadFile "$REPOSITORY/files/dotfiles/.xinitrc" "/home/adam/.xinitrc"
+downloadFile "$REPOSITORY/files/dotfiles/.bash_profile" "/home/adam/.bash_profile" "--overwrite"
+downloadFile "$REPOSITORY/files/dotfiles/.bashrc" "/home/adam/.bashrc" "--overwrite"
+downloadFile "$REPOSITORY/files/dotfiles/.gitconfig" "/home/adam/.gitconfig" "--overwrite"
+downloadFile "$REPOSITORY/files/dotfiles/.vim/colors/solarized.vim" "/home/adam/.vim/colors/solarized.vim" "--overwrite"
+downloadFile "$REPOSITORY/files/dotfiles/.vimrc" "/home/adam/.vimrc" "--overwrite"
+downloadFile "$REPOSITORY/files/dotfiles/.Xdefaults" "/home/adam/.Xdefaults" "--overwrite"
+downloadFile "$REPOSITORY/files/dotfiles/.xinitrc" "/home/adam/.xinitrc" "--overwrite"
 
 echo "Installing dwm"
 DWM_BUILD_PATH="/home/adam/build/dwm"
