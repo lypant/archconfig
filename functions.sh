@@ -7,7 +7,7 @@ anyKey ()
 	echo
 }
 
-downloadFile ()
+doDownloadFile ()
 {
 	if [ $# -lt 2 ]; then
 		anyKey "Provide repository url and file name as parameters\nGiven params: $@"
@@ -18,7 +18,17 @@ downloadFile ()
 	local OUT=$2
 	local OVERWRITE=$3
 
-	local CMD="curl -o $OUT --create-dirs -fsL $URL"
+	# Last param
+	local MOD="${@: -1}"
+	local BASE="curl -o $OUT --create-dirs -fsL $URL"
+	local CMD=""
+
+	if [ -n "$MOD" -a $MOD == "sudo" ]; then
+		CMD="sudo $BASE"
+	else
+		CMD="$BASE"
+	fi
+
 	local DOWNLOAD=false
 	local RESULT=0
 
@@ -46,6 +56,16 @@ downloadFile ()
 	return $RESULT
 }
 
+downloadFile ()
+{
+	doDownloadFile $@
+}
+
+downloadFileSudo ()
+{
+	doDownloadFile $@ "sudo"
+}
+
 # $1 - statement checked for success
 # $2 - number of retries, optional
 repeatUntilSuccess ()
@@ -67,19 +87,57 @@ repeatUntilSuccess ()
 	return 0
 }
 
-commentVar ()
+doCommentVar ()
 {
 	local VAR="$1"
 	local FILE="$2"
+	local MOD="$3"
+	local BASE="sed"
+	local CMD=""
 
-	sed -i "s/^\(${VAR}.*\)$/#\1/" "${FILE}"
+	if [ -n "$MOD" -a $MOD == "sudo" ]; then
+		CMD="sudo $BASE"
+	else
+		CMD="$BASE"
+	fi
+
+	$CMD -i "s/^\(${VAR}.*\)$/#\1/" "${FILE}"
+}
+
+commentVar ()
+{
+	doCommentVar "$1" "$2"
+}
+
+commentVarSudo ()
+{
+	doCommentVar "$1" "$2" "sudo"
+}
+
+doUncommentVar ()
+{
+	local VAR="$1"
+	local FILE="$2"
+	local MOD="$3"
+	local BASE="sed"
+	local CMD=""
+
+	if [ -n "$MOD" -a $MOD == "sudo" ]; then
+		CMD="sudo $BASE"
+	else
+		CMD="$BASE"
+	fi
+
+	$CMD -i "s/^#\(${VAR}.*\)$/\1/" "${FILE}";
 }
 
 uncommentVar ()
 {
-	local VAR="$1"
-	local FILE="$2"
+	doUncommentVar "$1" "$2"
+}
 
-	sed -i "s/^#\(${VAR}.*\)$/\1/" "${FILE}";
+uncommentVarSudo ()
+{
+	doUncommentVar "$1" "$2" "sudo"
 }
 

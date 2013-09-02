@@ -4,3 +4,4 @@ Add sudoers in a safe way
 
 Split configuration, download and install scripts so that download and installation can be separated easily and performed in steps?
 
+!!! Fix ~/build/dwm ownership

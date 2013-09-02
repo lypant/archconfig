@@ -29,5 +29,5 @@ source download_scripts.sh "/root"
 # Start executing scripts
 source install.sh
 
-echo "Reboot, log in as a regular user and launch \"sudo /etc/archconfig/customisation.sh\""
+echo "Reboot, log in as a regular user and launch \"/etc/archconfig/customisation.sh\""
 
