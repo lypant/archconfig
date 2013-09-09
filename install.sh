@@ -2,6 +2,7 @@
 
 # Load settings
 source "settings.conf"
+source "$FUNCTIONS_FILE"
 
 # Launch all installation scripts from here
 

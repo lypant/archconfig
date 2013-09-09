@@ -19,12 +19,12 @@ DOWNLOAD_SRC="$REPOSITORY/$DOWNLOAD_FILE"
 # Destination paths
 SETTINGS_DST="$DST_DIR/$SETTINGS_FILE"
 FUNCTIONS_DST="$DST_DIR/$FUNCTIONS_FILE"
-DOWNLOAD_DST="$DST_DIR/$DOWNLOADS_FILE"
+DOWNLOAD_DST="$DST_DIR/$DOWNLOAD_FILE"
 
 # Download basic files 
-curl -o "$SETTINGS_DST" -fsL "$SETTINGS_SRC"
-curl -o "$FUNCTIONS_DST" -fsL "$FUNCTIONS_SRC"
-curl -o "$DOWNLOAD_DST" -fsL "$DOWNLOAD_SRC"
+curl -o "$SETTINGS_DST" --create-dirs -fsL "$SETTINGS_SRC"
+curl -o "$FUNCTIONS_DST" --create-dirs -fsL "$FUNCTIONS_SRC"
+curl -o "$DOWNLOAD_DST" --create-dirs -fsL "$DOWNLOAD_SRC"
 
 # Load settings
 source "$SETTINGS_DST"
