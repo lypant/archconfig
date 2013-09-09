@@ -1,17 +1,5 @@
 #!/bin/bash
 
-echo "Starting base_system.sh"
-
-# Create file systems
-echo Creating file systems
-mkswap /dev/sda1
-swapon /dev/sda1
-mkfs.ext4 /dev/sda2
-
-# Mount the partitions
-echo Mounting partitions
-mount /dev/sda2 /mnt
-
 # Update livecd pacman
 echo Update pacman on live cd
 uncommentVar "TotalDownload" /etc/pacman.conf
@@ -29,6 +17,4 @@ pacstrap -i /mnt base base-devel
 # Generate fstab (-L is for labels, -U is for UIDs)
 echo Generating fstab
 genfstab -L -p /mnt >> /mnt/etc/fstab
-
-echo "Ending base_system.sh"
 
