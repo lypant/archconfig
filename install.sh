@@ -33,7 +33,7 @@ source "$GENERATE_FSTAB_FILE"
 mkdir "$MOUNTED_ARCHCONFIG_PATH"
 source "$DOWNLOAD_FILE" "$MOUNTED_ARCHCONFIG_PATH"
 chmod +x "$MOUNTED_CHROOT_FILE"
-arch-chroot "$MOUNT_PATH" "$MOUNTED_CHROOT_FILE"
+arch-chroot "$MOUNT_PATH" "$CHROOTED_CHROOT_FILE"
 
 source post_chroot.sh
 
