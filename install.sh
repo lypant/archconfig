@@ -35,10 +35,5 @@ source "$DOWNLOAD_FILE" "$MOUNTED_ARCHCONFIG_PATH"
 chmod +x "$MOUNTED_CHROOT_FILE"
 arch-chroot "$MOUNT_PATH" "$CHROOTED_CHROOT_FILE"
 
-source post_chroot.sh
-
-# Run as a regular user
-#source customisation.sh
-
-echo "Ending install.sh"
+source "$UNMOUNT_PARTITIONS_FILE"
 

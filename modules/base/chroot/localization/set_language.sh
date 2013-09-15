@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "LANG=en_US.UTF-8" > /etc/locale.conf
+export LANG=en_US.UTF-8
+

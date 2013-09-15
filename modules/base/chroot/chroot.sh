@@ -5,40 +5,58 @@ source "/etc/archconfig/settings.conf"
 
 source "$CHROOTED_FUNCTIONS_FILE"
 
+# Host name
+source "$SET_HOST_NAME_FILE"
+
+# Localization
+
 # Set locales
+source "$SET_LOCALES_FILE"
 
 # Generate locales
+source "$GENERATE_LOCALES_FILE"
 
 # Set language
-
-# Optional? - Console keymap and font
-# TODO - replace with favourite font when such is found
-# TODO - think about setting necessary kernel params/switches etc to allow smooth initialization
-# KEYMAP=pl
-# FONT=Lat2-Terminus16
+source "$SET_LANGUAGE_FILE"
 
 # Set time zone
+source "$SET_TIME_ZONE_FILE"
 
-# Set hardware clock
+# Set hw clock
+source "$SET_HW_CLOCK_FILE"
 
-# TODO - optional - set any required kernel modules here
+# Console
 
-# Set host name
+# Set console keymap
+source "$SET_CONSOLE_KEYMAP_FILE"
 
-# Configure the netwotk
-#	Check exact interface name (e.g. enp0s3)
-#	ip link
-# Wired, dynamic IP, using dhcpcd
+# Set console font
+source "$SET_CONSOLE_FONT_FILE"
 
-# TODO - optional - create initial ramdisk environment (check arch wiki for details)
+# Network
 
-# Install and configure a bootloader (Syslinux is chosen here)
+# Configure network
+source "$CONFIGURE_NETWORK_FILE"
+
+# Bootloader
+
+# Install bootloader
+source "$INSTALL_BOOTLOADER_FILE"
+
+# Configure bootloader
+source "$CONFIGURE_BOOTLOADER_FILE"
+
+# Users
 
 # Set root password
+source "$SET_ROOT_PASSWORD_FILE"
 
 # Add regular user
+source "$ADD_REGULAR_USER_FILE"
 
-# Set password
+# Set regular user password
+source "$SET_REGULAR_USER_PASSWORD_FILE"
 
-# "Adding user to sudoers"
+# Set sudoers
+source "$SET_SUDOERS_FILE"
 
