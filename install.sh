@@ -35,8 +35,8 @@ source "$DOWNLOAD_FILE" "$MOUNTED_ARCHCONFIG_PATH"
 chmod +x "$MOUNTED_CHROOT_FILE"
 arch-chroot "$MOUNT_PATH" "$CHROOTED_CHROOT_FILE"
 
-source "$UNMOUNT_PARTITIONS_FILE"
-
 # Set rights of all archconfig files
 chmod -R +rx "$MOUNTED_ARCHCONFIG_PATH"
+
+source "$UNMOUNT_PARTITIONS_FILE"
 
