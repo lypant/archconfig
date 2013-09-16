@@ -21,15 +21,6 @@ source "$INSTALL_BASE_SYSTEM_FILE"
 # Fstab
 source "$GENERATE_FSTAB_FILE"
 
-# TODO: CLEAN UP THE REST
-
-# chroot and run script to work in chrooted environment
-#mkdir /mnt/etc/archconfig
-#source download_scripts.sh /mnt/etc/archconfig
-#cp chrooted.sh /mnt/etc/archconfig/chrooted.sh
-#chmod +x /mnt/etc/archconfig/chrooted.sh
-#arch-chroot /mnt /etc/archconfig/chrooted.sh
-
 mkdir "$MOUNTED_ARCHCONFIG_PATH"
 source "$DOWNLOAD_FILE" "$MOUNTED_ARCHCONFIG_PATH"
 chmod +x "$MOUNTED_CHROOT_FILE"

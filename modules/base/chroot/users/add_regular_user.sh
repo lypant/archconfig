@@ -1,4 +1,4 @@
 #!/bin/bash
 
-useradd -m -g users -G wheel,storage,power -s /bin/bash adam
+useradd -m -g "$USER_MAIN_GROUP" -G "$USER_ADDITIONAL_GROUPS" -s "$USER_SHELL" "$USER_NAME"
 

@@ -1,8 +1,6 @@
 #!/bin/bash
 
-# Create file systems
-echo Creating file systems
-mkswap /dev/sda1
-swapon /dev/sda1
-mkfs.ext4 /dev/sda2
+mkswap "/dev/$SWAP_PARTITION"
+swapon "/dev/$SWAP_PARTITION"
+"mkfs.$ROOT_FILE_SYSTEM" "/dev/$ROOT_PARTITION"
 

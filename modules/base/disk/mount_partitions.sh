@@ -1,6 +1,4 @@
 #!/bin/bash
 
-# Mount the partitions
-echo Mounting partitions
-mount /dev/sda2 /mnt
+mount "/dev/$ROOT_PARTITION" "/mnt"
 

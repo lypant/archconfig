@@ -1,4 +1,4 @@
 #!/bin/bash
 
-echo "archvb" > /etc/hostname
+echo "$HOST_NAME" > /etc/hostname
 

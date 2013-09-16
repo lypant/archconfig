@@ -4,4 +4,75 @@ Add sudoers in a safe way
 
 Split configuration, download and install scripts so that download and installation can be separated easily and performed in steps?
 
-!!! Fix ~/build/dwm ownership
+Parametrization:
+
+!!! Check - does usage of settings variables require inclusion of settings file or they are passed down the loaded scripts?
+
+get.sh
+Repository/branch as an optional parameter
+Secondary: Destination dir as a parameter
+
+install.sh
+Settings file - provide full path.
+
+settings.conf
+Repository should match that one from get.sh
+
+modules/base/chroot/bootloader
+
+install_bootloader.sh
+Think of parametrization of bootloader (package) to be installed
+
+modules/base/chroot/console
+
+modules/base/chroot/localization
+
+modules/base/chroot/network
+
+configure_network.sh
+Long term: type of network connecion wired/wireless, etc
+
+modules/base/chroot/users
+
+set_regular_user_password.sh
+?number of retries
+
+set_root_password.sh
+?number of retries
+
+set_sudoers.sh
+Long term: safe sudoers manipulation
+
+modules/base/disk
+
+create_file_systems.sh
+Long term:
+   swap as option
+   more partitions as an option (/, /boot, ...)
+
+mount_partitions.sh
+Long term:
+   more partitions
+
+partition_disks.sh
+   Uhh... much parameters possible - disks, partitions, sizes, etc.
+
+unmount_partitions.sh
+? more partitions need to be unmounted when more are mounted?
+
+modules/base/fstab
+? more partitions when more are used?
+
+modules/base/pacman
+
+rank_mirrors.sh
+Long term: provide an alternative to ranking mirrors - copy mirrorlist prepared earlier
+
+modules/customization
+
+set_early_terminal_font.sh
+Long term: replace long sed command with function for expanding lists
+
+set_terminal_video_mode.sh
+Long term: move boot options to separate file or rename this file to be able to set more boot options here.
+           use list of params then

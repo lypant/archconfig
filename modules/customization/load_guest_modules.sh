@@ -1,4 +1,4 @@
 #!/bin/bash
 
-sudo modprobe -a vboxguest vboxsf vboxvideo
+sudo modprobe -a "$VIRTUALBOX_MODULES"
 
