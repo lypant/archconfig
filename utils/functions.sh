@@ -126,7 +126,7 @@ doUncommentVar ()
 		MOD="$3"
 	fi
 
-	if [ -n "$MOD" -a $MOD == "sudo" ]; then
+	if [ $MOD == "sudo" ]; then
 		CMD="sudo $BASE"
 	else
 		CMD="$BASE"

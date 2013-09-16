@@ -1,4 +1,4 @@
 #!/bin/bash
 
-sudo pacman -S --noconfirm "$CUSTOMIZATION_PACKAGES"
+sudo pacman -S --noconfirm $CUSTOMIZATION_PACKAGES
 
