@@ -118,9 +118,13 @@ doUncommentVar ()
 {
 	local VAR="$1"
 	local FILE="$2"
-	local MOD="$3"
+	local MOD=""
 	local BASE="sed"
 	local CMD=""
+
+	if [ $# -gt 2 ]; then
+		MOD="$3"
+	fi
 
 	if [ -n "$MOD" -a $MOD == "sudo" ]; then
 		CMD="sudo $BASE"
