@@ -1,4 +1,4 @@
 #!/bin/bash
 
-hwclock "$HWCLOCK"
+hwclock $HWCLOCK
 

@@ -1,4 +1,5 @@
 Redirect output of scripts to log files to be able to see what went wrong in case of a failure
+	!!! NOT ALL OUTPUT OF PACMAN IS SHOWN ON SCREEN - NO PROGRESS BARS !!!
 
 Add sudoers in a safe way
 

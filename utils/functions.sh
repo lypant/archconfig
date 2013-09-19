@@ -11,7 +11,7 @@ fi
 
 LOG_NOT_ENOUGH_PARAMS='executeCommand "echo $FUNCNAME: Not enough params \($#\): $@"'
 EXECUTING_SCRIPT_MSG="Executing script"
-EXECUTED_SCRIPT_MSG="Executed script"
+EXECUTED_SCRIPT_MSG="Executed script "
 
 executeCommand ()
 {
