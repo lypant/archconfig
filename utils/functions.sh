@@ -174,21 +174,17 @@ doUncommentVar ()
 {
 	local VAR="$1"
 	local FILE="$2"
-	local MOD=""
 	local BASE="sed"
 	local CMD=""
 
 	if [ $# -gt 2 ]; then
-		MOD="$3"
-	fi
-
-	if [ $MOD == "sudo" ]; then
-		CMD="sudo $BASE"
+		if [ $3 == "sudo" ]; then
+			CMD="sudo $BASE"
+		fi
 	else
 		CMD="$BASE"
 	fi
 
-	#$CMD -i "s/^#\(${VAR}.*\)$/\1/" "${FILE}";
 	executeCommand "$CMD -i \"s/^#\(${VAR}.*\)$/\1/\" \"${FILE}\";"
 }
 
@@ -201,7 +197,6 @@ uncommentVarSudo ()
 {
 	doUncommentVar "$1" "$2" "sudo"
 }
-
 
 return 0 
 

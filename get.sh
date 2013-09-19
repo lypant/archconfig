@@ -5,6 +5,7 @@ REPOSITORY="https://raw.github.com/lypant/archconfig/modular"
 
 # Destination directory
 DST_DIR="/root"
+GET_SCRIPT_LOG_FILE="$DST_DIR/archconfig_get.log"
 
 # Files to be downloaded as first
 SETTINGS_FILE="settings.conf"
@@ -30,7 +31,7 @@ curl -o "$DOWNLOAD_DST" --create-dirs -fsL "$DOWNLOAD_SRC"
 source "$SETTINGS_DST"
 
 # Load functions
-source "$FUNCTIONS_DST" "$DST_DIR/archconfig_get.log"
+source "$FUNCTIONS_DST" "$GET_SCRIPT_LOG_FILE"
 
 # Download other files by loading download script
 #source "$DOWNLOAD_DST" "$DST_DIR"

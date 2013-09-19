@@ -3,7 +3,7 @@
 # Hardcoded path needed - first include
 source "/etc/archconfig/settings.conf"
 
-source "$CHROOTED_FUNCTIONS_FILE"
+source "$CHROOTED_FUNCTIONS_FILE" "$CHROOT_SCRIPT_LOG_FILE"
 
 # Host name
 source "$ARCHCONFIG_PATH/$SET_HOST_NAME_FILE"
