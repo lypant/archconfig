@@ -15,7 +15,6 @@ EXECUTED_SCRIPT_MSG="Executed script"
 
 executeCommand ()
 {
-   echo "executeCommand: $@"
    (eval "$@" 2>&1) | tee -a $LOG_FILE
    return ${PIPESTATUS[0]}
 }

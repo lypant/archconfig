@@ -30,8 +30,9 @@ curl -o "$DOWNLOAD_DST" --create-dirs -fsL "$DOWNLOAD_SRC"
 source "$SETTINGS_DST"
 
 # Load functions
-source "$FUNCTIONS_DST"
+source "$FUNCTIONS_DST" "$DST_DIR/archconfig_get.log"
 
 # Download other files by loading download script
-source "$DOWNLOAD_DST" "$DST_DIR"
+#source "$DOWNLOAD_DST" "$DST_DIR"
+executeScript "$DOWNLOAD_DST" "$DST_DIR"
 
