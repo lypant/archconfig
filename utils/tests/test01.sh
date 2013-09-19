@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#source ../new_functions.sh
-source ../new_functions.sh output.log
+source "../../settings.conf"
+source ../functions.sh output.log
 
 #executeCommand
 #executeCommand pwd
@@ -27,4 +27,7 @@ source ../new_functions.sh output.log
 #uncommentVar "X" "settings.fake"
 #uncommentVarSudo "X" "settings.fake"
 #echo "Result of uncommentX: $?"
+
+#source "../download.sh" "./skasuj"
+executeScript "../download.sh" "./skasuj"
 
