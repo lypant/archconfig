@@ -9,27 +9,35 @@ else
 	LOG_FILE=$1
 fi
 
-LOG_NOT_ENOUGH_PARAMS='executeCommand "echo $FUNCNAME: Not enough params \($#\): $@"'
+LOG_NOT_ENOUGH_PARAMS='executeCommand echo "$FUNCNAME: Not enough params: $#: $@"'
 EXECUTING_SCRIPT_MSG="Executing script"
-EXECUTED_SCRIPT_MSG="Executed script "
+EXECUTED_SCRIPT_MSG="Executed script"
+
+#executeCommand ()
+#{
+#   (eval "$@" 2>&1) | tee -a $LOG_FILE
+#   return ${PIPESTATUS[0]}
+#}
 
 executeCommand ()
 {
-   (eval "$@" 2>&1) | tee -a $LOG_FILE
-   return ${PIPESTATUS[0]}
+   #eval $(eval "eval echo \"script -a -e -q -c \'$@\' $LOG_FILE\"")
+   eval script -a -e -q -c \'$@\' $LOG_FILE
+   return $?
 }
 
 log ()
 {
-   local RESULT=""
-   if [ $# -lt 1 ]; then
-      eval $LOG_NOT_ENOUGH_PARAMS
-      RESULT=1
-   else
-      executeCommand "echo $@"
-      RESULT=$?
-   fi
-   return $RESULT
+	local RESULT=""
+	if [ $# -lt 1 ]; then
+		eval $LOG_NOT_ENOUGH_PARAMS
+		#executeCommand echo "$FUNCNAME: Not enough params: $#: $@"
+		RESULT=1
+	else
+		executeCommand echo -e $@
+		RESULT=$?
+	fi
+	return $RESULT
 }
 
 executeScript ()
@@ -75,12 +83,12 @@ repeatUntilSuccess ()
 	return $RESULT
 }
 
-# Params contain message to be displayed
 anyKey ()
 {
-	executeCommand "echo $@"
-	executeCommand "read -sn 1 -p \"Any key to continue...\""
-	executeCommand "echo"
+# script -a -e -q -c 'read -sn 1 -p "Any key to continue..."' output.log
+	executeCommand echo $@
+	executeCommand read -sn 1 -p \"Any key to continue...\"
+	executeCommand echo
 }
 
 doDownloadFile ()
@@ -119,7 +127,8 @@ doDownloadFile ()
 		fi
 
 		if $DOWNLOAD; then
-			eval "$CMD"
+			#eval "$CMD"
+			executeCommand  "$CMD"
 			RESULT=$?
 			if [ "$RESULT" -gt 0 ]; then
 				anyKey "Failed to download $URL to $OUT : error $RESULT"
@@ -132,6 +141,7 @@ doDownloadFile ()
 
 	return $RESULT
 }
+
 
 downloadFile ()
 {

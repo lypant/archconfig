@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# TODO TEMP!!! THIS PATHS ARE JUST FOR A MOMENT!
+#source "../../settings.conf"
+#source "../functions.sh" "archconfig_download.log"
+
+if [ $# -lt 1 ]; then
+	anyKey "Download script - no target directory parameter provided"
+	return 1
+fi
+
+
 DST_DIR=$1
 
 # Destination paths - only for user-launchable scripts
@@ -122,7 +132,9 @@ downloadFile "$REPOSITORY/$XDEFAULTS_FILE" "$DST_DIR/$XDEFAULTS_FILE"
 downloadFile "$REPOSITORY/$XINITRC_FILE" "$DST_DIR/$XINITRC_FILE"
 
 # Change permissions - only needed for user-launched scripts
-chmod +x "$GET_DST"
-chmod +x "$INSTALL_DST"
-chmod +x "$CUSTOMIZE_DST"
+executeCommand chmod +x "$GET_DST"
+executeCommand chmod +x "$INSTALL_DST"
+executeCommand chmod +x "$CUSTOMIZE_DST"
+
+return 0
 

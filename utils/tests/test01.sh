@@ -7,13 +7,22 @@ source ../functions.sh output.log
 #executeCommand pwd
 #executeCommand rm non_existing_file
 
-#sth pwd
-#sth "rm blablabla"
-#sth "rm skasuj.to"
+#log
+#log raz
+#log raz dwa trzy
+
+#executeScript
+#executeScript "../download.sh"
+#executeScript "../download.sh" "./skasuj"
+
+#repeatUntilSuccess
+#repeatUntilSuccess pwd
+#repeatUntilSuccess pwd 3
+#repeatUntilSuccess "rm none" 3
 
 #anyKey
 #anyKey Raz dwa trzy
-#anyKey "Paused"
+anyKey "Paused"
 
 #downloadFile "https://raw.github.com/lypant/archconfig/modular/get.sh" "get.sh"
 #downloadFile "https://raw.github.com/lypant/archconfig/modular/get.sh" "get.sh" "--overwrite"
@@ -28,6 +37,10 @@ source ../functions.sh output.log
 #uncommentVarSudo "X" "settings.fake"
 #echo "Result of uncommentX: $?"
 
-#source "../download.sh" "./skasuj"
-executeScript "../download.sh" "./skasuj"
+
+
+
+
+
+echo "Result: $?"
 

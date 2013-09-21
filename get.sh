@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Source repository
-REPOSITORY="https://raw.github.com/lypant/archconfig/modular"
+REPOSITORY="https://raw.github.com/lypant/archconfig/script_logging"
 
 # Destination directory
 DST_DIR="/root"
