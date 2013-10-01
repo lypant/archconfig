@@ -21,16 +21,10 @@ executeScript "$INSTALL_BASE_SYSTEM_FILE"
 # Fstab
 executeScript "$GENERATE_FSTAB_FILE"
 
-#mkdir "$MOUNTED_ARCHCONFIG_PATH"
-#source "$DOWNLOAD_FILE" "$MOUNTED_ARCHCONFIG_PATH"
-#chmod +x "$MOUNTED_CHROOT_FILE"
-#arch-chroot "$MOUNT_PATH" "$CHROOTED_CHROOT_FILE"
-
-## Set rights of all archconfig files
-#chmod -R +rx "$MOUNTED_ARCHCONFIG_PATH"
-
 executeCommand "mkdir \"$MOUNTED_ARCHCONFIG_PATH\""
-executeScript "$DOWNLOAD_FILE" "$MOUNTED_ARCHCONFIG_PATH"
+#executeScript "$DOWNLOAD_FILE" "$MOUNTED_ARCHCONFIG_PATH"
+echo "COPYING FILES TO MOUNTED PATH INSTEAD OF DOWNLOADING!!!"
+executeScript "$COPY_FILE" "$MOUNTED_ARCHCONFIG_PATH"
 executeCommand "chmod +x \"$MOUNTED_CHROOT_FILE\""
 executeCommand "arch-chroot \"$MOUNT_PATH\" \"$CHROOTED_CHROOT_FILE\""
 
