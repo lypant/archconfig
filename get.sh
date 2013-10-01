@@ -34,6 +34,5 @@ source "$SETTINGS_DST"
 source "$FUNCTIONS_DST" "$GET_SCRIPT_LOG_FILE"
 
 # Download other files by loading download script
-#source "$DOWNLOAD_DST" "$DST_DIR"
 executeScript "$DOWNLOAD_DST" "$DST_DIR"
 
