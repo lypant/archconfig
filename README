@@ -1,2 +1,5 @@
-This is set of description, configuration and script files for setting up my flavor of Arch Linux.
+1. Download the suite
+culr -L https://github.com/lypant/archconfig/tarball/simplified | tar xz
+
+T.B.C.
 

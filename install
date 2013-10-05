@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Required files
+ARCHCONFIG_SETTINGS_FILE="settings"
+
+# Functions and settings files have to be present
+if [[ -f $ARCHCONFIG_SETTINGS_FILE ]]; then
+    source $ARCHCONFIG_SETTINGS_FILE
+else
+    echo "File not found: $ARCHCONFIG_SETTINGS_FILE"
+    exit 1
+fi
+
+# Now, if we have settings loaded, we know functions file name under ARCHCONFIG_FUNCTIONS_FILE...
+# Check if the file is present
+if [[ -f $ARCHCONFIG_FUNCTIONS_FILE ]]; then
+    source $ARCHCONFIG_FUNCTIONS_FILE
+else
+    echo "File not found: $ARCHCONFIG_FUNCTIONS_FILE"
+    exit 1
+fi
+
+# We have settings and functions file loaded
+echo "$ARCHCONFIG_INSTALL_FILE ready to start"
+

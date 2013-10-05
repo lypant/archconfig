@@ -1,0 +1,43 @@
+#!/bin/bash
+
+### ### ### ### ### ### ### ### System settings
+
+### ### ### ### Disks and partitions
+
+### ### Root partition
+
+# Disk on which root partition will be created, without partition number
+# e.g. "/dev/sda"
+ROOT_PARTITION_HDD="/dev/sda"
+
+# Partition nb on ROOT_PARTITION_HDD where root partition will be created 
+# e.g. for /dev/sda2 - "2"
+ROOT_PARTITION_NB="2"
+
+# Size of root partition. Format as for fdisk.
+# e.g. for 1 GB "+1G", for remaining space ""
+ROOT_PARTITION_SIZE=""
+
+# Root partition file system. Format as for mkfs.XXX
+ROOT_PARTITION_FS="ext4"
+
+### ### Swap partition
+
+# Disk on which swap partition will be created, without partition number
+# e.g. "/dev/sda"
+SWAP_PARTITION_HDD="/dev/sda"
+
+# Partition nb on SWAP_PARTITION_HDD where swap partition will be created 
+# e.g. for /dev/sda1 - "1"
+SWAP_PARTITION_NB="1"
+
+# Size of swap partition. Format as for fdisk.
+# e.g. for 1 GB "+1G", for remaining space ""
+SWAP_PARTITION_SIZE="+1G"
+
+
+### ### ### ### ### ### ### ### Archconfig settings
+
+ARCHCONFIG_SETTINGS_FILE="settings"
+ARCHCONFIG_FUNCTIONS_FILE="functions"
+ARCHCONFIG_INSTALL_FILE="install"
