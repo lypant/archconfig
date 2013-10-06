@@ -155,7 +155,12 @@ configureSyslinux()
 
 setRootPassword()
 {
-    archChroot "passwd"
+    local ASK=1
+
+    while [ $ASK -ne 0 ]; do
+        archChroot "passwd"
+        ASK=$?
+    done
 }
 
 # TODO Consider whether regular user adding should be done here, in base install, or in customization
