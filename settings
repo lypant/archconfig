@@ -48,7 +48,7 @@ BOOT_PARTITION_HDD="sda"
 
 # Partition nb on BOOT_PARTITION_HDD where boot partition will be created 
 # e.g. for /dev/sda1 - "1"
-BOOT_PARTITION_NB="1"
+BOOT_PARTITION_NB="2"
 
 # Size of boot partition. Format as for fdisk.
 # e.g. for 1 GB "+1G", for remaining space ""

@@ -39,7 +39,7 @@ createRootPartitionFS()
 createSwapPartition()
 {
     mkswap $PARTITION_PREFIX$SWAP_PARTITION_HDD$SWAP_PARTITION_NB
-    swapon $SWAP_PARTITION_HDD$SWAP_PARTITION_NB
+    swapon $PARTITION_PREFIX$SWAP_PARTITION_HDD$SWAP_PARTITION_NB
 }
 
 # Mount partition(s)

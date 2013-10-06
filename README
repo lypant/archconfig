@@ -3,3 +3,8 @@ culr -L https://github.com/lypant/archconfig/tarball/simplified | tar xz
 
 T.B.C.
 
+TODO LIST:
+- repeating function for password entering etc
+- copy archconfig files from iso session to new system - for future reference and maybe reuse of functions while chrooted?
+
+
