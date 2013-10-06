@@ -1,4 +1,73 @@
 #!/bin/bash
 
-echo "TODO!"
+# Required files - settings
+ARCHCONFIG_SETTINGS_FILE="settings"
+
+# Settings file has to be present
+if [[ -f $ARCHCONFIG_SETTINGS_FILE ]]; then
+    source $ARCHCONFIG_SETTINGS_FILE
+else
+    echo "File not found: $ARCHCONFIG_SETTINGS_FILE"
+    exit 1
+fi
+
+#sudoExec()
+#{
+#    if [ $# -ge 1 ];then
+#        sudo "$@"
+#    else
+#        echo $FUNCNAME: not enough parameters \($#\): "$@"
+#        return 1
+#    fi
+#}
+
+doUncommentVar ()
+{
+	local VAR="$1"
+	local FILE="$2"
+	local BASE_CMD="sed"
+	local CMD=""
+
+	if [ $# -gt 2 ]; then
+		if [ $3 == "sudo" ]; then
+			CMD="sudo $BASE_CMD"
+		fi
+	else
+		CMD="$BASE_CMD"
+	fi
+
+	#echo "$CMD -i \"s/^#\(${VAR}.*\)$/\1/\" \"${FILE}\";"
+    #echo $CMD -i "s/^#\(${VAR}.*\)$/\1/" "${FILE}"
+    $CMD -i "s/^#\(${VAR}.*\)$/\1/" "${FILE}"
+}
+
+uncommentVar ()
+{
+    if [ $# -lt 2 ];then
+        echo $FUNCNAME: not enough parameters \($#\): "$@"
+        return 1
+    fi
+
+	doUncommentVar "$1" "$2"
+}
+
+uncommentVarSudo ()
+{
+     if [ $# -lt 2 ];then
+        echo $FUNCNAME: not enough parameters \($#\): "$@"
+        return 1
+    fi
+
+	doUncommentVar "$1" "$2" "sudo"
+}
+
+archChroot()
+{
+     if [ $# -lt 1 ];then
+        echo $FUNCNAME: not enough parameters \($#\): "$@"
+        return 1
+    fi
+
+    arch-chroot $ROOT_PARTITION_MOUNT_POINT /bin/bash -c "${1}"
+}
 

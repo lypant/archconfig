@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Required files
+# Required files - settings and functions
 ARCHCONFIG_SETTINGS_FILE="settings"
 
 # Functions and settings files have to be present
@@ -22,4 +22,147 @@ fi
 
 # We have settings and functions file loaded
 echo "$ARCHCONFIG_INSTALL_FILE ready to start"
+
+# Disks and partitions
+
+# TODO So far partitioning is disabled - I need to think about consistent yest flexible way to address both installation on brand new disk without any partitioning and disks which already contain existing OSes and/or other partitions
+# TODO PARTITION DISKS HERE
+echo "No automatic disk partitioning so far... please do it manually"
+
+# Create file system(s)
+
+createRootPartitionFS()
+{
+   mkfs.$ROOT_PARTITION_FS $PARTITION_PREFIX$ROOT_PARTITION_HDD$ROOT_PARTITION_NB
+}
+
+createSwapPartition()
+{
+    mkswap $PARTITION_PREFIX$SWAP_PARTITION_HDD$SWAP_PARTITION_NB
+    swapon $SWAP_PARTITION_HDD$SWAP_PARTITION_NB
+}
+
+# Mount partition(s)
+
+mountRootPartition()
+{
+    mount $PARTITION_PREFIX$ROOT_PARTITION_HDD$ROOT_PARTITION_NB $ROOT_PARTITION_MOUNT_POINT
+}
+
+# Prepare pacman
+
+livecdPacmanTotalDownload()
+{
+    uncommentVar "TotalDownload" /etc/pacman.conf
+}
+
+livecdPacmanUpdate()
+{
+    pacman -Syy
+}
+
+# TODO - probably this could be avoided and mirrors for specific country could be used- check aui
+rankMirrors()
+{
+    cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.original
+    rankmirrors -n $MIRROR_COUNT /etc/pacman.d/mirrorlist.original > /etc/pacman.d/mirrorlist 
+}
+
+# Base system
+
+installBaseSystem()
+{
+    pacstrap -i $ROOT_PARTITION_MOUNT_POINT $BASE_SYSTEM_PACKAGES
+}
+
+# Fstab
+
+generateFstab()
+{
+    genfstab -L -p $ROOT_PARTITION_MOUNT_POINT >> $ROOT_PARTITION_MOUNT_POINT/etc/fstab 
+}
+
+### ### ### ### Chrooted commands
+
+# Host name
+
+setHostName()
+{
+    archChroot "echo $HOST_NAME > /etc/hostname"
+}
+
+### ### Localization
+
+setLocale()
+{
+    archChroot "uncommentVar $1 /etc/locale.gen"
+}
+
+setLocales()
+{
+    setLocale $LOCALIZATION_LANGUAGE1
+    setLocale $LOCALIZATION_LANGUAGE2
+}
+
+generateLocales()
+{
+    archChroot "locale-gen"
+}
+
+setLanguage()
+{
+    archChroot "echo LANG=$LOCALIZATION_LANGUAGE1 > /etc/locale.conf"
+    archChroot "export LANG=$LOCALIZATION_LANGUAGE1"
+}
+
+setTimeZone()
+{
+    archChroot "ln -s /usr/share/zoneinfo/$LOCALIZATION_TIME_ZONE /etc/localtime"
+}
+
+setHwClock()
+{
+    archChroot "hwclock $LOCALIZATION_HW_CLOCK"
+}
+
+setConsoleKeymap()
+{
+    archChroot "echo KEYMAP=$CONSOLE_KEYMAP > /etc/vconsole.conf"
+}
+
+setConsoleFont()
+{
+    archChroot "echo FONT=$CONSOLE_FONT >> /etc/vconsole.conf"
+}
+
+setWiredNetwork()
+{
+    archChroot "systemctl enable $NETWORK_SERVICE@$NETWORK_INTERFACE_WIRED.service"
+}
+
+installBootloader()
+{
+    archChroot "pacman -S $BOOTLOADER_PACKAGE --noconfirm"
+}
+
+configureSyslinux()
+{
+    archChroot "syslinux-install_update -i -a -m"
+    archChroot "sed -i \"s/sda3/$BOOT_PARTITION_HDD$BOOT_PARTITION_NB/g\" /boot/syslinux/syslinux.cfg"
+}
+
+# TODO Consider whether regular user adding should be done here, in base install, or in customization
+:
+### ### Back to non-chroot commands
+
+unmountPartition()
+{
+    umount $1
+}
+
+unmountPartitions()
+{
+    unmountPartition $ROOT_PARTITION_MOUNT_POINT
+    # TODO Unmount other partitions here, if any were mounted!
+}
 

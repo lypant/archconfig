@@ -4,13 +4,15 @@
 
 ### ### ### ### Disks and partitions
 
+PARTITION_PREFIX="/dev/"
+
 ### ### Root partition
 
 # Disk on which root partition will be created, without partition number
-# e.g. "/dev/sda"
-ROOT_PARTITION_HDD="/dev/sda"
+# e.g. "sda"
+ROOT_PARTITION_HDD="sda"
 
-# Partition nb on ROOT_PARTITION_HDD where root partition will be created 
+# Partition nb on ROOT_PARTITION_HDD where root partition will be created
 # e.g. for /dev/sda2 - "2"
 ROOT_PARTITION_NB="2"
 
@@ -21,11 +23,14 @@ ROOT_PARTITION_SIZE=""
 # Root partition file system. Format as for mkfs.XXX
 ROOT_PARTITION_FS="ext4"
 
+# Directory on live cd session where root partition will be mounted
+ROOT_PARTITION_MOUNT_POINT="/mnt"
+
 ### ### Swap partition
 
 # Disk on which swap partition will be created, without partition number
-# e.g. "/dev/sda"
-SWAP_PARTITION_HDD="/dev/sda"
+# e.g. "sda"
+SWAP_PARTITION_HDD="sda"
 
 # Partition nb on SWAP_PARTITION_HDD where swap partition will be created 
 # e.g. for /dev/sda1 - "1"
@@ -35,9 +40,77 @@ SWAP_PARTITION_NB="1"
 # e.g. for 1 GB "+1G", for remaining space ""
 SWAP_PARTITION_SIZE="+1G"
 
+### ### Boot partition
+
+# Disk on which boot partition will be created, without partition number
+# e.g. "sda"
+BOOT_PARTITION_HDD="sda"
+
+# Partition nb on BOOT_PARTITION_HDD where boot partition will be created 
+# e.g. for /dev/sda1 - "1"
+BOOT_PARTITION_NB="1"
+
+# Size of boot partition. Format as for fdisk.
+# e.g. for 1 GB "+1G", for remaining space ""
+BOOT_PARTITION_SIZE="+1G"
+
+### ### ### ### Base system
+
+BASE_SYSTEM_PACKAGES="base base-devel"
+
+### ### System config
+
+HOST_NAME="archon"
+
+### ### Localization
+
+### Languages
+
+LOCALIZATION_LANGUAGE1="en_US.UTF-8"
+LOCALIZATION_LANGUAGE2="pl_PL.UTF-8"
+
+### Time zone
+
+LOCALIZATION_TIME_ZONE="Europe/Warsaw"
+
+### HW clock
+
+LOCALIZATION_HW_CLOCK="--systohc --utc"
+
+### ### Console
+
+### Keymap
+
+CONSOLE_KEYMAP="pl"
+
+### Font
+
+CONSOLE_FONT="Lat2-Terminus16"
+
+### ### Network
+
+### Service
+
+NETWORK_SERVICE="dhcpcd"
+
+### Wired interface
+
+NETWORK_INTERFACE_WIRED="enp0s3"
+
+### ### Bootloader
+
+BOOTLOADER_PACKAGE="syslinux"
 
 ### ### ### ### ### ### ### ### Archconfig settings
+
+### ### ### ### Archconfig files
 
 ARCHCONFIG_SETTINGS_FILE="settings"
 ARCHCONFIG_FUNCTIONS_FILE="functions"
 ARCHCONFIG_INSTALL_FILE="install"
+
+### ### ### ### LiveCD
+
+# Number of mirrors to be found by rankmirrors
+MIRROR_COUNT=5
+
