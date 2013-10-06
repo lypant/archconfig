@@ -109,6 +109,12 @@ ARCHCONFIG_SETTINGS_FILE="settings"
 ARCHCONFIG_FUNCTIONS_FILE="functions"
 ARCHCONFIG_INSTALL_FILE="install"
 
+### ### ### ### Archconfig paths
+
+### ### New system location for archconfig files
+ARCHCONFIG_PATH="$ROOT_PARTITION_MOUNT_POINT/root/archconfig"
+
+
 ### ### ### ### LiveCD
 
 # Number of mirrors to be found by rankmirrors

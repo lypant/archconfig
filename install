@@ -167,6 +167,13 @@ setRootPassword()
 :
 ### ### Back to non-chroot commands
 
+copyArchconfigFiles()
+{
+    echo "Copying Archconfig files to $ARCHCONFIG_PATH"
+    mkdir $ARCHCONFIG_PATH
+    cp -R `pwd`/* $ARCHCONFIG_PATH
+}
+
 unmountPartition()
 {
     umount $1
@@ -201,5 +208,6 @@ setWiredNetwork
 installBootloader
 configureSyslinux
 setRootPassword
+copyArchconfigFiles
 unmountPartitions
 
