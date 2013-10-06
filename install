@@ -95,7 +95,9 @@ setHostName()
 
 setLocale()
 {
-    archChroot "uncommentVar $1 /etc/locale.gen"
+    #archChroot "uncommentVar $1 /etc/locale.gen"
+    # !!! After chroot functions are not known - use sed directly here
+    archChroot "sed -i \"s/^#\(${1}.*\)$/\1/\" /etc/locale.gen"
 }
 
 setLocales()
@@ -151,6 +153,11 @@ configureSyslinux()
     archChroot "sed -i \"s/sda3/$BOOT_PARTITION_HDD$BOOT_PARTITION_NB/g\" /boot/syslinux/syslinux.cfg"
 }
 
+setRootPassword()
+{
+    archChroot "passwd"
+}
+
 # TODO Consider whether regular user adding should be done here, in base install, or in customization
 :
 ### ### Back to non-chroot commands
@@ -165,4 +172,29 @@ unmountPartitions()
     unmountPartition $ROOT_PARTITION_MOUNT_POINT
     # TODO Unmount other partitions here, if any were mounted!
 }
+
+
+#######################################################################
+
+createRootPartitionFS
+createSwapPartition
+mountRootPartition
+livecdPacmanTotalDownload
+livecdPacmanUpdate
+rankMirrors
+installBaseSystem
+generateFstab
+setHostName
+setLocales
+generateLocales
+setLanguage
+setTimeZone
+setHwClock
+setConsoleKeymap
+setConsoleFont
+setWiredNetwork
+installBootloader
+configureSyslinux
+setRootPassword
+unmountPartitions
 
