@@ -109,6 +109,7 @@ USER_NAME="adam"
 USER_MAIN_GROUP="users"
 USER_ADDITIONAL_GROUPS="wheel,storage,power"
 USER_SHELL="/bin/bash"
+USER_HOME="/home/$USER_NAME"
 
 ### ### ### ### Basic tools
 

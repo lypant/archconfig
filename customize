@@ -197,6 +197,11 @@ recreateImage()
     mkinitcpio -p linux
 }
 
+changeHomeOwnership()
+{
+    chown -R $USER_NAME:users $USER_HOME
+}
+
 ################################################################################
 
 # Regular user
@@ -240,4 +245,7 @@ setConsoleVideoMode
 disableSyslinuxBootMenu
 useEarlyTerminalFont    # Image needs to be recreated afterwards
 recreateImage
+
+# Make sure all in user's home is owned by the user, not root
+changeHomeOwnership
 
