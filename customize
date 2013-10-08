@@ -41,18 +41,24 @@ setRegularUserPassword()
     done
 }
 
+setSudoers()
+{
+    # TODO - do it in a safer way... Here just for experiments
+    echo "$USER_NAME ALL=(ALL) ALL" >> /etc/sudoers
+}
+
 # Preparations
 
 updatePackageList()
 {
     # TODO !!! Try to run as root, no sudo
-    sudo pacman -Syy
+    pacman -Syy
 }
 
 configurePacman()
 {
     # TODO !!! Try to run as root, no sudo
-    uncommentVarSudo "TotalDownload" /etc/pacman.conf
+    uncommentVar "TotalDownload" /etc/pacman.conf
 }
 
 # Installing
@@ -60,7 +66,7 @@ configurePacman()
 installPackage()
 {
     # TODO !!! Try to run as root, no sudo
-    sudo pacman -S --noconfirm "$@"
+    pacman -S --noconfirm "$@"
 }
 
 # Basic tools
@@ -113,16 +119,24 @@ installGuiFonts()
 installDwm()
 {
     # Clone project from git
-#    git clone http://git.suckless.org/dwm "$DWM_BUILD_PATH"
-#    cd $DWM_BUILD_PATH
-#    git checkout 4fb31e0 -b my_adjustments
-#    sed -i 's/PREFIX = \/usr\/local/PREFIX = \/usr/g' "$DWM_BUILD_PATH/config.mk"
-#    sed -i 's/X11INC = \/usr\/X11R6\/include/X11INC = \/usr\/include\/X11/g' "$DWM_BUILD_PATH/config.mk"
-#    sed -i 's/X11LIB = \/usr\/X11R6\/lib/X11LIB = \/usr\/lib\/X11/g' "$DWM_BUILD_PATH/config.mk"
-#    #sed -i 's/"st"/"$TERMINAL_EMULATOR_COMMAND"/g' "$DWM_BUILD_PATH/config.def.h"
-#    sed -i "s/\"st\"/\"$TERMINAL_EMULATOR_COMMAND\"/g" "$DWM_BUILD_PATH/config.def.h"
-#    git commit -a -m "My adjustments"
-#    sudo make clean install
+    git clone http://git.suckless.org/dwm "$DWM_BUILD_PATH"
+    cd $DWM_BUILD_PATH
+
+    # Newest commit was not working... use specific, working version
+    git checkout 4fb31e0 -b archconfig_adjustments
+
+    # Configure necessary settings
+    sed -i 's/PREFIX = \/usr\/local/PREFIX = \/usr/g' "$DWM_BUILD_PATH/config.mk"
+    sed -i 's/X11INC = \/usr\/X11R6\/include/X11INC = \/usr\/include\/X11/g' "$DWM_BUILD_PATH/config.mk"
+    sed -i 's/X11LIB = \/usr\/X11R6\/lib/X11LIB = \/usr\/lib\/X11/g' "$DWM_BUILD_PATH/config.mk"
+    sed -i "s/\"st\"/\"$TERMINAL_EMULATOR_COMMAND\"/g" "$DWM_BUILD_PATH/config.def.h"
+
+    # Save configuration as new commit
+    git commit -a -m "Archconfig adjustments"
+
+    # Install
+    # TODO Removed sudo - now launching as root
+    make clean install
 }
 
 installDmenu()
@@ -152,39 +166,79 @@ installVirtualboxGuestAdditions()
     sudo modprobe -a $VIRTUALBOX_GUEST_UTILS_MODULES
 }
 
+# Misc config
+
+setConsoleVideoMode()
+{
+    local ROOT_PATH=$PARTITION_PREFIX$ROOT_PARTITION_HDD$ROOT_PARTITION_NB
+    #sed -i "s/APPEND root=\/dev\/$ROOT_PARTITION rw/APPEND root=\/dev\/$ROOT_PARTITION $BOOTLOADER_KERNEL_PARAMS/" /boot/syslinux/syslinux.cfg
+    sed -i "s/APPEND root=$ROOT_PATH rw/APPEND root=$ROOT_PATH $BOOTLOADER_KERNEL_PARAMS/" /boot/syslinux/syslinux.cfg
+}
+
+disableSyslinuxBootMenu()
+{
+    commentVar UI /boot/syslinux/syslinux.cfg
+}
+
+# This requires image recreation for changes to take effect
+useEarlyTerminalFont()
+{
+    # Add "consolefont keymap" hooks
+    # TODO - write a function for extending such lists
+    # TODO   (original list might change and we don't care about the list, we want just to add sth)
+    local ORIGINAL_LIST="base udev autodetect modconf block filesystems keyboard fsck"
+    local NEW_LIST="$ORIGINAL_LIST consolefont keymap"
+
+    #sed -i 's/HOOKS="base udev autodetect modconf block filesystems keyboard fsck"/HOOKS="base udev autodetect modconf block filesystems keyboard fsck consolefont keymap"/g' /etc/mkinitcpio.conf
+    sed -i "s/HOOKS=\"$ORIGINAL_LIST\"/HOOKS=\"$NEW_LIST\"/g" /etc/mkinitcpio.conf
+}
+
+recreateImage()
+{
+    mkinitcpio -p linux
+}
 
 ################################################################################
 
 # Regular user
 
-addRegularUser()
-setRegularUserPassword()
+addRegularUser
+setRegularUserPassword
+setSudoers
 
 # Preparations
-#updatePackageList
-#configurePacman
+updatePackageList
+configurePacman
 
 # Installing
 
 # VirtualBox
-#installVirtualboxGuestAdditions
+installVirtualboxGuestAdditions
 
 # Basic tools
-#installVim
+installVim
 
 # Sound
-#installAlsa
+installAlsa
 
 # Xorg
-#installXorgBasic
-#installXorgAdditional
+installXorgBasic
+installXorgAdditional
 
 # GUI tools etc
-#installRxvtUnicode
-#installGuiFonts
-#installDmenu
+installRxvtUnicode
+installGuiFonts
+installDmenu
 
 # Development etc
-#installGit
+installGit
 
+# Dwm (requires Xorg and git)
+installDwm
+
+# Misc config
+setConsoleVideoMode
+disableSyslinuxBootMenu
+useEarlyTerminalFont    # Image needs to be recreated afterwards
+recreateImage
 

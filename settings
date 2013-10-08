@@ -165,6 +165,15 @@ VIRTUALBOX_GUEST_UTILS_PACKAGES="virtualbox-guest-utils"
 # Modules to be loaded during startup (modprobe)
 VIRTUALBOX_GUEST_UTILS_MODULES="vboxguest vboxsf vboxvideo"
 
+
+### ### ### ### Misc config
+
+# VGA mode to be used for console after boot
+BOOTLOADER_VGA_MODE="864"
+
+# Kernel params passed by bootloader during boot
+BOOTLOADER_KERNEL_PARAMS="rw vga=$BOOTLOADER_VGA_MODE quiet"
+
 ### ### ### ### ### ### ### ### Archconfig settings
 
 ### ### ### ### Archconfig files
