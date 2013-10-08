@@ -1,0 +1,190 @@
+#!/bin/bash
+
+# Required files - settings and functions
+ARCHCONFIG_SETTINGS_FILE="settings"
+
+# Functions and settings files have to be present
+if [[ -f $ARCHCONFIG_SETTINGS_FILE ]]; then
+    source $ARCHCONFIG_SETTINGS_FILE
+else
+    echo "File not found: $ARCHCONFIG_SETTINGS_FILE"
+    exit 1
+fi
+
+# Now, if we have settings loaded, we know functions file name
+# under ARCHCONFIG_FUNCTIONS_FILE...
+# Check if the file is present
+if [[ -f $ARCHCONFIG_FUNCTIONS_FILE ]]; then
+    source $ARCHCONFIG_FUNCTIONS_FILE
+else
+    echo "File not found: $ARCHCONFIG_FUNCTIONS_FILE"
+    exit 1
+fi
+
+# We have settings and functions file loaded
+echo "$ARCHCONFIG_CUSTOMIZE_FILE ready to start"
+
+# Regular user
+
+addRegularUser()
+{
+    useradd -m -g $USER_MAIN_GROUP -G $USER_ADDITIONAL_GROUPS -s $USER_SHELL $USER_NAME
+}
+
+setRegularUserPassword()
+{
+    local ASK=1
+
+    while [ $ASK -ne 0 ]; do
+        passwd $USER_NAME
+        ASK=$?
+    done
+}
+
+# Preparations
+
+updatePackageList()
+{
+    # TODO !!! Try to run as root, no sudo
+    sudo pacman -Syy
+}
+
+configurePacman()
+{
+    # TODO !!! Try to run as root, no sudo
+    uncommentVarSudo "TotalDownload" /etc/pacman.conf
+}
+
+# Installing
+
+installPackage()
+{
+    # TODO !!! Try to run as root, no sudo
+    sudo pacman -S --noconfirm "$@"
+}
+
+# Basic tools
+
+# vim
+
+installVim()
+{
+   installPackage $VIM_PACKAGES 
+}
+
+# Sound
+
+installAlsa()
+{
+    installPackage $ALSA_PACKAGES
+}
+
+# Xorg
+
+installXorgBasic()
+{
+    installPackage $XORG_BASIC_PACKAGES
+}
+
+installXorgAdditional()
+{
+    installPackage $XORG_ADDITIONAL_PACKAGES
+}
+
+# GUI tools etc
+
+# Terminal
+
+installRxvtUnicode()
+{
+    installPackage $RXVTUNICODE_PACKAGES
+}
+
+# Font(s)
+
+installGuiFonts()
+{
+    installPackage $GUI_FONT_PACKAGES
+}
+
+# WM-related
+
+# TODO Requires: Xorg, git
+installDwm()
+{
+    # Clone project from git
+#    git clone http://git.suckless.org/dwm "$DWM_BUILD_PATH"
+#    cd $DWM_BUILD_PATH
+#    git checkout 4fb31e0 -b my_adjustments
+#    sed -i 's/PREFIX = \/usr\/local/PREFIX = \/usr/g' "$DWM_BUILD_PATH/config.mk"
+#    sed -i 's/X11INC = \/usr\/X11R6\/include/X11INC = \/usr\/include\/X11/g' "$DWM_BUILD_PATH/config.mk"
+#    sed -i 's/X11LIB = \/usr\/X11R6\/lib/X11LIB = \/usr\/lib\/X11/g' "$DWM_BUILD_PATH/config.mk"
+#    #sed -i 's/"st"/"$TERMINAL_EMULATOR_COMMAND"/g' "$DWM_BUILD_PATH/config.def.h"
+#    sed -i "s/\"st\"/\"$TERMINAL_EMULATOR_COMMAND\"/g" "$DWM_BUILD_PATH/config.def.h"
+#    git commit -a -m "My adjustments"
+#    sudo make clean install
+}
+
+installDmenu()
+{
+    installPackage $DMENU_PACKAGES
+}
+
+# Development etc
+
+# Version control
+
+installGit()
+{
+    installPackage $GIT_PACKAGES
+}
+
+# VirtualBox
+
+# Guest utils
+
+installVirtualboxGuestAdditions()
+{
+    # Install the packages
+    installPackage $VIRTUALBOX_GUEST_UTILS_PACKAGES
+
+    # Setup modules to be loaded on startup
+    sudo modprobe -a $VIRTUALBOX_GUEST_UTILS_MODULES
+}
+
+
+################################################################################
+
+# Regular user
+
+addRegularUser()
+setRegularUserPassword()
+
+# Preparations
+#updatePackageList
+#configurePacman
+
+# Installing
+
+# VirtualBox
+#installVirtualboxGuestAdditions
+
+# Basic tools
+#installVim
+
+# Sound
+#installAlsa
+
+# Xorg
+#installXorgBasic
+#installXorgAdditional
+
+# GUI tools etc
+#installRxvtUnicode
+#installGuiFonts
+#installDmenu
+
+# Development etc
+#installGit
+
+

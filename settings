@@ -101,6 +101,70 @@ NETWORK_INTERFACE_WIRED="enp0s3"
 
 BOOTLOADER_PACKAGE="syslinux"
 
+### ### ### ### ### ### ### ### Customization settings
+
+### ### ### ### Regular user setup
+
+USER_NAME="adam"
+USER_MAIN_GROUP="users"
+USER_ADDITIONAL_GROUPS="wheel,storage,power"
+USER_SHELL="/bin/bash"
+
+### ### ### ### Basic tools
+
+# vim
+VIM_PACKAGES="vim"
+
+### ### ### ### Sound
+
+ALSA_PACKAGES="alsa-utils"
+
+### ### ### ### Xorg
+
+### ### Xorg basic
+
+XORG_BASIC_PACKAGES="xorg-server xorg-server-utils xorg-xinit"
+
+### ### Xorg additional
+
+XORG_ADDITIONAL_PACKAGES="mesa"
+
+### ### ### ### GUI tools etc
+
+### ### Terminal
+
+RXVTUNICODE_PACKAGES="rxvt-unicode"
+
+### ### Font(s)
+
+GUI_FONT_PACKAGES="ttf-inconsolata ttf-dejavu"
+
+### ### WM-related
+
+### dwm
+
+# Dir to contain cloned git repository for dwm, etc
+DWM_BUILD_PATH="/home/$USER_NAME/Building/dwm"
+
+### dmenu
+
+DMENU_PACKAGES="dmenu"
+
+### ### ### ### Development etc
+
+### ### Version control
+
+GIT_PACKAGES="git"
+
+### ### ### ### VirtualBox
+
+### ### Guest utils
+
+VIRTUALBOX_GUEST_UTILS_PACKAGES="virtualbox-guest-utils"
+
+# Modules to be loaded during startup (modprobe)
+VIRTUALBOX_GUEST_UTILS_MODULES="vboxguest vboxsf vboxvideo"
+
 ### ### ### ### ### ### ### ### Archconfig settings
 
 ### ### ### ### Archconfig files
@@ -108,6 +172,7 @@ BOOTLOADER_PACKAGE="syslinux"
 ARCHCONFIG_SETTINGS_FILE="settings"
 ARCHCONFIG_FUNCTIONS_FILE="functions"
 ARCHCONFIG_INSTALL_FILE="install"
+ARCHCONFIG_CUSTOMIZE_FILE="customize"
 
 ### ### ### ### Archconfig paths
 
