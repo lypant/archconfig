@@ -4,5 +4,5 @@ culr -L https://github.com/lypant/archconfig/tarball/simplified | tar xz
 T.B.C.
 
 TODO LIST:
-- copy archconfig files from iso session to new system - for future reference and maybe reuse of functions while chrooted?
+- Check if "Sudo" versions of functions are needed now, when all install is done from root account
 
