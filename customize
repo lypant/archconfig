@@ -170,9 +170,8 @@ installVirtualboxGuestAdditions()
 
 setConsoleVideoMode()
 {
-    local ROOT_PATH=$PARTITION_PREFIX$ROOT_PARTITION_HDD$ROOT_PARTITION_NB
-    #sed -i "s/APPEND root=\/dev\/$ROOT_PARTITION rw/APPEND root=\/dev\/$ROOT_PARTITION $BOOTLOADER_KERNEL_PARAMS/" /boot/syslinux/syslinux.cfg
-    sed -i "s/APPEND root=$ROOT_PATH rw/APPEND root=$ROOT_PATH $BOOTLOADER_KERNEL_PARAMS/" /boot/syslinux/syslinux.cfg
+    # Not using var for /dev/ - caused sed problems interpreting / character
+    sed -i "s/APPEND root=\/dev\/$ROOT_PARTITION_HDD$ROOT_PARTITION_NB rw/APPEND root=\/dev\/$ROOT_PARTITION_HDD$ROOT_PARTITION_NB $BOOTLOADER_KERNEL_PARAMS/" /boot/syslinux/syslinux.cfg
 }
 
 disableSyslinuxBootMenu()
