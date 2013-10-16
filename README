@@ -5,4 +5,5 @@ T.B.C.
 
 TODO LIST:
 - Check if "Sudo" versions of functions are needed now, when all install is done from root account
+- Check dwm installation - problems with git email type etc - probably caused by not configured git (probably dotfiles need to be set up earlier)
 

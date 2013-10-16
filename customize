@@ -203,6 +203,16 @@ changeHomeOwnership()
     chown -R $USER_NAME:users $USER_HOME
 }
 
+# TODO - Change order - move this function to appropriate place
+# TODO REQUIRES GIT
+setupDotfiles()
+{
+    cd $USER_HOME
+    git clone https://github.com/lypant/dotfiles
+    cd dotfiles
+    install.sh
+}
+
 ################################################################################
 
 # Regular user
@@ -237,6 +247,9 @@ installDmenu
 
 # Development etc
 installGit
+
+# Setup dotfiles
+setupDotfiles()
 
 # Dwm (requires Xorg and git)
 installDwm
