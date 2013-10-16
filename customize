@@ -209,8 +209,7 @@ setupDotfiles()
 {
     cd $USER_HOME
     git clone https://github.com/lypant/dotfiles
-    cd dotfiles
-    install.sh
+    $USER_HOME/dotfiles/install.sh $USER_HOME
 }
 
 ################################################################################
@@ -249,7 +248,7 @@ installDmenu
 installGit
 
 # Setup dotfiles
-setupDotfiles()
+setupDotfiles
 
 # Dwm (requires Xorg and git)
 installDwm
