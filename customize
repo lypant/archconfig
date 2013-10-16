@@ -163,7 +163,8 @@ installVirtualboxGuestAdditions()
     installPackage $VIRTUALBOX_GUEST_UTILS_PACKAGES
 
     # Setup modules to be loaded on startup
-    sudo modprobe -a $VIRTUALBOX_GUEST_UTILS_MODULES
+    # TODO Removed sudo - now launching as root
+    modprobe -a $VIRTUALBOX_GUEST_UTILS_MODULES
 }
 
 # Misc config
