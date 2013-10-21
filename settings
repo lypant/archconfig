@@ -147,6 +147,9 @@ GUI_FONT_PACKAGES="ttf-inconsolata ttf-dejavu"
 # Dir to contain cloned git repository for dwm, etc
 DWM_BUILD_PATH="/home/$USER_NAME/Building/dwm"
 
+# Command to be launched by dwm when terminal shortcut is launched
+TERMINAL_EMULATOR_COMMAND="urxvt"
+
 ### dmenu
 
 DMENU_PACKAGES="dmenu"
