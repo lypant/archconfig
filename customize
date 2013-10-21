@@ -131,6 +131,10 @@ installDwm()
     sed -i 's/X11LIB = \/usr\/X11R6\/lib/X11LIB = \/usr\/lib\/X11/g' "$DWM_BUILD_PATH/config.mk"
     sed -i "s/\"st\"/\"$TERMINAL_EMULATOR_COMMAND\"/g" "$DWM_BUILD_PATH/config.def.h"
 
+    # Set local author for the project commits
+    git config --local user.name "root"
+    git config --local user.email "root@$HOST_NAME"
+
     # Save configuration as new commit
     git commit -a -m "Archconfig adjustments"
 
@@ -248,7 +252,8 @@ installDmenu
 installGit
 
 # Setup dotfiles
-setupDotfiles
+# TODO: temporarily disabled until it is cleared out how to handle it nicely
+#setupDotfiles
 
 # Dwm (requires Xorg and git)
 installDwm

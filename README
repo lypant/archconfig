@@ -6,4 +6,9 @@ T.B.C.
 TODO LIST:
 - Check if "Sudo" versions of functions are needed now, when all install is done from root account
 - Check dwm installation - problems with git email type etc - probably caused by not configured git (probably dotfiles need to be set up earlier)
+    - Several possibilities:
+        1. Set up root credentials and commit as root
+        2. Set up dotfiles for regular user and commit as regular user
+        3. Set up local regular user credenrials and commit as regular user
+    So far - option 1. taken
 
