@@ -123,11 +123,6 @@ backupFile()
     # If original file exists, move it to backup dir
     if [ -e $original ]; then
         # File exists
-        # Check if backup dir exists
-        if [ ! -d $DOTFILE_BACKUP_DIR ]; then
-            mkdir -p $DOTFILE_BACKUP_DIR
-        fi
-
         # Backup the file
         cp $original $backup
     fi
@@ -164,7 +159,13 @@ installDotfile()
     local now=`date +"%Y%m%d_%H%M"`
 
     downloadFile $url $downloadDst
+
+    # Check if backup dir exists
+    if [ ! -d $DOTFILE_BACKUP_DIR ]; then
+        mkdir -p $DOTFILE_BACKUP_DIR
+    fi
     backupFile $USER_HOME/$dotfileName $DOTFILES_BACKUP_DIR/$dotfileName_$now
+
     rm -f $USER_HOME/$dotfileName
     createLink $USER_HOME/$dotfileName $downloadDst
 }
