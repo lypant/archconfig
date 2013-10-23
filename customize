@@ -51,13 +51,11 @@ setSudoers()
 
 updatePackageList()
 {
-    # TODO !!! Try to run as root, no sudo
     pacman -Syy
 }
 
 configurePacman()
 {
-    # TODO !!! Try to run as root, no sudo
     uncommentVar "TotalDownload" /etc/pacman.conf
 }
 
@@ -65,7 +63,6 @@ configurePacman()
 
 installPackage()
 {
-    # TODO !!! Try to run as root, no sudo
     pacman -S --noconfirm "$@"
 }
 
@@ -139,7 +136,6 @@ installDwm()
     git commit -a -m "Archconfig adjustments"
 
     # Install
-    # TODO Removed sudo - now launching as root
     make clean install
 }
 
@@ -167,7 +163,6 @@ installVirtualboxGuestAdditions()
     installPackage $VIRTUALBOX_GUEST_UTILS_PACKAGES
 
     # Setup modules to be loaded on startup
-    # TODO Removed sudo - now launching as root
     modprobe -a $VIRTUALBOX_GUEST_UTILS_MODULES
 }
 
@@ -193,7 +188,6 @@ useEarlyTerminalFont()
     local ORIGINAL_LIST="base udev autodetect modconf block filesystems keyboard fsck"
     local NEW_LIST="$ORIGINAL_LIST consolefont keymap"
 
-    #sed -i 's/HOOKS="base udev autodetect modconf block filesystems keyboard fsck"/HOOKS="base udev autodetect modconf block filesystems keyboard fsck consolefont keymap"/g' /etc/mkinitcpio.conf
     sed -i "s/HOOKS=\"$ORIGINAL_LIST\"/HOOKS=\"$NEW_LIST\"/g" /etc/mkinitcpio.conf
 }
 
@@ -209,12 +203,12 @@ changeHomeOwnership()
 
 # TODO - Change order - move this function to appropriate place
 # TODO REQUIRES GIT
-setupDotfiles()
-{
-    cd $USER_HOME
-    git clone https://github.com/lypant/dotfiles
-    $USER_HOME/dotfiles/install.sh $USER_HOME
-}
+#setupDotfiles()
+#{
+#    cd $USER_HOME
+#    git clone https://github.com/lypant/dotfiles
+#    $USER_HOME/dotfiles/install.sh $USER_HOME
+#}
 
 ################################################################################
 
@@ -250,6 +244,8 @@ installDmenu
 
 # Development etc
 installGit
+# TODO Think about moving it into installGit function - here should be only function calls without params
+installDotfile $GIT_DOTFILE
 
 # Setup dotfiles
 # TODO: temporarily disabled until it is cleared out how to handle it nicely
@@ -263,6 +259,9 @@ setConsoleVideoMode
 disableSyslinuxBootMenu
 useEarlyTerminalFont    # Image needs to be recreated afterwards
 recreateImage
+
+# Install xinitrc dotfile
+installDotfile $XINITRC_DOTFILE
 
 # Make sure all in user's home is owned by the user, not root
 changeHomeOwnership

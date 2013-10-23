@@ -125,6 +125,7 @@ ALSA_PACKAGES="alsa-utils"
 ### ### Xorg basic
 
 XORG_BASIC_PACKAGES="xorg-server xorg-server-utils xorg-xinit"
+XINITRC_DOTFILE=".xinitrc"
 
 ### ### Xorg additional
 
@@ -159,6 +160,7 @@ DMENU_PACKAGES="dmenu"
 ### ### Version control
 
 GIT_PACKAGES="git"
+GIT_DOTFILE=".gitconfig"
 
 ### ### ### ### VirtualBox
 
@@ -192,6 +194,19 @@ ARCHCONFIG_CUSTOMIZE_FILE="customize"
 ### ### New system location for archconfig files
 ARCHCONFIG_PATH="$ROOT_PARTITION_MOUNT_POINT/root/archconfig"
 
+### ### Dotfiles
+
+### Dotfiles repository
+DOTFILES_REPOSITORY_PROTOCOL="https"
+DOTFILES_REPOSITORY_RAW_ADDRESS="raw.github.com"
+DOTFILES_REPOSITORY_USER_NAME="lypant"
+DOTFILES_REPOSITORY_REPO_NAME="dotfiles"
+DOTFILES_REPOSITORY_BRANCH_NAME="experiments"
+DOTFILES_REPOSITORY_RAW_URL="$DOTFILES_REPOSITORY_PROTOCOL://$DOTFILES_REPOSITORY_RAW_ADDRESS/$DOTFILES_REPOSITORY_USER_NAME/$DOTFILES_REPOSITORY_REPO_NAME/$DOTFILES_REPOSITORY_BRANCH_NAME"
+
+### Dotfiles directory
+DOTFILES_DIR_NAME="dotfiles"
+DOTFILES_DIR_PATH="$USER_HOME/$DOTFILES_DIR_NAME"
 
 ### ### ### ### LiveCD
 

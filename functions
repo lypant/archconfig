@@ -97,3 +97,69 @@ archChroot()
     arch-chroot $ROOT_PARTITION_MOUNT_POINT /bin/bash -c "${1}"
 }
 
+downloadFile()
+{
+    if [ $# -lt 2 ]; then
+        echo $FUNCNAME: not enough parameters \($#\): "$@"
+        return 1
+    fi
+
+    local src=$1
+    local dst=$2
+
+    curl -o $dst $src
+}
+
+backupFile()
+{
+    if [ $# -lt 2 ]; then
+        echo $FUNCNAME: not enough parameters \($#\): "$@"
+        return 1
+    fi
+
+    local original=$1
+    local backup=$2
+
+    # If original file exists, move it to backup dir
+    if [ -e $original ]; then
+        # File exists
+        # Backup the file
+        cp $original $backup
+    fi
+}
+
+createLink()
+{
+    if [ $# -lt 2 ]; then
+        echo $FUNCNAME: not enough parameters \($#\): "$@"
+        return 1
+    fi
+
+    local linkName=$1
+    local linkTarget=$2
+
+    # Check if target exists
+    if [ -e $linkTarget ]; then
+        # File exists
+        # create symlink
+        ln -s $linkTarget $linkName
+    fi
+}
+
+installDotfile()
+{
+     if [ $# -lt 1 ]; then
+        echo $FUNCNAME: not enough parameters \($#\): "$@"
+        return 1
+    fi
+
+    local dotfileName=$1
+    local url=$DOTFILES_REPOSITORY_RAW_URL/$dotfileName
+    local downloadDst=$DOTFILES_DIR_PATH/$dotfileName
+
+    downloadFile $url $downloadDst
+    backupFile $USER_HOME/$dotfileName
+    rm $USER_HOME/$dotfileName
+    createLink $USER_HOME/$dotfileName $downloadDst
+}
+
