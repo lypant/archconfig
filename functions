@@ -161,9 +161,10 @@ installDotfile()
     local dotfileName=$1
     local url=$DOTFILES_REPOSITORY_RAW_URL/$dotfileName
     local downloadDst=$DOTFILES_DIR_PATH/$dotfileName
+    local now=`date +"%Y%m%d_%H%M"`
 
     downloadFile $url $downloadDst
-    backupFile $USER_HOME/$dotfileName
+    backupFile $USER_HOME/$dotfileName $DOTFILES_BACKUP_DIR/$dotfileName_$now
     rm -f $USER_HOME/$dotfileName
     createLink $USER_HOME/$dotfileName $downloadDst
 }
