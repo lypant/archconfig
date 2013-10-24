@@ -98,7 +98,7 @@ createLink()
 
 installDotfile()
 {
-     if [ $# -lt 1 ]; then
+    if [ $# -lt 1 ]; then
         echo $FUNCNAME: not enough parameters \($#\): "$@"
         return 1
     fi
@@ -114,9 +114,39 @@ installDotfile()
     if [ ! -d $DOTFILES_BACKUP_DIR ]; then
         mkdir -p $DOTFILES_BACKUP_DIR
     fi
-    backupFile "$USER_HOME/$dotfileName" "$DOTFILES_BACKUP_DIR"/"$dotfileName"_"$now"
+    backupFile "$USER_HOME/$dotfileName" "$DOTFILES_BACKUP_DIR/$dotfileName"_"$now"
 
     rm -f $USER_HOME/$dotfileName
     createLink $USER_HOME/$dotfileName $downloadDst
+}
+
+installNestedDotfile()
+{
+    if [ $# -lt 2 ]; then
+        echo $FUNCNAME: not enough parameters \($#\): "$@"
+        return 1
+    fi
+
+    local dotfilePath=$1
+    local dotfileName=$2
+    local url=$DOTFILES_REPOSITORY_RAW_URL/$dotfilePath/$dotfileName
+    local downloadDst=$DOTFILES_DIR_PATH/$dotfilePath/$dotfileName
+    local now=`date +"%Y%m%d_%H%M"`
+
+    downloadFile $url $downloadDst
+
+    # Check if backup dir exists
+    if [ ! -d $DOTFILES_BACKUP_DIR ]; then
+        mkdir -p $DOTFILES_BACKUP_DIR
+    fi
+    backupFile "$USER_HOME/$dotfilePath/$dotfileName" "$DOTFILES_BACKUP_DIR/$dotfilePath/$dotfileName"_"$now"
+
+    rm -f $USER_HOME/$dotfilePath/$dotfileName
+
+    if [ ! -d $USER_HOME/$dotfilePath ]; then
+        mkdir -p $USER_HOME/$dotfilePath
+    fi
+
+    createLink $USER_HOME/$dotfilePath/$dotfileName $downloadDst
 }
 

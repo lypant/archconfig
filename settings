@@ -132,7 +132,8 @@ VIM_PACKAGES="vim"
 ### Dotfiles
 
 DOTFILE_VIM=".vimrc"
-DOTFILE_VIM_COLORS_SOLARIZED=".vim/colors/solarized.vim"
+DOTFILE_VIM_COLORS_SOLARIZED_PATH=".vim/colors"
+DOTFILE_VIM_COLORS_SOLARIZED_FILE="solarized.vim"
 
 ### ### ### ### Sound
 

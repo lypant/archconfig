@@ -243,8 +243,7 @@ installVirtualboxGuestAdditions
 # Basic tools
 installVim
 installDotfile $DOTFILE_VIM
-#TODO Check if approach with passing dirs also as file name works
-installDotfile $DOTFILE_VIM_COLORS_SOLARIZED
+installNestedDotfile $DOTFILE_VIM_COLORS_SOLARIZED_PATH $DOTFILE_VIM_COLORS_SOLARIZED_FILE
 
 # Sound
 installAlsa
