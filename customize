@@ -162,8 +162,16 @@ installVirtualboxGuestAdditions()
     # Install the packages
     installPackage $VIRTUALBOX_GUEST_UTILS_PACKAGES
 
-    # Setup modules to be loaded on startup
+    # Load required modules
     modprobe -a $VIRTUALBOX_GUEST_UTILS_MODULES
+
+    # Setup modules to be loaded on startup
+    if [ ! -z $VIRTUALBOX_GUEST_UTILS_MODULES ]; then
+        for module in $VIRTUALBOX_GUEST_UTILS_MODULES
+        do
+            echo $module >> $VIRTUALBOX_GUEST_UTILS_MODULES_FILE
+        done
+    fi
 }
 
 # Misc config
@@ -177,6 +185,13 @@ setConsoleVideoMode()
 disableSyslinuxBootMenu()
 {
     commentVar UI /boot/syslinux/syslinux.cfg
+}
+
+setConsoleLoginMessage()
+{
+    if [ ! -z $CONSOLE_WELCOME_MSG ];then
+        echo $CONSOLE_WELCOME_MSG > $CONSOLE_WELCOME_FILE
+    fi
 }
 
 # This requires image recreation for changes to take effect
@@ -256,6 +271,7 @@ installDwm
 
 # Misc config
 setConsoleVideoMode
+setConsoleLoginMessage
 disableSyslinuxBootMenu
 useEarlyTerminalFont    # Image needs to be recreated afterwards
 recreateImage
