@@ -189,7 +189,11 @@ disableSyslinuxBootMenu()
 
 setConsoleLoginMessage()
 {
-    if [ ! -z $CONSOLE_WELCOME_MSG ];then
+    # Remove welcome message
+    rm -f $CONSOLE_WELCOME_FILE
+
+    # Set new welcome message, if present.
+    if [ ! -z "$CONSOLE_WELCOME_MSG" ];then
         echo $CONSOLE_WELCOME_MSG > $CONSOLE_WELCOME_FILE
     fi
 }

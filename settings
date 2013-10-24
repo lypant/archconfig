@@ -186,7 +186,7 @@ BOOTLOADER_KERNEL_PARAMS="rw vga=$BOOTLOADER_VGA_MODE quiet"
 
 # Welocme message when logging in to console
 CONSOLE_WELCOME_FILE="/etc/issue"
-CONSOLE_WELCOME_MSG="$HOST_NAME"
+CONSOLE_WELCOME_MSG=""
 
 ### ### ### ### ### ### ### ### Archconfig settings
 
