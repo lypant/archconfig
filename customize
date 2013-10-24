@@ -262,7 +262,7 @@ installDwm
 
 # Misc config
 setConsoleVideoMode
-#setConsoleLoginMessage
+setConsoleLoginMessage
 disableSyslinuxBootMenu
 useEarlyTerminalFont    # Image needs to be recreated afterwards
 recreateImage
