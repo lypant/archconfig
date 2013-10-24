@@ -111,10 +111,28 @@ USER_ADDITIONAL_GROUPS="wheel,storage,power"
 USER_SHELL="/bin/bash"
 USER_HOME="/home/$USER_NAME"
 
+### ### Bash dotfiles
+
+### bashrc
+
+DOTFILE_BASHRC=".bashrc"
+
+### bash_profile
+
+DOTFILE_BASH_PROFILE=".bash_profile"
+
 ### ### ### ### Basic tools
 
-# vim
+### ### vim
+
+### Packages
+
 VIM_PACKAGES="vim"
+
+### Dotfiles
+
+DOTFILE_VIM=".vimrc"
+DOTFILE_VIM_COLORS_SOLARIZED=".vim/colors/solarized.vim"
 
 ### ### ### ### Sound
 
@@ -209,7 +227,7 @@ DOTFILES_REPOSITORY_PROTOCOL="https"
 DOTFILES_REPOSITORY_RAW_ADDRESS="raw.github.com"
 DOTFILES_REPOSITORY_USER_NAME="lypant"
 DOTFILES_REPOSITORY_REPO_NAME="dotfiles"
-DOTFILES_REPOSITORY_BRANCH_NAME="experiments"
+DOTFILES_REPOSITORY_BRANCH_NAME="simplified"
 DOTFILES_REPOSITORY_RAW_URL="$DOTFILES_REPOSITORY_PROTOCOL://$DOTFILES_REPOSITORY_RAW_ADDRESS/$DOTFILES_REPOSITORY_USER_NAME/$DOTFILES_REPOSITORY_REPO_NAME/$DOTFILES_REPOSITORY_BRANCH_NAME"
 
 ### Dotfiles directories

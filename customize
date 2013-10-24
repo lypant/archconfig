@@ -228,6 +228,9 @@ addRegularUser
 setRegularUserPassword
 setSudoers
 
+installDotfile $DOTFILE_BASHRC
+installDotfile $DOTFILE_BASH_PROFILE
+
 # Preparations
 updatePackageList
 configurePacman
@@ -239,6 +242,9 @@ installVirtualboxGuestAdditions
 
 # Basic tools
 installVim
+installDotfile $DOTFILE_VIM
+#TODO Check if approach with passing dirs also as file name works
+installDotfile $DOTFILE_VIM_COLORS_SOLARIZED
 
 # Sound
 installAlsa
