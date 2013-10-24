@@ -11,24 +11,6 @@ else
     exit 1
 fi
 
-doUncommentVar ()
-{
-	local VAR="$1"
-	local FILE="$2"
-	local BASE_CMD="sed"
-	local CMD=""
-
-	if [ $# -gt 2 ]; then
-		if [ $3 == "sudo" ]; then
-			CMD="sudo $BASE_CMD"
-		fi
-	else
-		CMD="$BASE_CMD"
-	fi
-
-    $CMD -i "s/^#\(${VAR}.*\)$/\1/" "${FILE}"
-}
-
 uncommentVar ()
 {
     if [ $# -lt 2 ];then
@@ -36,35 +18,10 @@ uncommentVar ()
         return 1
     fi
 
-	doUncommentVar "$1" "$2"
-}
+	local var="$1"
+	local file="$2"
 
-uncommentVarSudo ()
-{
-     if [ $# -lt 2 ];then
-        echo $FUNCNAME: not enough parameters \($#\): "$@"
-        return 1
-    fi
-
-	doUncommentVar "$1" "$2" "sudo"
-}
-
-doCommentVar ()
-{
-	local VAR="$1"
-	local FILE="$2"
-	local BASE_CMD="sed"
-	local CMD=""
-
-	if [ $# -gt 2 ]; then
-		if [ $3 == "sudo" ]; then
-			CMD="sudo $BASE_CMD"
-		fi
-	else
-		CMD="$BASE_CMD"
-	fi
-
-    $CMD -i "s/^\(${VAR}.*\)$/#\1/" "${FILE}"
+    sed -i "s/^#\(${var}.*\)$/\1/" "${file}"
 }
 
 commentVar ()
@@ -74,17 +31,10 @@ commentVar ()
         return 1
     fi
 
-	doCommentVar "$1" "$2"
-}
+	local var="$1"
+	local file="$2"
 
-commentVarSudo ()
-{
-     if [ $# -lt 2 ];then
-        echo $FUNCNAME: not enough parameters \($#\): "$@"
-        return 1
-    fi
-
-	doCommentVar "$1" "$2" "sudo"
+    sed -i "s/^\(${var}.*\)$/#\1/" "${file}"
 }
 
 archChroot()

@@ -216,15 +216,6 @@ changeHomeOwnership()
     chown -R $USER_NAME:users $USER_HOME
 }
 
-# TODO - Change order - move this function to appropriate place
-# TODO REQUIRES GIT
-#setupDotfiles()
-#{
-#    cd $USER_HOME
-#    git clone https://github.com/lypant/dotfiles
-#    $USER_HOME/dotfiles/install.sh $USER_HOME
-#}
-
 ################################################################################
 
 # Regular user
@@ -261,10 +252,6 @@ installDmenu
 installGit
 # TODO Think about moving it into installGit function - here should be only function calls without params
 installDotfile $GIT_DOTFILE
-
-# Setup dotfiles
-# TODO: temporarily disabled until it is cleared out how to handle it nicely
-#setupDotfiles
 
 # Dwm (requires Xorg and git)
 installDwm
