@@ -166,7 +166,7 @@ installVirtualboxGuestAdditions()
     modprobe -a $VIRTUALBOX_GUEST_UTILS_MODULES
 
     # Setup modules to be loaded on startup
-    if [ ! -z $VIRTUALBOX_GUEST_UTILS_MODULES ]; then
+    if [ ! -z "$VIRTUALBOX_GUEST_UTILS_MODULES" ]; then
         for module in $VIRTUALBOX_GUEST_UTILS_MODULES
         do
             echo $module >> $VIRTUALBOX_GUEST_UTILS_MODULES_FILE
@@ -271,7 +271,7 @@ installDwm
 
 # Misc config
 setConsoleVideoMode
-setConsoleLoginMessage
+#setConsoleLoginMessage
 disableSyslinuxBootMenu
 useEarlyTerminalFont    # Image needs to be recreated afterwards
 recreateImage
