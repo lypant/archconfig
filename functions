@@ -111,10 +111,10 @@ installDotfile()
     downloadFile $url $downloadDst
 
     # Check if backup dir exists
-    if [ ! -d $DOTFILE_BACKUP_DIR ]; then
-        mkdir -p $DOTFILE_BACKUP_DIR
+    if [ ! -d $DOTFILES_BACKUP_DIR ]; then
+        mkdir -p $DOTFILES_BACKUP_DIR
     fi
-    backupFile $USER_HOME/$dotfileName $DOTFILES_BACKUP_DIR/$dotfileName_$now
+    backupFile "$USER_HOME/$dotfileName" "$DOTFILES_BACKUP_DIR"/"$dotfileName"_"$now"
 
     rm -f $USER_HOME/$dotfileName
     createLink $USER_HOME/$dotfileName $downloadDst
