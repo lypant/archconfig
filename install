@@ -35,15 +35,18 @@ read -sn 1 -p "Any key to continue..."
 createRootPartitionFS()
 {
     log "Creating root partition file system..."
-    mkfs.$ROOT_PARTITION_FS $PARTITION_PREFIX$ROOT_PARTITION_HDD$ROOT_PARTITION_NB
+    #mkfs.$ROOT_PARTITION_FS $PARTITION_PREFIX$ROOT_PARTITION_HDD$ROOT_PARTITION_NB
+    executeCommand mkfs.$ROOT_PARTITION_FS $PARTITION_PREFIX$ROOT_PARTITION_HDD$ROOT_PARTITION_NB
     log "Creating root partition file system...done"
 }
 
 createSwapPartition()
 {
     log "Creating swap partition..."
-    mkswap $PARTITION_PREFIX$SWAP_PARTITION_HDD$SWAP_PARTITION_NB
-    swapon $PARTITION_PREFIX$SWAP_PARTITION_HDD$SWAP_PARTITION_NB
+    #mkswap $PARTITION_PREFIX$SWAP_PARTITION_HDD$SWAP_PARTITION_NB
+    #swapon $PARTITION_PREFIX$SWAP_PARTITION_HDD$SWAP_PARTITION_NB
+    executeCommand mkswap $PARTITION_PREFIX$SWAP_PARTITION_HDD$SWAP_PARTITION_NB
+    executeCommand swapon $PARTITION_PREFIX$SWAP_PARTITION_HDD$SWAP_PARTITION_NB
     log "Creating swap partition...done"
 }
 
@@ -52,7 +55,8 @@ createSwapPartition()
 mountRootPartition()
 {
     log "Mounting root partition..."
-    mount $PARTITION_PREFIX$ROOT_PARTITION_HDD$ROOT_PARTITION_NB $ROOT_PARTITION_MOUNT_POINT
+    #mount $PARTITION_PREFIX$ROOT_PARTITION_HDD$ROOT_PARTITION_NB $ROOT_PARTITION_MOUNT_POINT
+    executeCommand mount $PARTITION_PREFIX$ROOT_PARTITION_HDD$ROOT_PARTITION_NB $ROOT_PARTITION_MOUNT_POINT
     log "Mounting root partition...done"
 }
 
@@ -61,14 +65,16 @@ mountRootPartition()
 livecdPacmanTotalDownload()
 {
     log "Setting livecd pacman to display total download..."
-    uncommentVar "TotalDownload" /etc/pacman.conf
+    #uncommentVar "TotalDownload" /etc/pacman.conf
+    executeCommand uncommentVar "TotalDownload" /etc/pacman.conf
     log "Setting livecd pacman to display total download...done"
 }
 
 livecdPacmanUpdate()
 {
     log "Updating livecd pacman..."
-    pacman -Syy
+    #pacman -Syy
+    executeCommand pacman -Syy
     log "Updating livecd pacman...done"
 }
 
@@ -76,8 +82,10 @@ livecdPacmanUpdate()
 rankMirrors()
 {
     log "Ranking mirrors..."
-    cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.original
-    rankmirrors -n $MIRROR_COUNT /etc/pacman.d/mirrorlist.original > /etc/pacman.d/mirrorlist 
+    #cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.original
+    #rankmirrors -n $MIRROR_COUNT /etc/pacman.d/mirrorlist.original > /etc/pacman.d/mirrorlist 
+    executeCommand cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.original
+    executeCommand rankmirrors -n $MIRROR_COUNT /etc/pacman.d/mirrorlist.original > /etc/pacman.d/mirrorlist 
     log "Ranking mirrors...done"
 }
 
@@ -86,7 +94,8 @@ rankMirrors()
 installBaseSystem()
 {
     log "Installing base system..."
-    pacstrap -i $ROOT_PARTITION_MOUNT_POINT $BASE_SYSTEM_PACKAGES
+    #pacstrap -i $ROOT_PARTITION_MOUNT_POINT $BASE_SYSTEM_PACKAGES
+    executeCommand pacstrap -i $ROOT_PARTITION_MOUNT_POINT $BASE_SYSTEM_PACKAGES
     log "Installing base system...done"
 }
 
@@ -95,7 +104,8 @@ installBaseSystem()
 generateFstab()
 {
     log "Generating fstab..."
-    genfstab -L -p $ROOT_PARTITION_MOUNT_POINT >> $ROOT_PARTITION_MOUNT_POINT/etc/fstab 
+    #genfstab -L -p $ROOT_PARTITION_MOUNT_POINT >> $ROOT_PARTITION_MOUNT_POINT/etc/fstab 
+    executeCommand genfstab -L -p $ROOT_PARTITION_MOUNT_POINT >> $ROOT_PARTITION_MOUNT_POINT/etc/fstab 
     log "Generating fstab...done"
 }
 
@@ -106,7 +116,8 @@ generateFstab()
 setHostName()
 {
     log "Setting host name..."
-    archChroot "echo $HOST_NAME > /etc/hostname"
+    #archChroot "echo $HOST_NAME > /etc/hostname"
+    executeCommand archChroot "echo $HOST_NAME > /etc/hostname"
     log "Setting host name...done"
 }
 
@@ -116,80 +127,95 @@ setLocale()
 {
     log "Setting locale $1..."
     # After chroot functions are not known - use sed directly here
-    archChroot "sed -i \"s/^#\(${1}.*\)$/\1/\" /etc/locale.gen"
+    #archChroot "sed -i \"s/^#\(${1}.*\)$/\1/\" /etc/locale.gen"
+    # TODO: Check quotations etc - might be wrong when used with executeCommand
+    executeCommand archChroot "sed -i \"s/^#\(${1}.*\)$/\1/\" /etc/locale.gen"
     log "Setting locale $1...done"
 }
 
 setLocales()
 {
     log "Seting locales..."
-    setLocale $LOCALIZATION_LANGUAGE1
-    setLocale $LOCALIZATION_LANGUAGE2
+    #setLocale $LOCALIZATION_LANGUAGE1
+    #setLocale $LOCALIZATION_LANGUAGE2
+    executeCommand setLocale $LOCALIZATION_LANGUAGE1
+    executeCommand setLocale $LOCALIZATION_LANGUAGE2
     log "Seting locales...done"
 }
 
 generateLocales()
 {
     log "Generating locales..."
-    archChroot "locale-gen"
+    #archChroot "locale-gen"
+    executeCommand archChroot "locale-gen"
     log "Generating locales...done"
 }
 
 setLanguage()
 {
     log "Setting language..."
-    archChroot "echo LANG=$LOCALIZATION_LANGUAGE1 > /etc/locale.conf"
-    archChroot "export LANG=$LOCALIZATION_LANGUAGE1"
+    #archChroot "echo LANG=$LOCALIZATION_LANGUAGE1 > /etc/locale.conf"
+    #archChroot "export LANG=$LOCALIZATION_LANGUAGE1"
+    executeCommand archChroot "echo LANG=$LOCALIZATION_LANGUAGE1 > /etc/locale.conf"
+    executeCommand archChroot "export LANG=$LOCALIZATION_LANGUAGE1"
     log "Setting language...done"
 }
 
 setTimeZone()
 {
     log "Setting time zone..."
-    archChroot "ln -s /usr/share/zoneinfo/$LOCALIZATION_TIME_ZONE /etc/localtime"
+    #archChroot "ln -s /usr/share/zoneinfo/$LOCALIZATION_TIME_ZONE /etc/localtime"
+    executeCommand archChroot "ln -s /usr/share/zoneinfo/$LOCALIZATION_TIME_ZONE /etc/localtime"
     log "Setting time zone...done"
 }
 
 setHwClock()
 {
     log "Setting hw clock..."
-    archChroot "hwclock $LOCALIZATION_HW_CLOCK"
+    #archChroot "hwclock $LOCALIZATION_HW_CLOCK"
+    executeCommand archChroot "hwclock $LOCALIZATION_HW_CLOCK"
     log "Setting hw clock...done"
 }
 
 setConsoleKeymap()
 {
     log "Setting console keymap..."
-    archChroot "echo KEYMAP=$CONSOLE_KEYMAP > /etc/vconsole.conf"
+    #archChroot "echo KEYMAP=$CONSOLE_KEYMAP > /etc/vconsole.conf"
+    executeCommand archChroot "echo KEYMAP=$CONSOLE_KEYMAP > /etc/vconsole.conf"
     log "Setting console keymap...done"
 }
 
 setConsoleFont()
 {
     log "Setting console font..."
-    archChroot "echo FONT=$CONSOLE_FONT >> /etc/vconsole.conf"
+    #archChroot "echo FONT=$CONSOLE_FONT >> /etc/vconsole.conf"
+    executeCommand archChroot "echo FONT=$CONSOLE_FONT >> /etc/vconsole.conf"
     log "Setting console font...done"
 }
 
 setWiredNetwork()
 {
     log "Setting wired network..."
-    archChroot "systemctl enable $NETWORK_SERVICE@$NETWORK_INTERFACE_WIRED.service"
+    #archChroot "systemctl enable $NETWORK_SERVICE@$NETWORK_INTERFACE_WIRED.service"
+    executeCommand archChroot "systemctl enable $NETWORK_SERVICE@$NETWORK_INTERFACE_WIRED.service"
     log "Setting wired network...done"
 }
 
 installBootloader()
 {
     log "Installing bootloader..."
-    archChroot "pacman -S $BOOTLOADER_PACKAGE --noconfirm"
+    #archChroot "pacman -S $BOOTLOADER_PACKAGE --noconfirm"
+    executeCommand archChroot "pacman -S $BOOTLOADER_PACKAGE --noconfirm"
     log "Installing bootloader...done"
 }
 
 configureSyslinux()
 {
     log "Configuring Syslinux..."
-    archChroot "syslinux-install_update -i -a -m"
-    archChroot "sed -i \"s/sda3/$BOOT_PARTITION_HDD$BOOT_PARTITION_NB/g\" /boot/syslinux/syslinux.cfg"
+    #archChroot "syslinux-install_update -i -a -m"
+    #archChroot "sed -i \"s/sda3/$BOOT_PARTITION_HDD$BOOT_PARTITION_NB/g\" /boot/syslinux/syslinux.cfg"
+    executeCommand archChroot "syslinux-install_update -i -a -m"
+    executeCommand archChroot "sed -i \"s/sda3/$BOOT_PARTITION_HDD$BOOT_PARTITION_NB/g\" /boot/syslinux/syslinux.cfg"
     log "Configuring Syslinux...done"
 }
 
@@ -199,7 +225,8 @@ setRootPassword()
     local ASK=1
 
     while [ $ASK -ne 0 ]; do
-        archChroot "passwd"
+        #archChroot "passwd"
+        executeCommand archChroot "passwd"
         ASK=$?
     done
     log "Setting root password...done"
@@ -211,22 +238,26 @@ copyArchconfigFiles()
 {
     log "Copying Archconfig files..."
     log "Copying Archconfig files to $ARCHCONFIG_PATH"
-    mkdir $ARCHCONFIG_PATH
-    cp -R `pwd`/* $ARCHCONFIG_PATH
+    #mkdir $ARCHCONFIG_PATH
+    #cp -R `pwd`/* $ARCHCONFIG_PATH
+    executeCommand mkdir $ARCHCONFIG_PATH
+    executeCommand cp -R `pwd`/* $ARCHCONFIG_PATH
     log "Copying Archconfig files...done"
 }
 
 unmountPartition()
 {
     log "Unmounting partition $1..."
-    umount $1
+    #umount $1
+    executeCommand umount $1
     log "Unmounting partition $1...done"
 }
 
 unmountPartitions()
 {
     log "Unmounting partitions..."
-    unmountPartition $ROOT_PARTITION_MOUNT_POINT
+    #unmountPartition $ROOT_PARTITION_MOUNT_POINT
+    executeCommand unmountPartition $ROOT_PARTITION_MOUNT_POINT
     # TODO Unmount other partitions here, if any were mounted!
     log "Unmounting partitions...done"
 }
