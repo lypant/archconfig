@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Set log file name
+LOG_FILE="archconfig_install.log"
+
 # Required files - settings and functions
 ARCHCONFIG_SETTINGS_FILE="settings"
 
@@ -20,66 +23,80 @@ else
     exit 1
 fi
 
-# We have settings and functions file loaded
-echo "$ARCHCONFIG_INSTALL_FILE ready to start"
-
 # Disks and partitions
 
 # TODO So far partitioning is disabled - I need to think about consistent yest flexible way to address both installation on brand new disk without any partitioning and disks which already contain existing OSes and/or other partitions
 # TODO PARTITION DISKS HERE
 echo "No automatic disk partitioning so far... please do it manually"
+read -sn 1 -p "Any key to continue..."
 
 # Create file system(s)
 
 createRootPartitionFS()
 {
-   mkfs.$ROOT_PARTITION_FS $PARTITION_PREFIX$ROOT_PARTITION_HDD$ROOT_PARTITION_NB
+    log "Creating root partition file system..."
+    mkfs.$ROOT_PARTITION_FS $PARTITION_PREFIX$ROOT_PARTITION_HDD$ROOT_PARTITION_NB
+    log "Creating root partition file system...done"
 }
 
 createSwapPartition()
 {
+    log "Creating swap partition..."
     mkswap $PARTITION_PREFIX$SWAP_PARTITION_HDD$SWAP_PARTITION_NB
     swapon $PARTITION_PREFIX$SWAP_PARTITION_HDD$SWAP_PARTITION_NB
+    log "Creating swap partition...done"
 }
 
 # Mount partition(s)
 
 mountRootPartition()
 {
+    log "Mounting root partition..."
     mount $PARTITION_PREFIX$ROOT_PARTITION_HDD$ROOT_PARTITION_NB $ROOT_PARTITION_MOUNT_POINT
+    log "Mounting root partition...done"
 }
 
 # Prepare pacman
 
 livecdPacmanTotalDownload()
 {
+    log "Setting livecd pacman to display total download..."
     uncommentVar "TotalDownload" /etc/pacman.conf
+    log "Setting livecd pacman to display total download...done"
 }
 
 livecdPacmanUpdate()
 {
+    log "Updating livecd pacman..."
     pacman -Syy
+    log "Updating livecd pacman...done"
 }
 
 # TODO - probably this could be avoided and mirrors for specific country could be used- check aui
 rankMirrors()
 {
+    log "Ranking mirrors..."
     cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.original
     rankmirrors -n $MIRROR_COUNT /etc/pacman.d/mirrorlist.original > /etc/pacman.d/mirrorlist 
+    log "Ranking mirrors...done"
 }
 
 # Base system
 
 installBaseSystem()
 {
+    log "Installing base system..."
     pacstrap -i $ROOT_PARTITION_MOUNT_POINT $BASE_SYSTEM_PACKAGES
+    log "Installing base system...done"
 }
 
 # Fstab
 
 generateFstab()
 {
+    log "Generating fstab..."
     genfstab -L -p $ROOT_PARTITION_MOUNT_POINT >> $ROOT_PARTITION_MOUNT_POINT/etc/fstab 
+    log "Generating fstab...done"
 }
 
 ### ### ### ### Chrooted commands
@@ -88,101 +105,130 @@ generateFstab()
 
 setHostName()
 {
+    log "Setting host name..."
     archChroot "echo $HOST_NAME > /etc/hostname"
+    log "Setting host name...done"
 }
 
 ### ### Localization
 
 setLocale()
 {
-    #archChroot "uncommentVar $1 /etc/locale.gen"
-    # !!! After chroot functions are not known - use sed directly here
+    log "Setting locale $1..."
+    # After chroot functions are not known - use sed directly here
     archChroot "sed -i \"s/^#\(${1}.*\)$/\1/\" /etc/locale.gen"
+    log "Setting locale $1...done"
 }
 
 setLocales()
 {
+    log "Seting locales..."
     setLocale $LOCALIZATION_LANGUAGE1
     setLocale $LOCALIZATION_LANGUAGE2
+    log "Seting locales...done"
 }
 
 generateLocales()
 {
+    log "Generating locales..."
     archChroot "locale-gen"
+    log "Generating locales...done"
 }
 
 setLanguage()
 {
+    log "Setting language..."
     archChroot "echo LANG=$LOCALIZATION_LANGUAGE1 > /etc/locale.conf"
     archChroot "export LANG=$LOCALIZATION_LANGUAGE1"
+    log "Setting language...done"
 }
 
 setTimeZone()
 {
+    log "Setting time zone..."
     archChroot "ln -s /usr/share/zoneinfo/$LOCALIZATION_TIME_ZONE /etc/localtime"
+    log "Setting time zone...done"
 }
 
 setHwClock()
 {
+    log "Setting hw clock..."
     archChroot "hwclock $LOCALIZATION_HW_CLOCK"
+    log "Setting hw clock...done"
 }
 
 setConsoleKeymap()
 {
+    log "Setting console keymap..."
     archChroot "echo KEYMAP=$CONSOLE_KEYMAP > /etc/vconsole.conf"
+    log "Setting console keymap...done"
 }
 
 setConsoleFont()
 {
+    log "Setting console font..."
     archChroot "echo FONT=$CONSOLE_FONT >> /etc/vconsole.conf"
+    log "Setting console font...done"
 }
 
 setWiredNetwork()
 {
+    log "Setting wired network..."
     archChroot "systemctl enable $NETWORK_SERVICE@$NETWORK_INTERFACE_WIRED.service"
+    log "Setting wired network...done"
 }
 
 installBootloader()
 {
+    log "Installing bootloader..."
     archChroot "pacman -S $BOOTLOADER_PACKAGE --noconfirm"
+    log "Installing bootloader...done"
 }
 
 configureSyslinux()
 {
+    log "Configuring Syslinux..."
     archChroot "syslinux-install_update -i -a -m"
     archChroot "sed -i \"s/sda3/$BOOT_PARTITION_HDD$BOOT_PARTITION_NB/g\" /boot/syslinux/syslinux.cfg"
+    log "Configuring Syslinux...done"
 }
 
 setRootPassword()
 {
+    log "Setting root password..."
     local ASK=1
 
     while [ $ASK -ne 0 ]; do
         archChroot "passwd"
         ASK=$?
     done
+    log "Setting root password...done"
 }
 
-# TODO Consider whether regular user adding should be done here, in base install, or in customization
-:
 ### ### Back to non-chroot commands
 
 copyArchconfigFiles()
 {
-    echo "Copying Archconfig files to $ARCHCONFIG_PATH"
+    log "Copying Archconfig files..."
+    log "Copying Archconfig files to $ARCHCONFIG_PATH"
     mkdir $ARCHCONFIG_PATH
     cp -R `pwd`/* $ARCHCONFIG_PATH
+    log "Copying Archconfig files...done"
 }
 
 unmountPartition()
 {
+    log "Unmounting partition $1..."
     umount $1
+    log "Unmounting partition $1...done"
 }
 
 unmountPartitions()
 {
+    log "Unmounting partitions..."
     unmountPartition $ROOT_PARTITION_MOUNT_POINT
     # TODO Unmount other partitions here, if any were mounted!
+    log "Unmounting partitions...done"
 }
 
 

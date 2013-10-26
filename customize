@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Set log file name
+LOG_FILE="archconfig_customize.log"
+
 # Required files - settings and functions
 ARCHCONFIG_SETTINGS_FILE="settings"
 
@@ -28,42 +31,55 @@ echo "$ARCHCONFIG_CUSTOMIZE_FILE ready to start"
 
 addRegularUser()
 {
+    log "Adding regular user..."
     useradd -m -g $USER_MAIN_GROUP -G $USER_ADDITIONAL_GROUPS -s $USER_SHELL $USER_NAME
+    log "Adding regular user...done"
 }
 
 setRegularUserPassword()
 {
+    log "Setting regular user password..."
     local ASK=1
 
     while [ $ASK -ne 0 ]; do
+        log "Provide password for user $USER_NAME"
         passwd $USER_NAME
         ASK=$?
     done
+    log "Setting regular user password...done"
 }
 
 setSudoers()
 {
+    log "Setting sudoers..."
     # TODO - do it in a safer way... Here just for experiments
     echo "$USER_NAME ALL=(ALL) ALL" >> /etc/sudoers
+    log "Setting sudoers...done"
 }
 
 # Preparations
 
 updatePackageList()
 {
+    log "Updating package list..."
     pacman -Syy
+    log "Updating package list...done"
 }
 
 configurePacman()
 {
+    log "Configuring pacman..."
     uncommentVar "TotalDownload" /etc/pacman.conf
+    log "Configuring pacman...done"
 }
 
 # Installing
 
 installPackage()
 {
+    log "Installing package(s)..."
     pacman -S --noconfirm "$@"
+    log "Installing package(s)...done"
 }
 
 # Basic tools
@@ -72,26 +88,34 @@ installPackage()
 
 installVim()
 {
-   installPackage $VIM_PACKAGES 
+    log "Installing vim..."
+    installPackage $VIM_PACKAGES
+    log "Installing vim...done"
 }
 
 # Sound
 
 installAlsa()
 {
+    log "Installing alsa..."
     installPackage $ALSA_PACKAGES
+    log "Installing alsa...done"
 }
 
 # Xorg
 
 installXorgBasic()
 {
+    log "Installing xorg basics..."
     installPackage $XORG_BASIC_PACKAGES
+    log "Installing xorg basics...done"
 }
 
 installXorgAdditional()
 {
+    log "Installing xorg additionals..."
     installPackage $XORG_ADDITIONAL_PACKAGES
+    log "Installing xorg additionals...done"
 }
 
 # GUI tools etc
@@ -100,14 +124,18 @@ installXorgAdditional()
 
 installRxvtUnicode()
 {
+    log "Installing rxvt unicode..."
     installPackage $RXVTUNICODE_PACKAGES
+    log "Installing rxvt unicode...done"
 }
 
 # Font(s)
 
 installGuiFonts()
 {
+    log "Installing gui fonts..."
     installPackage $GUI_FONT_PACKAGES
+    log "Installing gui fonts...done"
 }
 
 # WM-related
@@ -115,6 +143,7 @@ installGuiFonts()
 # TODO Requires: Xorg, git
 installDwm()
 {
+    log "Installing dwm..."
     # Clone project from git
     git clone http://git.suckless.org/dwm "$DWM_BUILD_PATH"
     cd $DWM_BUILD_PATH
@@ -137,11 +166,14 @@ installDwm()
 
     # Install
     make clean install
+    log "Installing dwm...done"
 }
 
 installDmenu()
 {
+    log "Installing dmenu..."
     installPackage $DMENU_PACKAGES
+    log "Installing dmenu...done"
 }
 
 # Development etc
@@ -150,7 +182,9 @@ installDmenu()
 
 installGit()
 {
+    log "Installing git..."
     installPackage $GIT_PACKAGES
+    log "Installing git...done"
 }
 
 # VirtualBox
@@ -159,6 +193,7 @@ installGit()
 
 installVirtualboxGuestAdditions()
 {
+    log "Installing virtualbox guest additions..."
     # Install the packages
     installPackage $VIRTUALBOX_GUEST_UTILS_PACKAGES
 
@@ -172,23 +207,29 @@ installVirtualboxGuestAdditions()
             echo $module >> $VIRTUALBOX_GUEST_UTILS_MODULES_FILE
         done
     fi
+    log "Installing virtualbox guest additions...done"
 }
 
 # Misc config
 
 setConsoleVideoMode()
 {
+    log "Setting console video mode..."
     # Not using var for /dev/ - caused sed problems interpreting / character
     sed -i "s/APPEND root=\/dev\/$ROOT_PARTITION_HDD$ROOT_PARTITION_NB rw/APPEND root=\/dev\/$ROOT_PARTITION_HDD$ROOT_PARTITION_NB $BOOTLOADER_KERNEL_PARAMS/" /boot/syslinux/syslinux.cfg
+    log "Setting console video mode...done"
 }
 
 disableSyslinuxBootMenu()
 {
+    log "Disabling syslinux boot menu..."
     commentVar UI /boot/syslinux/syslinux.cfg
+    log "Disabling syslinux boot menu...done"
 }
 
 setConsoleLoginMessage()
 {
+    log "Setting console login message..."
     # Remove welcome message
     rm -f $CONSOLE_WELCOME_FILE
 
@@ -196,11 +237,13 @@ setConsoleLoginMessage()
     if [ ! -z "$CONSOLE_WELCOME_MSG" ];then
         echo $CONSOLE_WELCOME_MSG > $CONSOLE_WELCOME_FILE
     fi
+    log "Setting console login message...done"
 }
 
 # This requires image recreation for changes to take effect
 useEarlyTerminalFont()
 {
+    log "Setting early terminal font usage..."
     # Add "consolefont keymap" hooks
     # TODO - write a function for extending such lists
     # TODO   (original list might change and we don't care about the list, we want just to add sth)
@@ -208,16 +251,21 @@ useEarlyTerminalFont()
     local NEW_LIST="$ORIGINAL_LIST consolefont keymap"
 
     sed -i "s/HOOKS=\"$ORIGINAL_LIST\"/HOOKS=\"$NEW_LIST\"/g" /etc/mkinitcpio.conf
+    log "Setting early terminal font usage...done"
 }
 
 recreateImage()
 {
+    log "(Re)creating linux image..."
     mkinitcpio -p linux
+    log "(Re)creating linux image...done"
 }
 
 changeHomeOwnership()
 {
+    log "Changing home dir ownership..."
     chown -R $USER_NAME:users $USER_HOME
+    log "Changing home dir ownership...done"
 }
 
 ################################################################################
