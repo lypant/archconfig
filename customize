@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set log file name
-LOG_FILE="archconfig_customize.log"
+LOG_FILE=`pwd`/"archconfig_customize.log"
 
 # Required files - settings and functions
 ARCHCONFIG_SETTINGS_FILE="settings"
@@ -77,9 +77,9 @@ configurePacman()
 
 installPackage()
 {
-    log "Installing package(s)..."
+    log "Installing packages..."
     pacman -S --noconfirm "$@"
-    log "Installing package(s)...done"
+    log "Installing packages...done"
 }
 
 # Basic tools
@@ -256,9 +256,9 @@ useEarlyTerminalFont()
 
 recreateImage()
 {
-    log "(Re)creating linux image..."
+    log "Recreating linux image..."
     mkinitcpio -p linux
-    log "(Re)creating linux image...done"
+    log "Recreating linux image...done"
 }
 
 changeHomeOwnership()
