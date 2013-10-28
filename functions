@@ -55,7 +55,8 @@ archChroot()
         return 1
     fi
 
-    arch-chroot $ROOT_PARTITION_MOUNT_POINT /bin/bash -c "${1}"
+    #arch-chroot $ROOT_PARTITION_MOUNT_POINT /bin/bash -c "${1}"
+    executeCommand arch-chroot $ROOT_PARTITION_MOUNT_POINT /bin/bash -c "$@"
 }
 
 downloadFile()

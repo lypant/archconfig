@@ -123,99 +123,94 @@ setHostName()
 
 ### ### Localization
 
+#setLocale()
+#{
+#    log "Setting locale $1..."
+#    # After chroot functions are not known - use sed directly here
+#    #archChroot "sed -i \"s/^#\(${1}.*\)$/\1/\" /etc/locale.gen"
+#    # TODO: Check quotations etc - might be wrong when used with executeCommand
+#    executeCommand archChroot "sed -i \"s/^#\(${1}.*\)$/\1/\" /etc/locale.gen"
+#    log "Setting locale $1...done"
+#}
+
 setLocale()
 {
-    log "Setting locale $1..."
-    # After chroot functions are not known - use sed directly here
+    log "Setting locale for  $1..."
     #archChroot "sed -i \"s/^#\(${1}.*\)$/\1/\" /etc/locale.gen"
-    # TODO: Check quotations etc - might be wrong when used with executeCommand
-    executeCommand archChroot "sed -i \"s/^#\(${1}.*\)$/\1/\" /etc/locale.gen"
-    log "Setting locale $1...done"
+    archChroot \"sed -i \\\"s/^#\\\\\(${1}.*\\\\\)$/\\\\\1/\\\" /etc/locale.gen\"
+    log "Setting locale for $1...done"
 }
 
 setLocales()
 {
     log "Seting locales..."
-    #setLocale $LOCALIZATION_LANGUAGE1
-    #setLocale $LOCALIZATION_LANGUAGE2
-    executeCommand setLocale $LOCALIZATION_LANGUAGE1
-    executeCommand setLocale $LOCALIZATION_LANGUAGE2
+    setLocale $LOCALIZATION_LANGUAGE1
+    setLocale $LOCALIZATION_LANGUAGE2
     log "Seting locales...done"
 }
 
 generateLocales()
 {
     log "Generating locales..."
-    #archChroot "locale-gen"
-    executeCommand archChroot "locale-gen"
+    archChroot "locale-gen"
     log "Generating locales...done"
 }
 
 setLanguage()
 {
     log "Setting language..."
-    #archChroot "echo LANG=$LOCALIZATION_LANGUAGE1 > /etc/locale.conf"
-    #archChroot "export LANG=$LOCALIZATION_LANGUAGE1"
-    executeCommand archChroot "echo LANG=$LOCALIZATION_LANGUAGE1 > /etc/locale.conf"
-    executeCommand archChroot "export LANG=$LOCALIZATION_LANGUAGE1"
+    archChroot "echo LANG=$LOCALIZATION_LANGUAGE1 > /etc/locale.conf"
+    archChroot "export LANG=$LOCALIZATION_LANGUAGE1"
     log "Setting language...done"
 }
 
 setTimeZone()
 {
     log "Setting time zone..."
-    #archChroot "ln -s /usr/share/zoneinfo/$LOCALIZATION_TIME_ZONE /etc/localtime"
-    executeCommand archChroot "ln -s /usr/share/zoneinfo/$LOCALIZATION_TIME_ZONE /etc/localtime"
+    archChroot "ln -s /usr/share/zoneinfo/$LOCALIZATION_TIME_ZONE /etc/localtime"
     log "Setting time zone...done"
 }
 
 setHwClock()
 {
     log "Setting hw clock..."
-    #archChroot "hwclock $LOCALIZATION_HW_CLOCK"
-    executeCommand archChroot "hwclock $LOCALIZATION_HW_CLOCK"
+    archChroot "hwclock $LOCALIZATION_HW_CLOCK"
     log "Setting hw clock...done"
 }
 
 setConsoleKeymap()
 {
     log "Setting console keymap..."
-    #archChroot "echo KEYMAP=$CONSOLE_KEYMAP > /etc/vconsole.conf"
-    executeCommand archChroot "echo KEYMAP=$CONSOLE_KEYMAP > /etc/vconsole.conf"
+    archChroot "echo KEYMAP=$CONSOLE_KEYMAP > /etc/vconsole.conf"
     log "Setting console keymap...done"
 }
 
 setConsoleFont()
 {
     log "Setting console font..."
-    #archChroot "echo FONT=$CONSOLE_FONT >> /etc/vconsole.conf"
-    executeCommand archChroot "echo FONT=$CONSOLE_FONT >> /etc/vconsole.conf"
+    archChroot "echo FONT=$CONSOLE_FONT >> /etc/vconsole.conf"
     log "Setting console font...done"
 }
 
 setWiredNetwork()
 {
     log "Setting wired network..."
-    #archChroot "systemctl enable $NETWORK_SERVICE@$NETWORK_INTERFACE_WIRED.service"
-    executeCommand archChroot "systemctl enable $NETWORK_SERVICE@$NETWORK_INTERFACE_WIRED.service"
+    archChroot "systemctl enable $NETWORK_SERVICE@$NETWORK_INTERFACE_WIRED.service"
     log "Setting wired network...done"
 }
 
 installBootloader()
 {
     log "Installing bootloader..."
-    #archChroot "pacman -S $BOOTLOADER_PACKAGE --noconfirm"
-    executeCommand archChroot "pacman -S $BOOTLOADER_PACKAGE --noconfirm"
+    archChroot "pacman -S $BOOTLOADER_PACKAGE --noconfirm"
     log "Installing bootloader...done"
 }
 
 configureSyslinux()
 {
     log "Configuring Syslinux..."
-    #archChroot "syslinux-install_update -i -a -m"
-    #archChroot "sed -i \"s/sda3/$BOOT_PARTITION_HDD$BOOT_PARTITION_NB/g\" /boot/syslinux/syslinux.cfg"
-    executeCommand archChroot "syslinux-install_update -i -a -m"
-    executeCommand archChroot "sed -i \"s/sda3/$BOOT_PARTITION_HDD$BOOT_PARTITION_NB/g\" /boot/syslinux/syslinux.cfg"
+    archChroot "syslinux-install_update -i -a -m"
+    archChroot "sed -i \"s/sda3/$BOOT_PARTITION_HDD$BOOT_PARTITION_NB/g\" /boot/syslinux/syslinux.cfg"
     log "Configuring Syslinux...done"
 }
 
@@ -225,8 +220,7 @@ setRootPassword()
     local ASK=1
 
     while [ $ASK -ne 0 ]; do
-        #archChroot "passwd"
-        executeCommand archChroot "passwd"
+        archChroot "passwd"
         ASK=$?
     done
     log "Setting root password...done"
