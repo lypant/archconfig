@@ -56,7 +56,9 @@ archChroot()
     fi
 
     #arch-chroot $ROOT_PARTITION_MOUNT_POINT /bin/bash -c "${1}"
-    executeCommand arch-chroot $ROOT_PARTITION_MOUNT_POINT /bin/bash -c "$@"
+    #executeCommand arch-chroot $ROOT_PARTITION_MOUNT_POINT /bin/bash -c "$@"
+    # TODO: Test if this approach works - it should limit the number of changes in functions calling archChroot
+    executeCommand arch-chroot $ROOT_PARTITION_MOUNT_POINT /bin/bash -c \""$@"\"
 }
 
 downloadFile()

@@ -116,8 +116,7 @@ generateFstab()
 setHostName()
 {
     log "Setting host name..."
-    #archChroot "echo $HOST_NAME > /etc/hostname"
-    executeCommand archChroot "echo $HOST_NAME > /etc/hostname"
+    archChroot "echo $HOST_NAME > /etc/hostname"
     log "Setting host name...done"
 }
 
@@ -137,7 +136,8 @@ setLocale()
 {
     log "Setting locale for  $1..."
     #archChroot "sed -i \"s/^#\(${1}.*\)$/\1/\" /etc/locale.gen"
-    archChroot \"sed -i \\\"s/^#\\\\\(${1}.*\\\\\)$/\\\\\1/\\\" /etc/locale.gen\"
+    #archChroot \"sed -i \\\"s/^#\\\\\(${1}.*\\\\\)$/\\\\\1/\\\" /etc/locale.gen\"
+    archChroot sed -i \"s/^#\\\(${1}.*\\\)$/\\\1/\" /etc/locale.gen
     log "Setting locale for $1...done"
 }
 
@@ -160,7 +160,9 @@ setLanguage()
 {
     log "Setting language..."
     archChroot "echo LANG=$LOCALIZATION_LANGUAGE1 > /etc/locale.conf"
-    archChroot "export LANG=$LOCALIZATION_LANGUAGE1"
+    # TODO: This is causing additional output to be shown and changes console screen to green...
+    # Probably this is not needed
+    #archChroot "export LANG=$LOCALIZATION_LANGUAGE1"
     log "Setting language...done"
 }
 
