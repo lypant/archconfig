@@ -53,7 +53,7 @@ setSudoers()
     log "Setting sudoers..."
     # TODO - do it in a safer way... Here just for experiments
     #echo "$USER_NAME ALL=(ALL) ALL" >> /etc/sudoers
-    executeCommand echo "$USER_NAME ALL=(ALL) ALL" >> /etc/sudoers
+    executeCommand 'echo "$USER_NAME ALL=(ALL) ALL" >> /etc/sudoers'
     log "Setting sudoers...done"
 }
 
@@ -154,10 +154,8 @@ installDwm()
 {
     log "Installing dwm..."
     # Clone project from git
-    #git clone http://git.suckless.org/dwm "$DWM_BUILD_PATH"
     executeCommand git clone http://git.suckless.org/dwm "$DWM_BUILD_PATH"
-    #cd $DWM_BUILD_PATH
-    executeCommand cd $DWM_BUILD_PATH
+    cd $DWM_BUILD_PATH
 
     # Newest commit was not working... use specific, working version
     #git checkout 4fb31e0 -b archconfig_adjustments
@@ -165,13 +163,13 @@ installDwm()
 
     # Configure necessary settings
     #sed -i 's/PREFIX = \/usr\/local/PREFIX = \/usr/g' "$DWM_BUILD_PATH/config.mk"
-    executeCommand sed -i 's/PREFIX = \/usr\/local/PREFIX = \/usr/g' "$DWM_BUILD_PATH/config.mk"
+    executeCommand "sed -i 's/PREFIX = \/usr\/local/PREFIX = \/usr/g'" "$DWM_BUILD_PATH/config.mk"
     #sed -i 's/X11INC = \/usr\/X11R6\/include/X11INC = \/usr\/include\/X11/g' "$DWM_BUILD_PATH/config.mk"
-    executeCommand sed -i 's/X11INC = \/usr\/X11R6\/include/X11INC = \/usr\/include\/X11/g' "$DWM_BUILD_PATH/config.mk"
+    executeCommand "sed -i 's/X11INC = \/usr\/X11R6\/include/X11INC = \/usr\/include\/X11/g'" "$DWM_BUILD_PATH/config.mk"
     #sed -i 's/X11LIB = \/usr\/X11R6\/lib/X11LIB = \/usr\/lib\/X11/g' "$DWM_BUILD_PATH/config.mk"
-    executeCommand sed -i 's/X11LIB = \/usr\/X11R6\/lib/X11LIB = \/usr\/lib\/X11/g' "$DWM_BUILD_PATH/config.mk"
+    executeCommand "sed -i 's/X11LIB = \/usr\/X11R6\/lib/X11LIB = \/usr\/lib\/X11/g'" "$DWM_BUILD_PATH/config.mk"
     #sed -i "s/\"st\"/\"$TERMINAL_EMULATOR_COMMAND\"/g" "$DWM_BUILD_PATH/config.def.h"
-    executeCommand sed -i "s/\"st\"/\"$TERMINAL_EMULATOR_COMMAND\"/g" "$DWM_BUILD_PATH/config.def.h"
+    executeCommand 'sed -i "s/\"st\"/\"$TERMINAL_EMULATOR_COMMAND\"/g"' "$DWM_BUILD_PATH/config.def.h"
 
     # Set local author for the project commits
     #git config --local user.name "root"
@@ -181,7 +179,7 @@ installDwm()
 
     # Save configuration as new commit
     #git commit -a -m "Archconfig adjustments"
-    executeCommand git commit -a -m "Archconfig adjustments"
+    executeCommand 'git commit -a -m "Archconfig adjustments"'
 
     # Install
     #make clean install
@@ -242,7 +240,7 @@ setConsoleVideoMode()
     log "Setting console video mode..."
     # Not using var for /dev/ - caused sed problems interpreting / character
     #sed -i "s/APPEND root=\/dev\/$ROOT_PARTITION_HDD$ROOT_PARTITION_NB rw/APPEND root=\/dev\/$ROOT_PARTITION_HDD$ROOT_PARTITION_NB $BOOTLOADER_KERNEL_PARAMS/" /boot/syslinux/syslinux.cfg
-    executeCommand sed -i "s/APPEND root=\/dev\/$ROOT_PARTITION_HDD$ROOT_PARTITION_NB rw/APPEND root=\/dev\/$ROOT_PARTITION_HDD$ROOT_PARTITION_NB $BOOTLOADER_KERNEL_PARAMS/" /boot/syslinux/syslinux.cfg
+    executeCommand 'sed -i "s/APPEND root=\/dev\/$ROOT_PARTITION_HDD$ROOT_PARTITION_NB rw/APPEND root=\/dev\/$ROOT_PARTITION_HDD$ROOT_PARTITION_NB $BOOTLOADER_KERNEL_PARAMS/" /boot/syslinux/syslinux.cfg'
     log "Setting console video mode...done"
 }
 
@@ -280,7 +278,7 @@ useEarlyTerminalFont()
     local NEW_LIST="$ORIGINAL_LIST consolefont keymap"
 
     #sed -i "s/HOOKS=\"$ORIGINAL_LIST\"/HOOKS=\"$NEW_LIST\"/g" /etc/mkinitcpio.conf
-    executeCommand sed -i "s/HOOKS=\"$ORIGINAL_LIST\"/HOOKS=\"$NEW_LIST\"/g" /etc/mkinitcpio.conf
+    executeCommand 'sed -i "s/HOOKS=\"$ORIGINAL_LIST\"/HOOKS=\"$NEW_LIST\"/g" /etc/mkinitcpio.conf'
     log "Setting early terminal font usage...done"
 }
 
