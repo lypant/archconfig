@@ -52,7 +52,6 @@ setSudoers()
 {
     log "Setting sudoers..."
     # TODO - do it in a safer way... Here just for experiments
-    #echo "$USER_NAME ALL=(ALL) ALL" >> /etc/sudoers
     executeCommand 'echo "$USER_NAME ALL=(ALL) ALL" >> /etc/sudoers'
     log "Setting sudoers...done"
 }
@@ -62,7 +61,6 @@ setSudoers()
 updatePackageList()
 {
     log "Updating package list..."
-    #pacman -Syy
     executeCommand pacman -Syy
     log "Updating package list...done"
 }
@@ -70,7 +68,6 @@ updatePackageList()
 configurePacman()
 {
     log "Configuring pacman..."
-    #uncommentVar "TotalDownload" /etc/pacman.conf
     executeCommand uncommentVar "TotalDownload" /etc/pacman.conf
     log "Configuring pacman...done"
 }
@@ -80,7 +77,6 @@ configurePacman()
 installPackage()
 {
     log "Installing packages..."
-    #pacman -S --noconfirm "$@"
     executeCommand pacman -S --noconfirm "$@"
     log "Installing packages...done"
 }
@@ -92,7 +88,6 @@ installPackage()
 installVim()
 {
     log "Installing vim..."
-    #installPackage $VIM_PACKAGES
     executeCommand installPackage $VIM_PACKAGES
     log "Installing vim...done"
 }
@@ -102,7 +97,6 @@ installVim()
 installAlsa()
 {
     log "Installing alsa..."
-    #installPackage $ALSA_PACKAGES
     executeCommand installPackage $ALSA_PACKAGES
     log "Installing alsa...done"
 }
@@ -112,7 +106,6 @@ installAlsa()
 installXorgBasic()
 {
     log "Installing xorg basics..."
-    #installPackage $XORG_BASIC_PACKAGES
     executeCommand installPackage $XORG_BASIC_PACKAGES
     log "Installing xorg basics...done"
 }
@@ -120,7 +113,6 @@ installXorgBasic()
 installXorgAdditional()
 {
     log "Installing xorg additionals..."
-    #installPackage $XORG_ADDITIONAL_PACKAGES
     executeCommand installPackage $XORG_ADDITIONAL_PACKAGES
     log "Installing xorg additionals...done"
 }
@@ -132,7 +124,6 @@ installXorgAdditional()
 installRxvtUnicode()
 {
     log "Installing rxvt unicode..."
-    #installPackage $RXVTUNICODE_PACKAGES
     executeCommand installPackage $RXVTUNICODE_PACKAGES
     log "Installing rxvt unicode...done"
 }
@@ -142,7 +133,6 @@ installRxvtUnicode()
 installGuiFonts()
 {
     log "Installing gui fonts..."
-    #installPackage $GUI_FONT_PACKAGES
     executeCommand installPackage $GUI_FONT_PACKAGES
     log "Installing gui fonts...done"
 }
@@ -158,27 +148,19 @@ installDwm()
     cd $DWM_BUILD_PATH
 
     # Newest commit was not working... use specific, working version
-    #git checkout 4fb31e0 -b archconfig_adjustments
     executeCommand git checkout 4fb31e0 -b archconfig_adjustments
 
     # Configure necessary settings
-    #sed -i 's/PREFIX = \/usr\/local/PREFIX = \/usr/g' "$DWM_BUILD_PATH/config.mk"
     executeCommand "sed -i 's/PREFIX = \/usr\/local/PREFIX = \/usr/g'" "$DWM_BUILD_PATH/config.mk"
-    #sed -i 's/X11INC = \/usr\/X11R6\/include/X11INC = \/usr\/include\/X11/g' "$DWM_BUILD_PATH/config.mk"
     executeCommand "sed -i 's/X11INC = \/usr\/X11R6\/include/X11INC = \/usr\/include\/X11/g'" "$DWM_BUILD_PATH/config.mk"
-    #sed -i 's/X11LIB = \/usr\/X11R6\/lib/X11LIB = \/usr\/lib\/X11/g' "$DWM_BUILD_PATH/config.mk"
     executeCommand "sed -i 's/X11LIB = \/usr\/X11R6\/lib/X11LIB = \/usr\/lib\/X11/g'" "$DWM_BUILD_PATH/config.mk"
-    #sed -i "s/\"st\"/\"$TERMINAL_EMULATOR_COMMAND\"/g" "$DWM_BUILD_PATH/config.def.h"
     executeCommand 'sed -i "s/\"st\"/\"$TERMINAL_EMULATOR_COMMAND\"/g"' "$DWM_BUILD_PATH/config.def.h"
 
     # Set local author for the project commits
-    #git config --local user.name "root"
     executeCommand git config --local user.name "root"
-    #git config --local user.email "root@$HOST_NAME"
     executeCommand git config --local user.email "root@$HOST_NAME"
 
     # Save configuration as new commit
-    #git commit -a -m "Archconfig adjustments"
     executeCommand 'git commit -a -m "Archconfig adjustments"'
 
     # Install
@@ -190,7 +172,6 @@ installDwm()
 installDmenu()
 {
     log "Installing dmenu..."
-    #installPackage $DMENU_PACKAGES
     executeCommand installPackage $DMENU_PACKAGES
     log "Installing dmenu...done"
 }
@@ -202,7 +183,6 @@ installDmenu()
 installGit()
 {
     log "Installing git..."
-    #installPackage $GIT_PACKAGES
     executeCommand installPackage $GIT_PACKAGES
     log "Installing git...done"
 }
@@ -215,18 +195,15 @@ installVirtualboxGuestAdditions()
 {
     log "Installing virtualbox guest additions..."
     # Install the packages
-    #installPackage $VIRTUALBOX_GUEST_UTILS_PACKAGES
     executeCommand installPackage $VIRTUALBOX_GUEST_UTILS_PACKAGES
 
     # Load required modules
-    #modprobe -a $VIRTUALBOX_GUEST_UTILS_MODULES
     executeCommand modprobe -a $VIRTUALBOX_GUEST_UTILS_MODULES
 
     # Setup modules to be loaded on startup
     if [ ! -z "$VIRTUALBOX_GUEST_UTILS_MODULES" ]; then
         for module in $VIRTUALBOX_GUEST_UTILS_MODULES
         do
-            #echo $module >> $VIRTUALBOX_GUEST_UTILS_MODULES_FILE
             executeCommand echo $module >> $VIRTUALBOX_GUEST_UTILS_MODULES_FILE
         done
     fi
@@ -239,7 +216,6 @@ setConsoleVideoMode()
 {
     log "Setting console video mode..."
     # Not using var for /dev/ - caused sed problems interpreting / character
-    #sed -i "s/APPEND root=\/dev\/$ROOT_PARTITION_HDD$ROOT_PARTITION_NB rw/APPEND root=\/dev\/$ROOT_PARTITION_HDD$ROOT_PARTITION_NB $BOOTLOADER_KERNEL_PARAMS/" /boot/syslinux/syslinux.cfg
     executeCommand 'sed -i "s/APPEND root=\/dev\/$ROOT_PARTITION_HDD$ROOT_PARTITION_NB rw/APPEND root=\/dev\/$ROOT_PARTITION_HDD$ROOT_PARTITION_NB $BOOTLOADER_KERNEL_PARAMS/" /boot/syslinux/syslinux.cfg'
     log "Setting console video mode...done"
 }
@@ -247,7 +223,6 @@ setConsoleVideoMode()
 disableSyslinuxBootMenu()
 {
     log "Disabling syslinux boot menu..."
-    #commentVar UI /boot/syslinux/syslinux.cfg
     executeCommand commentVar UI /boot/syslinux/syslinux.cfg
     log "Disabling syslinux boot menu...done"
 }
@@ -256,12 +231,10 @@ setConsoleLoginMessage()
 {
     log "Setting console login message..."
     # Remove welcome message
-    #rm -f $CONSOLE_WELCOME_FILE
     executeCommand rm -f $CONSOLE_WELCOME_FILE
 
     # Set new welcome message, if present.
     if [ ! -z "$CONSOLE_WELCOME_MSG" ];then
-        #echo $CONSOLE_WELCOME_MSG > $CONSOLE_WELCOME_FILE
         executeCommand echo $CONSOLE_WELCOME_MSG > $CONSOLE_WELCOME_FILE
     fi
     log "Setting console login message...done"
@@ -277,7 +250,6 @@ useEarlyTerminalFont()
     local ORIGINAL_LIST="base udev autodetect modconf block filesystems keyboard fsck"
     local NEW_LIST="$ORIGINAL_LIST consolefont keymap"
 
-    #sed -i "s/HOOKS=\"$ORIGINAL_LIST\"/HOOKS=\"$NEW_LIST\"/g" /etc/mkinitcpio.conf
     executeCommand 'sed -i "s/HOOKS=\"$ORIGINAL_LIST\"/HOOKS=\"$NEW_LIST\"/g" /etc/mkinitcpio.conf'
     log "Setting early terminal font usage...done"
 }
@@ -285,7 +257,6 @@ useEarlyTerminalFont()
 recreateImage()
 {
     log "Recreating linux image..."
-    #mkinitcpio -p linux
     executeCommand mkinitcpio -p linux
     log "Recreating linux image...done"
 }
@@ -293,7 +264,6 @@ recreateImage()
 changeHomeOwnership()
 {
     log "Changing home dir ownership..."
-    #chown -R $USER_NAME:users $USER_HOME
     executeCommand chown -R $USER_NAME:users $USER_HOME
     log "Changing home dir ownership...done"
 }

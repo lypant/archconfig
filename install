@@ -115,8 +115,6 @@ setHostName()
 setLocale()
 {
     log "Setting locale for  $1..."
-    #archChroot "sed -i \"s/^#\(${1}.*\)$/\1/\" /etc/locale.gen"
-    #archChroot \"sed -i \\\"s/^#\\\\\(${1}.*\\\\\)$/\\\\\1/\\\" /etc/locale.gen\"
     archChroot "sed -i \\\"s/^#\\\\\(${1}.*\\\\\)$/\\\\\1/\\\" /etc/locale.gen"
     log "Setting locale for $1...done"
 }
