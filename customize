@@ -68,7 +68,7 @@ updatePackageList()
 configurePacman()
 {
     log "Configuring pacman..."
-    executeCommand uncommentVar "TotalDownload" /etc/pacman.conf
+    uncommentVar "TotalDownload" /etc/pacman.conf
     log "Configuring pacman...done"
 }
 
@@ -88,7 +88,7 @@ installPackage()
 installVim()
 {
     log "Installing vim..."
-    executeCommand installPackage $VIM_PACKAGES
+    installPackage $VIM_PACKAGES
     log "Installing vim...done"
 }
 
@@ -97,7 +97,7 @@ installVim()
 installAlsa()
 {
     log "Installing alsa..."
-    executeCommand installPackage $ALSA_PACKAGES
+    installPackage $ALSA_PACKAGES
     log "Installing alsa...done"
 }
 
@@ -106,14 +106,14 @@ installAlsa()
 installXorgBasic()
 {
     log "Installing xorg basics..."
-    executeCommand installPackage $XORG_BASIC_PACKAGES
+    installPackage $XORG_BASIC_PACKAGES
     log "Installing xorg basics...done"
 }
 
 installXorgAdditional()
 {
     log "Installing xorg additionals..."
-    executeCommand installPackage $XORG_ADDITIONAL_PACKAGES
+    installPackage $XORG_ADDITIONAL_PACKAGES
     log "Installing xorg additionals...done"
 }
 
@@ -124,7 +124,7 @@ installXorgAdditional()
 installRxvtUnicode()
 {
     log "Installing rxvt unicode..."
-    executeCommand installPackage $RXVTUNICODE_PACKAGES
+    installPackage $RXVTUNICODE_PACKAGES
     log "Installing rxvt unicode...done"
 }
 
@@ -133,7 +133,7 @@ installRxvtUnicode()
 installGuiFonts()
 {
     log "Installing gui fonts..."
-    executeCommand installPackage $GUI_FONT_PACKAGES
+    installPackage $GUI_FONT_PACKAGES
     log "Installing gui fonts...done"
 }
 
@@ -172,7 +172,7 @@ installDwm()
 installDmenu()
 {
     log "Installing dmenu..."
-    executeCommand installPackage $DMENU_PACKAGES
+    installPackage $DMENU_PACKAGES
     log "Installing dmenu...done"
 }
 
@@ -183,7 +183,7 @@ installDmenu()
 installGit()
 {
     log "Installing git..."
-    executeCommand installPackage $GIT_PACKAGES
+    installPackage $GIT_PACKAGES
     log "Installing git...done"
 }
 
@@ -195,7 +195,7 @@ installVirtualboxGuestAdditions()
 {
     log "Installing virtualbox guest additions..."
     # Install the packages
-    executeCommand installPackage $VIRTUALBOX_GUEST_UTILS_PACKAGES
+    installPackage $VIRTUALBOX_GUEST_UTILS_PACKAGES
 
     # Load required modules
     executeCommand modprobe -a $VIRTUALBOX_GUEST_UTILS_MODULES
@@ -223,7 +223,7 @@ setConsoleVideoMode()
 disableSyslinuxBootMenu()
 {
     log "Disabling syslinux boot menu..."
-    executeCommand commentVar UI /boot/syslinux/syslinux.cfg
+    commentVar UI /boot/syslinux/syslinux.cfg
     log "Disabling syslinux boot menu...done"
 }
 

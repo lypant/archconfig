@@ -25,59 +25,59 @@ log()
 uncommentVar ()
 {
     if [ $# -lt 2 ];then
-        echo $FUNCNAME: not enough parameters \($#\): "$@"
+        log "$FUNCNAME: not enough parameters \($#\): $@"
         return 1
     fi
 
 	local var="$1"
 	local file="$2"
 
-    sed -i "s/^#\(${var}.*\)$/\1/" "${file}"
+    #sed -i "s/^#\(${var}.*\)$/\1/" "${file}"
+    executeCommand 'sed -i "s/^#\(${var}.*\)$/\1/" "${file}"'
 }
 
 commentVar ()
 {
     if [ $# -lt 2 ];then
-        echo $FUNCNAME: not enough parameters \($#\): "$@"
+        log "$FUNCNAME: not enough parameters \($#\): $@"
         return 1
     fi
 
 	local var="$1"
 	local file="$2"
 
-    sed -i "s/^\(${var}.*\)$/#\1/" "${file}"
+    #sed -i "s/^\(${var}.*\)$/#\1/" "${file}"
+    executeCommand 'sed -i "s/^\(${var}.*\)$/#\1/" "${file}"'
 }
 
 archChroot()
 {
      if [ $# -lt 1 ];then
-        echo $FUNCNAME: not enough parameters \($#\): "$@"
+        log "$FUNCNAME: not enough parameters \($#\): $@"
         return 1
     fi
 
-    #arch-chroot $ROOT_PARTITION_MOUNT_POINT /bin/bash -c "${1}"
-    #executeCommand arch-chroot $ROOT_PARTITION_MOUNT_POINT /bin/bash -c "$@"
-    # TODO: Test if this approach works - it should limit the number of changes in functions calling archChroot
     executeCommand arch-chroot $ROOT_PARTITION_MOUNT_POINT /bin/bash -c \""$@"\"
 }
 
 downloadFile()
 {
     if [ $# -lt 2 ]; then
-        echo $FUNCNAME: not enough parameters \($#\): "$@"
+        log "$FUNCNAME: not enough parameters \($#\): $@"
         return 1
     fi
 
     local src=$1
     local dst=$2
 
-    curl -so $dst --create-dirs $src
+    #curl -so $dst --create-dirs $src
+    executeCommand 'curl -so $dst --create-dirs $src'
 }
 
 backupFile()
 {
     if [ $# -lt 2 ]; then
-        echo $FUNCNAME: not enough parameters \($#\): "$@"
+        log "$FUNCNAME: not enough parameters \($#\): $@"
         return 1
     fi
 
@@ -88,14 +88,15 @@ backupFile()
     if [ -e $original ]; then
         # File exists
         # Backup the file
-        cp $original $backup
+        #cp $original $backup
+        executeCommand 'cp $original $backup'
     fi
 }
 
 createLink()
 {
     if [ $# -lt 2 ]; then
-        echo $FUNCNAME: not enough parameters \($#\): "$@"
+        log "$FUNCNAME: not enough parameters \($#\): $@"
         return 1
     fi
 
@@ -106,14 +107,14 @@ createLink()
     if [ -e $linkTarget ]; then
         # File exists
         # create symlink
-        ln -s $linkTarget $linkName
+        executeCommand 'ln -s $linkTarget $linkName'
     fi
 }
 
 installDotfile()
 {
     if [ $# -lt 1 ]; then
-        echo $FUNCNAME: not enough parameters \($#\): "$@"
+        log "$FUNCNAME: not enough parameters \($#\): $@"
         return 1
     fi
 
@@ -126,18 +127,18 @@ installDotfile()
 
     # Check if backup dir exists
     if [ ! -d $DOTFILES_BACKUP_DIR ]; then
-        mkdir -p $DOTFILES_BACKUP_DIR
+        executeCommand 'mkdir -p $DOTFILES_BACKUP_DIR'
     fi
     backupFile "$USER_HOME/$dotfileName" "$DOTFILES_BACKUP_DIR/$dotfileName"_"$now"
 
-    rm -f $USER_HOME/$dotfileName
+    executeCommand 'rm -f $USER_HOME/$dotfileName'
     createLink $USER_HOME/$dotfileName $downloadDst
 }
 
 installNestedDotfile()
 {
     if [ $# -lt 2 ]; then
-        echo $FUNCNAME: not enough parameters \($#\): "$@"
+        log "$FUNCNAME: not enough parameters \($#\): $@"
         return 1
     fi
 
@@ -151,14 +152,14 @@ installNestedDotfile()
 
     # Check if backup dir exists
     if [ ! -d $DOTFILES_BACKUP_DIR ]; then
-        mkdir -p $DOTFILES_BACKUP_DIR
+        executeCommand 'mkdir -p $DOTFILES_BACKUP_DIR'
     fi
     backupFile "$USER_HOME/$dotfilePath/$dotfileName" "$DOTFILES_BACKUP_DIR/$dotfilePath/$dotfileName"_"$now"
 
-    rm -f $USER_HOME/$dotfilePath/$dotfileName
+    executeCommand 'rm -f $USER_HOME/$dotfilePath/$dotfileName'
 
     if [ ! -d $USER_HOME/$dotfilePath ]; then
-        mkdir -p $USER_HOME/$dotfilePath
+        executeCommand 'mkdir -p $USER_HOME/$dotfilePath'
     fi
 
     createLink $USER_HOME/$dotfilePath/$dotfileName $downloadDst

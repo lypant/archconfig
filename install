@@ -61,7 +61,7 @@ mountRootPartition()
 livecdPacmanTotalDownload()
 {
     log "Setting livecd pacman to display total download..."
-    executeCommand uncommentVar "TotalDownload" /etc/pacman.conf
+    uncommentVar "TotalDownload" /etc/pacman.conf
     log "Setting livecd pacman to display total download...done"
 }
 
@@ -227,7 +227,7 @@ unmountPartition()
 unmountPartitions()
 {
     log "Unmounting partitions..."
-    executeCommand unmountPartition $ROOT_PARTITION_MOUNT_POINT
+    unmountPartition $ROOT_PARTITION_MOUNT_POINT
     # TODO Unmount other partitions here, if any were mounted!
     log "Unmounting partitions...done"
 }
