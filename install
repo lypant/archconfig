@@ -253,6 +253,10 @@ setConsoleKeymap
 setConsoleFont
 setWiredNetwork
 installBootloader
+
+log "Waiting 10s"
+executeCommand "sleep 10"
+
 configureSyslinux
 setRootPassword
 copyArchconfigFiles

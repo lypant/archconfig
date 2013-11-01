@@ -60,7 +60,7 @@ BASE_SYSTEM_PACKAGES="base base-devel"
 
 ### ### System config
 
-HOST_NAME="archon"
+HOST_NAME="monolith"
 
 ### ### Localization
 
@@ -95,7 +95,7 @@ NETWORK_SERVICE="dhcpcd"
 
 ### Wired interface
 
-NETWORK_INTERFACE_WIRED="enp0s3"
+NETWORK_INTERFACE_WIRED="enp0s12"
 
 ### ### Bootloader
 
@@ -148,7 +148,10 @@ XINITRC_DOTFILE=".xinitrc"
 
 ### ### Xorg additional
 
-XORG_ADDITIONAL_PACKAGES="mesa"
+XORG_ADDITIONAL_PACKAGES=""
+
+### ### Video drivers
+VIDEO_DRIVERS_PACKAGES="xf86-video-vesa"
 
 ### ### ### ### GUI tools etc
 
@@ -181,25 +184,13 @@ DMENU_PACKAGES="dmenu"
 GIT_PACKAGES="git"
 GIT_DOTFILE=".gitconfig"
 
-### ### ### ### VirtualBox
-
-### ### Guest utils
-
-VIRTUALBOX_GUEST_UTILS_PACKAGES="virtualbox-guest-utils"
-
-# Modules to be loaded during startup (modprobe)
-VIRTUALBOX_GUEST_UTILS_MODULES="vboxguest vboxsf vboxvideo"
-
-# Configuration file for loading modules during startup
-VIRTUALBOX_GUEST_UTILS_MODULES_FILE="/etc/modules-load.d/virtualbox.conf"
-
 ### ### ### ### Misc config
 
 # VGA mode to be used for console after boot
-BOOTLOADER_VGA_MODE="864"
+BOOTLOADER_VGA_MODE="789"
 
 # Kernel params passed by bootloader during boot
-BOOTLOADER_KERNEL_PARAMS="rw vga=$BOOTLOADER_VGA_MODE quiet"
+BOOTLOADER_KERNEL_PARAMS="rw vga=$BOOTLOADER_VGA_MODE quiet nomodeset"
 
 ### ### Issue
 
@@ -228,6 +219,7 @@ DOTFILES_REPOSITORY_PROTOCOL="https"
 DOTFILES_REPOSITORY_RAW_ADDRESS="raw.github.com"
 DOTFILES_REPOSITORY_USER_NAME="lypant"
 DOTFILES_REPOSITORY_REPO_NAME="dotfiles"
+# TODO Change to 'monolith branch, when prepared'
 DOTFILES_REPOSITORY_BRANCH_NAME="simplified"
 DOTFILES_REPOSITORY_RAW_URL="$DOTFILES_REPOSITORY_PROTOCOL://$DOTFILES_REPOSITORY_RAW_ADDRESS/$DOTFILES_REPOSITORY_USER_NAME/$DOTFILES_REPOSITORY_REPO_NAME/$DOTFILES_REPOSITORY_BRANCH_NAME"
 

@@ -1,5 +1,5 @@
 1. Download the suite
-culr -L https://github.com/lypant/archconfig/tarball/simplified | tar xz
+curl -L https://github.com/lypant/archconfig/tarball/monolith | tar xz
 
 T.B.C.
 
@@ -13,4 +13,9 @@ TODO LIST:
 - When finished with executeCommand etc - ensure each function returns value and check it. In case of failure, break installation for easier problem finding
 - When copying log file after install - not complete log file is being copied, since after copy operation few logs are added. Think about better solution.
 - Determine and use consistent policy with executeCommand calls. Probably all commands should be surrounded with single quotation marks, e.g. '<command>'
+
+
+monolith branch:
+- Check syslinux configuration - faced problems with proc being already mounted
+    - Trying to solve using sleep command to wait for slow process(es)
 

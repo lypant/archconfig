@@ -117,6 +117,13 @@ installXorgAdditional()
     log "Installing xorg additionals...done"
 }
 
+installVideoDrivers()
+{
+    log "Installing video drivers..."
+    installPackage $VIDEO_DRIVERS_PACKAGES
+    log "Installing video drivers...done"
+}
+
 # GUI tools etc
 
 # Terminal
@@ -185,29 +192,6 @@ installGit()
     log "Installing git..."
     installPackage $GIT_PACKAGES
     log "Installing git...done"
-}
-
-# VirtualBox
-
-# Guest utils
-
-installVirtualboxGuestAdditions()
-{
-    log "Installing virtualbox guest additions..."
-    # Install the packages
-    installPackage $VIRTUALBOX_GUEST_UTILS_PACKAGES
-
-    # Load required modules
-    executeCommand modprobe -a $VIRTUALBOX_GUEST_UTILS_MODULES
-
-    # Setup modules to be loaded on startup
-    if [ ! -z "$VIRTUALBOX_GUEST_UTILS_MODULES" ]; then
-        for module in $VIRTUALBOX_GUEST_UTILS_MODULES
-        do
-            executeCommand echo $module >> $VIRTUALBOX_GUEST_UTILS_MODULES_FILE
-        done
-    fi
-    log "Installing virtualbox guest additions...done"
 }
 
 # Misc config
@@ -285,9 +269,6 @@ configurePacman
 
 # Installing
 
-# VirtualBox
-installVirtualboxGuestAdditions
-
 # Basic tools
 installVim
 installDotfile $DOTFILE_VIM
@@ -298,7 +279,10 @@ installAlsa
 
 # Xorg
 installXorgBasic
-installXorgAdditional
+#installXorgAdditional
+
+# Video drivers
+installVideoDrivers
 
 # GUI tools etc
 installRxvtUnicode
