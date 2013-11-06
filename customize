@@ -252,6 +252,34 @@ changeHomeOwnership()
     log "Changing home dir ownership...done"
 }
 
+installElinks()
+{
+    log "Installing elinks..."
+    installPackage $ELINKS_PACKAGES
+    log "Installing elinks...done"
+}
+
+installDvtm()
+{
+    log "Installing dvtm..."
+    executeCommand "git clone $DVTM_GIT_REPOSITORY $DVTM_BUILD_PATH"
+    cd $DVTM_BUILD_PATH
+    executeCommand "git chekout -b $DVTM_CONFIG_BRANCH"
+
+    # Change default blue color to something brighter - to make it visible on older CRT monitor
+    executeCommand "sed -i 's/BLUE/$DVTM_ACTIVE_COLOR/g'" "$DVTM_BUILD_PATH/config.def.h"
+
+    # Change default mod key - 'g' is not convenient to be used with CTRL key
+    executeCommand "sed -i 's/#define MOD CTRL\('g'\)/#define MOD CTRL\('$DVTM_MOD_KEY'\)/g'" "$DVTM_BUILD_PATH/config.def.h"
+
+    executeCommand "git commit -a -m 'Archconfig adjustments'"
+
+    executeCommand "make"
+    executeCommand "make install"
+
+    log "Installing dvtm...done"
+}
+
 ################################################################################
 
 # Regular user
@@ -277,6 +305,9 @@ installNestedDotfile $DOTFILE_VIM_COLORS_SOLARIZED_PATH $DOTFILE_VIM_COLORS_SOLA
 # Sound
 installAlsa
 
+# Console applications
+installDvtm
+
 # Xorg
 installXorgBasic
 #installXorgAdditional
@@ -288,6 +319,10 @@ installVideoDrivers
 installRxvtUnicode
 installGuiFonts
 installDmenu
+
+# Internet applications
+
+installElinks
 
 # Development etc
 installGit

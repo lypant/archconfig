@@ -139,6 +139,20 @@ DOTFILE_VIM_COLORS_SOLARIZED_FILE="solarized.vim"
 
 ALSA_PACKAGES="alsa-utils"
 
+### ### ### ### Console applications
+
+### ### Terminal multiplexer
+
+### dvtm
+
+# TODO Replace "Building" with something more appropriate and use variable in other places
+DVTM_BUILD_PATH="/home/$USER_NAME/Building/dvtm"
+DVTM_GIT_REPOSITORY="git://repo.or.cz/dvtm.git"
+# TODO Use similar branch var for dwm
+DVTM_CONFIG_BRANCH="archconfig"
+DVTM_ACTIVE_COLOR="GREEN"
+DVTM_MOD_KEY="d"
+
 ### ### ### ### Xorg
 
 ### ### Xorg basic
@@ -176,6 +190,14 @@ TERMINAL_EMULATOR_COMMAND="urxvt"
 ### dmenu
 
 DMENU_PACKAGES="dmenu"
+
+### ### ### ### Internet applications
+
+### ### Web browser
+
+### elinks
+
+ELINKS_PACKAGES="elinks"
 
 ### ### ### ### Development etc
 
