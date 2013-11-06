@@ -259,18 +259,23 @@ installElinks()
     log "Installing elinks...done"
 }
 
+# Requires git
 installDvtm()
 {
     log "Installing dvtm..."
     executeCommand "git clone $DVTM_GIT_REPOSITORY $DVTM_BUILD_PATH"
     cd $DVTM_BUILD_PATH
-    executeCommand "git chekout -b $DVTM_CONFIG_BRANCH"
+    executeCommand "git checkout -b $DVTM_CONFIG_BRANCH"
 
     # Change default blue color to something brighter - to make it visible on older CRT monitor
     executeCommand "sed -i 's/BLUE/$DVTM_ACTIVE_COLOR/g'" "$DVTM_BUILD_PATH/config.def.h"
 
     # Change default mod key - 'g' is not convenient to be used with CTRL key
-    executeCommand "sed -i 's/#define MOD CTRL\('g'\)/#define MOD CTRL\('$DVTM_MOD_KEY'\)/g'" "$DVTM_BUILD_PATH/config.def.h"
+    executeCommand "sed -i \"s/#define MOD CTRL('g')/#define MOD CTRL('$DVTM_MOD_KEY')/g\"" "$DVTM_BUILD_PATH/config.def.h"
+
+    # Set local author for the project commits
+    executeCommand git config --local user.name "root"
+    executeCommand git config --local user.email "root@$HOST_NAME"
 
     executeCommand "git commit -a -m 'Archconfig adjustments'"
 
@@ -305,9 +310,6 @@ installNestedDotfile $DOTFILE_VIM_COLORS_SOLARIZED_PATH $DOTFILE_VIM_COLORS_SOLA
 # Sound
 installAlsa
 
-# Console applications
-installDvtm
-
 # Xorg
 installXorgBasic
 #installXorgAdditional
@@ -328,6 +330,9 @@ installElinks
 installGit
 # TODO Think about moving it into installGit function - here should be only function calls without params
 installDotfile $GIT_DOTFILE
+
+# Requires git!
+installDvtm
 
 # Dwm (requires Xorg and git)
 installDwm
