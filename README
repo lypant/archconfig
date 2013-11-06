@@ -14,3 +14,6 @@ TODO LIST:
 - When copying log file after install - not complete log file is being copied, since after copy operation few logs are added. Think about better solution.
 - Determine and use consistent policy with executeCommand calls. Probably all commands should be surrounded with single quotation marks, e.g. '<command>'
 
+
+# To set custom video mode for terminal (available under vga=864 or vesa 360) run in host's terminal VBoxManage setextradata "<guest_name>" "CustomVideoMode1" "1680x1050x24"
+
