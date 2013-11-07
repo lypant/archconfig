@@ -13,13 +13,27 @@ fi
 
 executeCommand()
 {
+    # Write command to be executed to the command file
+    echo "$@" >> $COMMANDS_FILE
+
+    # Execute command
+    # Redirect stdout and stderr to screen and log file
     (eval "$@" 2>&1) | tee -a $LOG_FILE
     return ${PIPESTATUS[0]}
 }
 
 log()
 {
-    executeCommand "echo $@"
+    # Use msg with prefix to distinguish Archconfig logs
+    local msg="$ARCHCONFIG_LOG_PREFIX$@"
+
+    # Write message to commands file for easier grouping of commands
+    # Write as a comment
+    echo "# $msg" >> $COMMANDS_FILE
+
+    # Write message to screen and log file only ()
+    (echo "$msg" 2>&1) | tee -a $LOG_FILE
+    return ${PIPESTATUS[0]}
 }
 
 uncommentVar ()

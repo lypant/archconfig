@@ -236,6 +236,11 @@ DOTFILES_DIR_NAME="dotfiles"
 DOTFILES_DIR_PATH="$USER_HOME/$DOTFILES_DIR_NAME"
 DOTFILES_BACKUP_DIR="$DOTFILES_DIR_PATH/backup"
 
+
+### ### ### ### Archconfig logs
+
+ARCHCONFIG_LOG_PREFIX="AC: "
+
 ### ### ### ### LiveCD
 
 # Number of mirrors to be found by rankmirrors
