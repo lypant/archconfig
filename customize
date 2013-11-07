@@ -30,8 +30,7 @@ fi
 addRegularUser()
 {
     log "Adding regular user..."
-    #useradd -m -g $USER_MAIN_GROUP -G $USER_ADDITIONAL_GROUPS -s $USER_SHELL $USER_NAME
-    executeCommand useradd -m -g $USER_MAIN_GROUP -G $USER_ADDITIONAL_GROUPS -s $USER_SHELL $USER_NAME
+    executeCommand "useradd -m -g $USER_MAIN_GROUP -G $USER_ADDITIONAL_GROUPS -s $USER_SHELL $USER_NAME"
     log "Adding regular user...done"
 }
 
@@ -42,8 +41,7 @@ setRegularUserPassword()
 
     while [ $ASK -ne 0 ]; do
         log "Provide password for user $USER_NAME"
-        #passwd $USER_NAME
-        executeCommand passwd $USER_NAME
+        executeCommand "passwd $USER_NAME"
         ASK=$?
     done
     log "Setting regular user password...done"
@@ -53,7 +51,7 @@ setSudoers()
 {
     log "Setting sudoers..."
     # TODO - do it in a safer way... Here just for experiments
-    executeCommand 'echo "$USER_NAME ALL=(ALL) ALL" >> /etc/sudoers'
+    executeCommand "echo \"$USER_NAME ALL=(ALL) ALL\" >> /etc/sudoers"
     log "Setting sudoers...done"
 }
 
@@ -62,14 +60,14 @@ setSudoers()
 updatePackageList()
 {
     log "Updating package list..."
-    executeCommand pacman -Syy
+    executeCommand "pacman -Syy"
     log "Updating package list...done"
 }
 
 configurePacman()
 {
     log "Configuring pacman..."
-    uncommentVar "TotalDownload" /etc/pacman.conf
+    uncommentVar "TotalDownload" "/etc/pacman.conf"
     log "Configuring pacman...done"
 }
 
@@ -78,7 +76,7 @@ configurePacman()
 installPackage()
 {
     log "Installing packages..."
-    executeCommand pacman -S --noconfirm "$@"
+    executeCommand "pacman -S --noconfirm $@"
     log "Installing packages...done"
 }
 
@@ -145,11 +143,11 @@ installDwm()
 {
     log "Installing dwm..."
     # Clone project from git
-    executeCommand git clone http://git.suckless.org/dwm "$DWM_BUILD_PATH"
+    executeCommand "git clone http://git.suckless.org/dwm $DWM_BUILD_PATH"
     cd $DWM_BUILD_PATH
 
     # Newest commit was not working... use specific, working version
-    executeCommand git checkout 4fb31e0 -b archconfig_adjustments
+    executeCommand "git checkout 4fb31e0 -b archconfig_adjustments"
 
     # Configure necessary settings
     executeCommand "sed -i 's/PREFIX = \/usr\/local/PREFIX = \/usr/g'" "$DWM_BUILD_PATH/config.mk"
@@ -158,15 +156,15 @@ installDwm()
     executeCommand 'sed -i "s/\"st\"/\"$TERMINAL_EMULATOR_COMMAND\"/g"' "$DWM_BUILD_PATH/config.def.h"
 
     # Set local author for the project commits
-    executeCommand git config --local user.name "root"
-    executeCommand git config --local user.email "root@$HOST_NAME"
+    executeCommand "git config --local user.name \"root\""
+    executeCommand "git config --local user.email \"root@$HOST_NAME\""
 
     # Save configuration as new commit
-    executeCommand 'git commit -a -m "Archconfig adjustments"'
+    executeCommand "git commit -a -m \"Archconfig adjustments\""
 
     # Install
     #make clean install
-    executeCommand make clean install
+    executeCommand "make clean install"
     log "Installing dwm...done"
 }
 
@@ -199,13 +197,13 @@ installVirtualboxGuestAdditions()
     installPackage $VIRTUALBOX_GUEST_UTILS_PACKAGES
 
     # Load required modules
-    executeCommand modprobe -a $VIRTUALBOX_GUEST_UTILS_MODULES
+    executeCommand "modprobe -a $VIRTUALBOX_GUEST_UTILS_MODULES"
 
     # Setup modules to be loaded on startup
     if [ ! -z "$VIRTUALBOX_GUEST_UTILS_MODULES" ]; then
         for module in $VIRTUALBOX_GUEST_UTILS_MODULES
         do
-            executeCommand echo $module >> $VIRTUALBOX_GUEST_UTILS_MODULES_FILE
+            executeCommand "echo $module >> $VIRTUALBOX_GUEST_UTILS_MODULES_FILE"
         done
     fi
     log "Installing virtualbox guest additions...done"
@@ -217,14 +215,14 @@ setConsoleVideoMode()
 {
     log "Setting console video mode..."
     # Not using var for /dev/ - caused sed problems interpreting / character
-    executeCommand 'sed -i "s/APPEND root=\/dev\/$ROOT_PARTITION_HDD$ROOT_PARTITION_NB rw/APPEND root=\/dev\/$ROOT_PARTITION_HDD$ROOT_PARTITION_NB $BOOTLOADER_KERNEL_PARAMS/" /boot/syslinux/syslinux.cfg'
+    executeCommand "sed -i \"s/APPEND root=\/dev\/$ROOT_PARTITION_HDD$ROOT_PARTITION_NB rw/APPEND root=\/dev\/$ROOT_PARTITION_HDD$ROOT_PARTITION_NB $BOOTLOADER_KERNEL_PARAMS/\" /boot/syslinux/syslinux.cfg"
     log "Setting console video mode...done"
 }
 
 disableSyslinuxBootMenu()
 {
     log "Disabling syslinux boot menu..."
-    commentVar UI /boot/syslinux/syslinux.cfg
+    commentVar "UI" "/boot/syslinux/syslinux.cfg"
     log "Disabling syslinux boot menu...done"
 }
 
@@ -232,11 +230,11 @@ setConsoleLoginMessage()
 {
     log "Setting console login message..."
     # Remove welcome message
-    executeCommand rm -f $CONSOLE_WELCOME_FILE
+    executeCommand "rm -f $CONSOLE_WELCOME_FILE"
 
     # Set new welcome message, if present.
     if [ ! -z "$CONSOLE_WELCOME_MSG" ];then
-        executeCommand echo $CONSOLE_WELCOME_MSG > $CONSOLE_WELCOME_FILE
+        executeCommand "echo $CONSOLE_WELCOME_MSG > $CONSOLE_WELCOME_FILE"
     fi
     log "Setting console login message...done"
 }
@@ -251,21 +249,21 @@ useEarlyTerminalFont()
     local ORIGINAL_LIST="base udev autodetect modconf block filesystems keyboard fsck"
     local NEW_LIST="$ORIGINAL_LIST consolefont keymap"
 
-    executeCommand 'sed -i "s/HOOKS=\"$ORIGINAL_LIST\"/HOOKS=\"$NEW_LIST\"/g" /etc/mkinitcpio.conf'
+    executeCommand "sed -i \"s/HOOKS=\"$ORIGINAL_LIST\"/HOOKS=\"$NEW_LIST\"/g\" /etc/mkinitcpio.conf"
     log "Setting early terminal font usage...done"
 }
 
 recreateImage()
 {
     log "Recreating linux image..."
-    executeCommand mkinitcpio -p linux
+    executeCommand "mkinitcpio -p linux"
     log "Recreating linux image...done"
 }
 
 changeHomeOwnership()
 {
     log "Changing home dir ownership..."
-    executeCommand chown -R $USER_NAME:users $USER_HOME
+    executeCommand "chown -R $USER_NAME:users $USER_HOME"
     log "Changing home dir ownership...done"
 }
 
@@ -277,6 +275,7 @@ addRegularUser
 setRegularUserPassword
 setSudoers
 
+# TODO: Create own functions with logs for dotfiles
 installDotfile $DOTFILE_BASHRC
 installDotfile $DOTFILE_BASH_PROFILE
 

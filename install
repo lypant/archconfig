@@ -36,15 +36,15 @@ read -sn 1 -p "Any key to continue..."
 createRootPartitionFS()
 {
     log "Creating root partition file system..."
-    executeCommand mkfs.$ROOT_PARTITION_FS $PARTITION_PREFIX$ROOT_PARTITION_HDD$ROOT_PARTITION_NB
+    executeCommand "mkfs.$ROOT_PARTITION_FS $PARTITION_PREFIX$ROOT_PARTITION_HDD$ROOT_PARTITION_NB"
     log "Creating root partition file system...done"
 }
 
 createSwapPartition()
 {
     log "Creating swap partition..."
-    executeCommand mkswap $PARTITION_PREFIX$SWAP_PARTITION_HDD$SWAP_PARTITION_NB
-    executeCommand swapon $PARTITION_PREFIX$SWAP_PARTITION_HDD$SWAP_PARTITION_NB
+    executeCommand "mkswap $PARTITION_PREFIX$SWAP_PARTITION_HDD$SWAP_PARTITION_NB"
+    executeCommand "swapon $PARTITION_PREFIX$SWAP_PARTITION_HDD$SWAP_PARTITION_NB"
     log "Creating swap partition...done"
 }
 
@@ -53,7 +53,7 @@ createSwapPartition()
 mountRootPartition()
 {
     log "Mounting root partition..."
-    executeCommand mount $PARTITION_PREFIX$ROOT_PARTITION_HDD$ROOT_PARTITION_NB $ROOT_PARTITION_MOUNT_POINT
+    executeCommand "mount $PARTITION_PREFIX$ROOT_PARTITION_HDD$ROOT_PARTITION_NB $ROOT_PARTITION_MOUNT_POINT"
     log "Mounting root partition...done"
 }
 
@@ -62,14 +62,14 @@ mountRootPartition()
 livecdPacmanTotalDownload()
 {
     log "Setting livecd pacman to display total download..."
-    uncommentVar "TotalDownload" /etc/pacman.conf
+    uncommentVar "TotalDownload" "/etc/pacman.conf"
     log "Setting livecd pacman to display total download...done"
 }
 
 livecdPacmanUpdate()
 {
     log "Updating livecd pacman..."
-    executeCommand pacman -Syy
+    executeCommand "pacman -Syy"
     log "Updating livecd pacman...done"
 }
 
@@ -77,8 +77,8 @@ livecdPacmanUpdate()
 rankMirrors()
 {
     log "Ranking mirrors..."
-    executeCommand cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.original
-    executeCommand rankmirrors -n $MIRROR_COUNT /etc/pacman.d/mirrorlist.original > /etc/pacman.d/mirrorlist 
+    executeCommand "cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.original"
+    executeCommand "rankmirrors -n $MIRROR_COUNT /etc/pacman.d/mirrorlist.original > /etc/pacman.d/mirrorlist"
     log "Ranking mirrors...done"
 }
 
@@ -87,7 +87,7 @@ rankMirrors()
 installBaseSystem()
 {
     log "Installing base system..."
-    executeCommand pacstrap -i $ROOT_PARTITION_MOUNT_POINT $BASE_SYSTEM_PACKAGES
+    executeCommand "pacstrap -i $ROOT_PARTITION_MOUNT_POINT $BASE_SYSTEM_PACKAGES"
     log "Installing base system...done"
 }
 
@@ -96,7 +96,7 @@ installBaseSystem()
 generateFstab()
 {
     log "Generating fstab..."
-    executeCommand genfstab -L -p $ROOT_PARTITION_MOUNT_POINT >> $ROOT_PARTITION_MOUNT_POINT/etc/fstab 
+    executeCommand "genfstab -L -p $ROOT_PARTITION_MOUNT_POINT >> $ROOT_PARTITION_MOUNT_POINT/etc/fstab"
     log "Generating fstab...done"
 }
 
@@ -123,8 +123,8 @@ setLocale()
 setLocales()
 {
     log "Seting locales..."
-    setLocale $LOCALIZATION_LANGUAGE1
-    setLocale $LOCALIZATION_LANGUAGE2
+    setLocale "$LOCALIZATION_LANGUAGE1"
+    setLocale "$LOCALIZATION_LANGUAGE2"
     log "Seting locales...done"
 }
 
@@ -213,22 +213,22 @@ copyArchconfigFiles()
 {
     log "Copying Archconfig files..."
     log "Copying Archconfig files to $ARCHCONFIG_PATH"
-    executeCommand mkdir $ARCHCONFIG_PATH
-    executeCommand cp -R `pwd`/* $ARCHCONFIG_PATH
+    executeCommand "mkdir $ARCHCONFIG_PATH"
+    executeCommand "cp -R `pwd`/* $ARCHCONFIG_PATH"
     log "Copying Archconfig files...done"
 }
 
 unmountPartition()
 {
     log "Unmounting partition $1..."
-    executeCommand umount $1
+    executeCommand "umount $1"
     log "Unmounting partition $1...done"
 }
 
 unmountPartitions()
 {
     log "Unmounting partitions..."
-    unmountPartition $ROOT_PARTITION_MOUNT_POINT
+    unmountPartition "$ROOT_PARTITION_MOUNT_POINT"
     # TODO Unmount other partitions here, if any were mounted!
     log "Unmounting partitions...done"
 }

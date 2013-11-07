@@ -15,7 +15,7 @@ executeCommand()
 {
     # Record command to be executed to the command file
     echo "$@" >> $COMMANDS_FILE
-    echo "$ARCHCONFIG_LOG_PREFIX$ARCHCONFIG_CMD_PREFIX$@" >> $LOG_FILE
+    echo "$ARCHCONFIG_CMD_PREFIX$@" >> $LOG_FILE
 
     # Execute command
     # Redirect stdout and stderr to screen and log file
