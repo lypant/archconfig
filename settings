@@ -240,6 +240,7 @@ DOTFILES_BACKUP_DIR="$DOTFILES_DIR_PATH/backup"
 ### ### ### ### Archconfig logs
 
 ARCHCONFIG_LOG_PREFIX="AC: "
+ARCHCONFIG_CMD_PREFIX="CMD: "
 
 ### ### ### ### LiveCD
 

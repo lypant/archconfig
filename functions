@@ -13,8 +13,9 @@ fi
 
 executeCommand()
 {
-    # Write command to be executed to the command file
+    # Record command to be executed to the command file
     echo "$@" >> $COMMANDS_FILE
+    echo "$ARCHCONFIG_LOG_PREFIX$ARCHCONFIG_CMD_PREFIX$@" >> $LOG_FILE
 
     # Execute command
     # Redirect stdout and stderr to screen and log file
@@ -28,8 +29,8 @@ log()
     local msg="$ARCHCONFIG_LOG_PREFIX$@"
 
     # Write message to commands file for easier grouping of commands
-    # Write as a comment
-    echo "# $msg" >> $COMMANDS_FILE
+    # Write as a comment, without prefix
+    #echo "# $@" >> $COMMANDS_FILE
 
     # Write message to screen and log file only ()
     (echo "$msg" 2>&1) | tee -a $LOG_FILE
@@ -46,8 +47,7 @@ uncommentVar ()
 	local var="$1"
 	local file="$2"
 
-    #sed -i "s/^#\(${var}.*\)$/\1/" "${file}"
-    executeCommand 'sed -i "s/^#\(${var}.*\)$/\1/" "${file}"'
+    executeCommand "sed -i \"s/^#\(${var}.*\)$/\1/\" ${file}"
 }
 
 commentVar ()
@@ -60,8 +60,7 @@ commentVar ()
 	local var="$1"
 	local file="$2"
 
-    #sed -i "s/^\(${var}.*\)$/#\1/" "${file}"
-    executeCommand 'sed -i "s/^\(${var}.*\)$/#\1/" "${file}"'
+    executeCommand "sed -i \"s/^\(${var}.*\)$/#\1/\" ${file}"
 }
 
 archChroot()
@@ -84,8 +83,7 @@ downloadFile()
     local src=$1
     local dst=$2
 
-    #curl -so $dst --create-dirs $src
-    executeCommand 'curl -so $dst --create-dirs $src'
+    executeCommand "curl -so $dst --create-dirs $src"
 }
 
 backupFile()
@@ -102,8 +100,7 @@ backupFile()
     if [ -e $original ]; then
         # File exists
         # Backup the file
-        #cp $original $backup
-        executeCommand 'cp $original $backup'
+        executeCommand "cp $original $backup"
     fi
 }
 
@@ -121,7 +118,7 @@ createLink()
     if [ -e $linkTarget ]; then
         # File exists
         # create symlink
-        executeCommand 'ln -s $linkTarget $linkName'
+        executeCommand "ln -s $linkTarget $linkName"
     fi
 }
 
@@ -141,11 +138,11 @@ installDotfile()
 
     # Check if backup dir exists
     if [ ! -d $DOTFILES_BACKUP_DIR ]; then
-        executeCommand 'mkdir -p $DOTFILES_BACKUP_DIR'
+        executeCommand "mkdir -p $DOTFILES_BACKUP_DIR"
     fi
     backupFile "$USER_HOME/$dotfileName" "$DOTFILES_BACKUP_DIR/$dotfileName"_"$now"
 
-    executeCommand 'rm -f $USER_HOME/$dotfileName'
+    executeCommand "rm -f $USER_HOME/$dotfileName"
     createLink $USER_HOME/$dotfileName $downloadDst
 }
 
@@ -166,14 +163,14 @@ installNestedDotfile()
 
     # Check if backup dir exists
     if [ ! -d $DOTFILES_BACKUP_DIR ]; then
-        executeCommand 'mkdir -p $DOTFILES_BACKUP_DIR'
+        executeCommand "mkdir -p $DOTFILES_BACKUP_DIR"
     fi
     backupFile "$USER_HOME/$dotfilePath/$dotfileName" "$DOTFILES_BACKUP_DIR/$dotfilePath/$dotfileName"_"$now"
 
-    executeCommand 'rm -f $USER_HOME/$dotfilePath/$dotfileName'
+    executeCommand "rm -f $USER_HOME/$dotfilePath/$dotfileName"
 
     if [ ! -d $USER_HOME/$dotfilePath ]; then
-        executeCommand 'mkdir -p $USER_HOME/$dotfilePath'
+        executeCommand "mkdir -p $USER_HOME/$dotfilePath"
     fi
 
     createLink $USER_HOME/$dotfilePath/$dotfileName $downloadDst
