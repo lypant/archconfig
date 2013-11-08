@@ -61,7 +61,10 @@ createSwapPartition()
 mountRootPartition()
 {
     log "Mounting root partition..."
+
     executeCommand "mount $PARTITION_PREFIX$ROOT_PARTITION_HDD$ROOT_PARTITION_NB $ROOT_PARTITION_MOUNT_POINT"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to mount root partition"
+
     log "Mounting root partition...done"
 }
 
@@ -70,14 +73,20 @@ mountRootPartition()
 livecdPacmanTotalDownload()
 {
     log "Setting livecd pacman to display total download..."
+
     uncommentVar "TotalDownload" "/etc/pacman.conf"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to uncomment variable"
+
     log "Setting livecd pacman to display total download...done"
 }
 
 livecdPacmanUpdate()
 {
     log "Updating livecd pacman..."
+
     executeCommand "pacman -Syy"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to update pacman package list"
+
     log "Updating livecd pacman...done"
 }
 
@@ -85,8 +94,13 @@ livecdPacmanUpdate()
 rankMirrors()
 {
     log "Ranking mirrors..."
+
     executeCommand "cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.original"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to copy mirror list"
+
     executeCommand "rankmirrors -n $MIRROR_COUNT /etc/pacman.d/mirrorlist.original > /etc/pacman.d/mirrorlist"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to rank mirrors"
+
     log "Ranking mirrors...done"
 }
 
@@ -95,7 +109,10 @@ rankMirrors()
 installBaseSystem()
 {
     log "Installing base system..."
+
     executeCommand "pacstrap -i $ROOT_PARTITION_MOUNT_POINT $BASE_SYSTEM_PACKAGES"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to install base system"
+
     log "Installing base system...done"
 }
 
@@ -104,7 +121,10 @@ installBaseSystem()
 generateFstab()
 {
     log "Generating fstab..."
+
     executeCommand "genfstab -L -p $ROOT_PARTITION_MOUNT_POINT >> $ROOT_PARTITION_MOUNT_POINT/etc/fstab"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to generate fstab"
+
     log "Generating fstab...done"
 }
 
@@ -115,7 +135,10 @@ generateFstab()
 setHostName()
 {
     log "Setting host name..."
+
     archChroot "echo $HOST_NAME > /etc/hostname"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to set host name"
+
     log "Setting host name...done"
 }
 
@@ -124,94 +147,134 @@ setHostName()
 setLocale()
 {
     log "Setting locale for  $1..."
+
     archChroot "sed -i \\\"s/^#\\\\\(${1}.*\\\\\)$/\\\\\1/\\\" /etc/locale.gen"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to set locale"
+
     log "Setting locale for $1...done"
 }
 
 setLocales()
 {
     log "Seting locales..."
+
     setLocale "$LOCALIZATION_LANGUAGE1"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to set first locale"
+
     setLocale "$LOCALIZATION_LANGUAGE2"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to set second locale"
+
     log "Seting locales...done"
 }
 
 generateLocales()
 {
     log "Generating locales..."
+
     archChroot "locale-gen"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to generate locales"
+
     log "Generating locales...done"
 }
 
 setLanguage()
 {
     log "Setting language..."
+
     archChroot "echo LANG=$LOCALIZATION_LANGUAGE1 > /etc/locale.conf"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to set first language"
+
     # TODO: This is causing additional output to be shown and changes console screen to green...
     # TODO: Probably this is not needed
     #archChroot "export LANG=$LOCALIZATION_LANGUAGE1"
+
     log "Setting language...done"
 }
 
 setTimeZone()
 {
     log "Setting time zone..."
+
     archChroot "ln -s /usr/share/zoneinfo/$LOCALIZATION_TIME_ZONE /etc/localtime"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to set time zone"
+
     log "Setting time zone...done"
 }
 
 setHwClock()
 {
     log "Setting hw clock..."
+
     archChroot "hwclock $LOCALIZATION_HW_CLOCK"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to set hardware clock"
+
     log "Setting hw clock...done"
 }
 
 setConsoleKeymap()
 {
     log "Setting console keymap..."
+
     archChroot "echo KEYMAP=$CONSOLE_KEYMAP > /etc/vconsole.conf"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to set console keymap"
+
     log "Setting console keymap...done"
 }
 
 setConsoleFont()
 {
     log "Setting console font..."
+
     archChroot "echo FONT=$CONSOLE_FONT >> /etc/vconsole.conf"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to set console font"
+
     log "Setting console font...done"
 }
 
 setWiredNetwork()
 {
     log "Setting wired network..."
+
     archChroot "systemctl enable $NETWORK_SERVICE@$NETWORK_INTERFACE_WIRED.service"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to set wired network"
+
     log "Setting wired network...done"
 }
 
 installBootloader()
 {
     log "Installing bootloader..."
+
     archChroot "pacman -S $BOOTLOADER_PACKAGE --noconfirm"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to install bootloader"
+
     log "Installing bootloader...done"
 }
 
 configureSyslinux()
 {
     log "Configuring Syslinux..."
+
     archChroot "syslinux-install_update -i -a -m"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to update syslinux"
+
     archChroot "sed -i \"s/sda3/$BOOT_PARTITION_HDD$BOOT_PARTITION_NB/g\" /boot/syslinux/syslinux.cfg"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to change partition name in syslinux"
+
     log "Configuring Syslinux...done"
 }
 
 setRootPassword()
 {
     log "Setting root password..."
+
     local ASK=1
 
     while [ $ASK -ne 0 ]; do
         archChroot "passwd"
         ASK=$?
     done
+
     log "Setting root password...done"
 }
 
@@ -220,24 +283,37 @@ setRootPassword()
 copyArchconfigFiles()
 {
     log "Copying Archconfig files..."
+
     log "Copying Archconfig files to $ARCHCONFIG_PATH"
+
     executeCommand "mkdir $ARCHCONFIG_PATH"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to create archconfig path"
+
     executeCommand "cp -R `pwd`/* $ARCHCONFIG_PATH"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to copy archconfig files"
+
     log "Copying Archconfig files...done"
 }
 
 unmountPartition()
 {
     log "Unmounting partition $1..."
+
     executeCommand "umount $1"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to unmount partition"
+
     log "Unmounting partition $1...done"
 }
 
 unmountPartitions()
 {
     log "Unmounting partitions..."
+
     unmountPartition "$ROOT_PARTITION_MOUNT_POINT"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to unmount root partition"
+
     # TODO Unmount other partitions here, if any were mounted!
+
     log "Unmounting partitions...done"
 }
 
