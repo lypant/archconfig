@@ -33,6 +33,18 @@ log()
     return ${PIPESTATUS[0]}
 }
 
+terminateScriptOnError()
+{
+    local error="$1"
+    local function="$2"
+    local msg="$3"
+
+    if [ $result -ne 0 ]; then
+        log "$function: $msg: $error"
+        exit 1
+    fi
+}
+
 uncommentVar ()
 {
     if [ $# -lt 2 ];then
