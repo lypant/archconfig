@@ -57,7 +57,7 @@ uncommentVar ()
 	local file="$2"
 
     executeCommand "sed -i \"s/^#\(${var}.*\)$/\1/\" ${file}"
-    rerturn $?
+    return $?
 }
 
 commentVar ()
