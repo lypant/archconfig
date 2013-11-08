@@ -39,8 +39,9 @@ terminateScriptOnError()
     local function="$2"
     local msg="$3"
 
-    if [ $result -ne 0 ]; then
+    if [ $error -ne 0 ]; then
         log "$function: $msg: $error"
+        log "Aborting script!"
         exit 1
     fi
 }
