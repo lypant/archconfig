@@ -28,10 +28,6 @@ log()
     # Use msg with prefix to distinguish Archconfig logs
     local msg="$ARCHCONFIG_LOG_PREFIX$@"
 
-    # Write message to commands file for easier grouping of commands
-    # Write as a comment, without prefix
-    #echo "# $@" >> $COMMANDS_FILE
-
     # Write message to screen and log file only ()
     (echo "$msg" 2>&1) | tee -a $LOG_FILE
     return ${PIPESTATUS[0]}
@@ -48,6 +44,7 @@ uncommentVar ()
 	local file="$2"
 
     executeCommand "sed -i \"s/^#\(${var}.*\)$/\1/\" ${file}"
+    rerturn $?
 }
 
 commentVar ()
@@ -61,6 +58,7 @@ commentVar ()
 	local file="$2"
 
     executeCommand "sed -i \"s/^\(${var}.*\)$/#\1/\" ${file}"
+    return $?
 }
 
 archChroot()
@@ -71,6 +69,7 @@ archChroot()
     fi
 
     executeCommand arch-chroot $ROOT_PARTITION_MOUNT_POINT /bin/bash -c \""$@"\"
+    return $?
 }
 
 downloadFile()
@@ -84,6 +83,7 @@ downloadFile()
     local dst=$2
 
     executeCommand "curl -so $dst --create-dirs $src"
+    return $?
 }
 
 backupFile()
@@ -95,13 +95,16 @@ backupFile()
 
     local original=$1
     local backup=$2
+    local retval=0
 
     # If original file exists, move it to backup dir
     if [ -e $original ]; then
         # File exists
         # Backup the file
         executeCommand "cp $original $backup"
+        retval=$?
     fi
+    return $retval
 }
 
 createLink()
@@ -113,13 +116,16 @@ createLink()
 
     local linkName=$1
     local linkTarget=$2
+    local retval=0
 
     # Check if target exists
     if [ -e $linkTarget ]; then
         # File exists
         # create symlink
         executeCommand "ln -s $linkTarget $linkName"
+        retval=$?
     fi
+    return $retval
 }
 
 installDotfile()
@@ -133,17 +139,47 @@ installDotfile()
     local url=$DOTFILES_REPOSITORY_RAW_URL/$dotfileName
     local downloadDst=$DOTFILES_DIR_PATH/$dotfileName
     local now=`date +"%Y%m%d_%H%M"`
+    local retval=0
 
     downloadFile $url $downloadDst
+    retval=$?
+    if [ $retval -ne 0 ]; then
+        log "$FUNCNAME: failed to download file: $retval"
+        return 2
+    fi
 
     # Check if backup dir exists
     if [ ! -d $DOTFILES_BACKUP_DIR ]; then
         executeCommand "mkdir -p $DOTFILES_BACKUP_DIR"
+        retval=$?
+        if [ $retval -ne 0 ]; then
+            log "$FUNCNAME: failed to create dir: $retval"
+            return 3
+        fi
     fi
+
     backupFile "$USER_HOME/$dotfileName" "$DOTFILES_BACKUP_DIR/$dotfileName"_"$now"
+    retval=$?
+    if [ $retval -ne 0 ]; then
+        log "$FUNCNAME: failed to backup file: $retval"
+        return 4
+    fi
 
     executeCommand "rm -f $USER_HOME/$dotfileName"
+    retval=$?
+    if [ $retval -ne 0 ]; then
+        log "$FUNCAME: failed to original dotfile: $retval"
+        return 5
+    fi
+
     createLink $USER_HOME/$dotfileName $downloadDst
+    retval=$?
+    if [ $retval -ne 0 ]; then
+        log "$FUNCAME: failed to create link: $retval"
+        return 6
+    fi
+
+    return $retval
 }
 
 installNestedDotfile()
@@ -158,21 +194,55 @@ installNestedDotfile()
     local url=$DOTFILES_REPOSITORY_RAW_URL/$dotfilePath/$dotfileName
     local downloadDst=$DOTFILES_DIR_PATH/$dotfilePath/$dotfileName
     local now=`date +"%Y%m%d_%H%M"`
+    local retval=0
 
     downloadFile $url $downloadDst
+    retval=$?
+    if [ $retval -ne 0 ]; then
+        log "$FUNCNAME: failed to download file: $retval"
+        return 2
+    fi
 
     # Check if backup dir exists
     if [ ! -d $DOTFILES_BACKUP_DIR ]; then
         executeCommand "mkdir -p $DOTFILES_BACKUP_DIR"
+        retval=$?
+        if [ $retval -ne 0 ]; then
+            log "$FUNCNAME: failed to create dir: $retval"
+            return 3
+        fi
     fi
+
     backupFile "$USER_HOME/$dotfilePath/$dotfileName" "$DOTFILES_BACKUP_DIR/$dotfilePath/$dotfileName"_"$now"
+    retval=$?
+    if [ $retval -ne 0 ]; then
+        log "$FUNCNAME: failed to backup file: $retval"
+        return 4
+    fi
 
     executeCommand "rm -f $USER_HOME/$dotfilePath/$dotfileName"
+    retval=$?
+    if [ $retval -ne 0 ]; then
+        log "$FUNCNAME: failed to remove dotfile: $retval"
+        return 5
+    fi
 
     if [ ! -d $USER_HOME/$dotfilePath ]; then
         executeCommand "mkdir -p $USER_HOME/$dotfilePath"
+        retval=$?
+        if [ $retval -ne 0 ]; then
+            log "$FUNCNAME: failed to create dir: $retval"
+            return 6
+        fi
     fi
 
     createLink $USER_HOME/$dotfilePath/$dotfileName $downloadDst
+    retval=$?
+    if [ $retval -ne 0 ]; then
+        log "$FUNCNAME: failed to create ling: $retval"
+        return 7
+    fi
+
+    return $retval
 }
 

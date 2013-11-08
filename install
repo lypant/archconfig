@@ -36,15 +36,38 @@ read -sn 1 -p "Any key to continue..."
 createRootPartitionFS()
 {
     log "Creating root partition file system..."
+
     executeCommand "mkfs.$ROOT_PARTITION_FS $PARTITION_PREFIX$ROOT_PARTITION_HDD$ROOT_PARTITION_NB"
+    local retval=$?
+    if [ $retval -ne 0 ]; then
+        log "$FUNCNAME: failed to create root partition file system: $retval"
+        # Exit whole script to notice the problem
+        exit 1
+    fi
+
     log "Creating root partition file system...done"
 }
 
 createSwapPartition()
 {
     log "Creating swap partition..."
+
     executeCommand "mkswap $PARTITION_PREFIX$SWAP_PARTITION_HDD$SWAP_PARTITION_NB"
+    local retval=$?
+    if [ $retval -ne 0 ]; then
+        log "$FUNCNAME: failed to make swap partition: $retval"
+        # Exit whole script to notice the problem
+        exit 1
+    fi
+
     executeCommand "swapon $PARTITION_PREFIX$SWAP_PARTITION_HDD$SWAP_PARTITION_NB"
+    retval=$?
+    if [ $retval -ne 0 ]; then
+        log "$FUNCNAME: failed to activate swap partition: $retval"
+        # Exit whole script to notice the problem
+        exit 1
+    fi
+
     log "Creating swap partition...done"
 }
 
