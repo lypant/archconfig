@@ -244,6 +244,13 @@ ARCHCONFIG_CMD_PREFIX="CMD: "
 
 ### ### ### ### LiveCD
 
+### ### Mirrors
+
 # Number of mirrors to be found by rankmirrors
 MIRROR_COUNT=5
+MIRROR_LIST_FILE="/etc/pacman.d/mirrorlist"
+MIRROR_LIST_FILE_BACKUP="/etc/pacman.d/mirrorlist.original"
 
+# Used by alternative method downloading mirror list for selected country
+MIRROR_COUNTRY="PL"
+MIRROR_LIST_URL="https://www.archlinux.org/mirrorlist/?country=$MIRROR_COUNTRY"

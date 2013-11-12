@@ -95,13 +95,31 @@ rankMirrors()
 {
     log "Ranking mirrors..."
 
-    executeCommand "cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.original"
+    # Backup original file
+    executeCommand "cp $MIRROR_LIST_FILE $MIRROR_LIST_FILE_BACKUP"
     terminateScriptOnError "$?" "$FUNCNAME" "failed to copy mirror list"
 
-    executeCommand "rankmirrors -n $MIRROR_COUNT /etc/pacman.d/mirrorlist.original > /etc/pacman.d/mirrorlist"
+    executeCommand "rankmirrors -n $MIRROR_COUNT $MIRROR_LIST_FILE_BACKUP > $MIRROR_LIST_FILE"
     terminateScriptOnError "$?" "$FUNCNAME" "failed to rank mirrors"
 
     log "Ranking mirrors...done"
+}
+
+downloadMirrorList()
+{
+    log "Downloading mirror list..."
+
+    # Backup original file
+    executeCommand "cp $MIRROR_LIST_FILE $MIRROR_LIST_FILE_BACKUP"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to copy mirror list"
+
+    downloadFile $MIRROR_LIST_URL $MIRROR_LIST_FILE
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to download mirror list"
+
+    uncommentVar "Server" $MIRROR_LIST_FILE
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to uncomment servers"
+
+    log "Downloading mirror list..."
 }
 
 # Base system
@@ -325,7 +343,10 @@ createSwapPartition
 mountRootPartition
 livecdPacmanTotalDownload
 livecdPacmanUpdate
-rankMirrors
+
+#rankMirrors
+downloadMirrorList
+
 installBaseSystem
 generateFstab
 setHostName
