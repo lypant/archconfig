@@ -320,7 +320,7 @@ useEarlyTerminalFont()
     local ORIGINAL_LIST="base udev autodetect modconf block filesystems keyboard fsck"
     local NEW_LIST="$ORIGINAL_LIST consolefont keymap"
 
-    executeCommand "sed -i \"s/HOOKS=\"$ORIGINAL_LIST\"/HOOKS=\"$NEW_LIST\"/g\" /etc/mkinitcpio.conf"
+    executeCommand "sed -i \"s/HOOKS=\\\"$ORIGINAL_LIST\\\"/HOOKS=\\\"$NEW_LIST\\\"/g\" /etc/mkinitcpio.conf"
     terminateScriptOnError "$?" "$FUNCNAME" "failed to set early terminal font usage"
 
     log "Setting early terminal font usage...done"
