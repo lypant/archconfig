@@ -30,7 +30,10 @@ fi
 addRegularUser()
 {
     log "Adding regular user..."
+
     executeCommand "useradd -m -g $USER_MAIN_GROUP -G $USER_ADDITIONAL_GROUPS -s $USER_SHELL $USER_NAME"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to add regular user"
+
     log "Adding regular user...done"
 }
 
@@ -50,8 +53,11 @@ setRegularUserPassword()
 setSudoers()
 {
     log "Setting sudoers..."
+
     # TODO - do it in a safer way... Here just for experiments
     executeCommand "echo \"$USER_NAME ALL=(ALL) ALL\" >> /etc/sudoers"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to set sudoers"
+
     log "Setting sudoers...done"
 }
 
@@ -60,14 +66,20 @@ setSudoers()
 updatePackageList()
 {
     log "Updating package list..."
+
     executeCommand "pacman -Syy"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to update package list"
+
     log "Updating package list...done"
 }
 
 configurePacman()
 {
     log "Configuring pacman..."
+
     uncommentVar "TotalDownload" "/etc/pacman.conf"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to configure pacman"
+
     log "Configuring pacman...done"
 }
 
@@ -75,9 +87,12 @@ configurePacman()
 
 installPackage()
 {
-    log "Installing packages..."
+    log "Installing package..."
+
     executeCommand "pacman -S --noconfirm $@"
-    log "Installing packages...done"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to install package"
+
+    log "Installing package...done"
 }
 
 # Basic tools
@@ -87,7 +102,10 @@ installPackage()
 installVim()
 {
     log "Installing vim..."
+
     installPackage $VIM_PACKAGES
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to install vim"
+
     log "Installing vim...done"
 }
 
@@ -96,7 +114,10 @@ installVim()
 installAlsa()
 {
     log "Installing alsa..."
+
     installPackage $ALSA_PACKAGES
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to install alsa"
+
     log "Installing alsa...done"
 }
 
@@ -105,14 +126,20 @@ installAlsa()
 installXorgBasic()
 {
     log "Installing xorg basics..."
+
     installPackage $XORG_BASIC_PACKAGES
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to install xorg basics"
+
     log "Installing xorg basics...done"
 }
 
 installXorgAdditional()
 {
     log "Installing xorg additionals..."
+
     installPackage $XORG_ADDITIONAL_PACKAGES
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to install xorg additionals"
+
     log "Installing xorg additionals...done"
 }
 
@@ -123,7 +150,10 @@ installXorgAdditional()
 installRxvtUnicode()
 {
     log "Installing rxvt unicode..."
+
     installPackage $RXVTUNICODE_PACKAGES
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to install rxvt unicode"
+
     log "Installing rxvt unicode...done"
 }
 
@@ -132,7 +162,10 @@ installRxvtUnicode()
 installGuiFonts()
 {
     log "Installing gui fonts..."
+
     installPackage $GUI_FONT_PACKAGES
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to install gui fonts"
+
     log "Installing gui fonts...done"
 }
 
@@ -144,34 +177,53 @@ installDwm()
     log "Installing dwm..."
     # Clone project from git
     executeCommand "git clone http://git.suckless.org/dwm $DWM_BUILD_PATH"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to clone dwm repository"
+
     cd $DWM_BUILD_PATH
 
     # Newest commit was not working... use specific, working version
     executeCommand "git checkout 4fb31e0 -b archconfig_adjustments"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to checkout older commit as a new branch"
 
     # Configure necessary settings
     executeCommand "sed -i 's/PREFIX = \/usr\/local/PREFIX = \/usr/g'" "$DWM_BUILD_PATH/config.mk"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to change dwm prefix"
+
     executeCommand "sed -i 's/X11INC = \/usr\/X11R6\/include/X11INC = \/usr\/include\/X11/g'" "$DWM_BUILD_PATH/config.mk"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to change dwm x11 include path"
+
     executeCommand "sed -i 's/X11LIB = \/usr\/X11R6\/lib/X11LIB = \/usr\/lib\/X11/g'" "$DWM_BUILD_PATH/config.mk"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to change dwm x11 lib path"
+
     executeCommand 'sed -i "s/\"st\"/\"$TERMINAL_EMULATOR_COMMAND\"/g"' "$DWM_BUILD_PATH/config.def.h"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to change dwm terminal emulator command"
 
     # Set local author for the project commits
     executeCommand "git config --local user.name \"root\""
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to set git user name"
+
     executeCommand "git config --local user.email \"root@$HOST_NAME\""
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to set git user email"
 
     # Save configuration as new commit
     executeCommand "git commit -a -m \"Archconfig adjustments\""
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to commit adjustments"
 
     # Install
     #make clean install
     executeCommand "make clean install"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to build and install dwm"
+
     log "Installing dwm...done"
 }
 
 installDmenu()
 {
     log "Installing dmenu..."
+
     installPackage $DMENU_PACKAGES
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to install dmenu"
+
     log "Installing dmenu...done"
 }
 
@@ -182,7 +234,10 @@ installDmenu()
 installGit()
 {
     log "Installing git..."
+
     installPackage $GIT_PACKAGES
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to install git"
+
     log "Installing git...done"
 }
 
@@ -193,19 +248,24 @@ installGit()
 installVirtualboxGuestAdditions()
 {
     log "Installing virtualbox guest additions..."
+
     # Install the packages
     installPackage $VIRTUALBOX_GUEST_UTILS_PACKAGES
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to install virtualbox package"
 
     # Load required modules
     executeCommand "modprobe -a $VIRTUALBOX_GUEST_UTILS_MODULES"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to load required modules"
 
     # Setup modules to be loaded on startup
     if [ ! -z "$VIRTUALBOX_GUEST_UTILS_MODULES" ]; then
         for module in $VIRTUALBOX_GUEST_UTILS_MODULES
         do
             executeCommand "echo $module >> $VIRTUALBOX_GUEST_UTILS_MODULES_FILE"
+            terminateScriptOnError "$?" "$FUNCNAME" "failed to setup module to be loaded on startup"
         done
     fi
+
     log "Installing virtualbox guest additions...done"
 }
 
@@ -214,28 +274,38 @@ installVirtualboxGuestAdditions()
 setConsoleVideoMode()
 {
     log "Setting console video mode..."
+
     # Not using var for /dev/ - caused sed problems interpreting / character
     executeCommand "sed -i \"s/APPEND root=\/dev\/$ROOT_PARTITION_HDD$ROOT_PARTITION_NB rw/APPEND root=\/dev\/$ROOT_PARTITION_HDD$ROOT_PARTITION_NB $BOOTLOADER_KERNEL_PARAMS/\" /boot/syslinux/syslinux.cfg"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to set console video mode"
+
     log "Setting console video mode...done"
 }
 
 disableSyslinuxBootMenu()
 {
     log "Disabling syslinux boot menu..."
+
     commentVar "UI" "/boot/syslinux/syslinux.cfg"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to set disable syslinux boot menu"
+
     log "Disabling syslinux boot menu...done"
 }
 
 setConsoleLoginMessage()
 {
     log "Setting console login message..."
+
     # Remove welcome message
     executeCommand "rm -f $CONSOLE_WELCOME_FILE"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to remove welcome message"
 
     # Set new welcome message, if present.
     if [ ! -z "$CONSOLE_WELCOME_MSG" ];then
         executeCommand "echo $CONSOLE_WELCOME_MSG > $CONSOLE_WELCOME_FILE"
+        terminateScriptOnError "$?" "$FUNCNAME" "failed to set welcome message"
     fi
+
     log "Setting console login message...done"
 }
 
@@ -243,6 +313,7 @@ setConsoleLoginMessage()
 useEarlyTerminalFont()
 {
     log "Setting early terminal font usage..."
+
     # Add "consolefont keymap" hooks
     # TODO - write a function for extending such lists
     # TODO   (original list might change and we don't care about the list, we want just to add sth)
@@ -250,20 +321,28 @@ useEarlyTerminalFont()
     local NEW_LIST="$ORIGINAL_LIST consolefont keymap"
 
     executeCommand "sed -i \"s/HOOKS=\"$ORIGINAL_LIST\"/HOOKS=\"$NEW_LIST\"/g\" /etc/mkinitcpio.conf"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to set early terminal font usage"
+
     log "Setting early terminal font usage...done"
 }
 
 recreateImage()
 {
     log "Recreating linux image..."
+
     executeCommand "mkinitcpio -p linux"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to set recreate linux image"
+
     log "Recreating linux image...done"
 }
 
 changeHomeOwnership()
 {
     log "Changing home dir ownership..."
+
     executeCommand "chown -R $USER_NAME:users $USER_HOME"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to change home dir ownership"
+
     log "Changing home dir ownership...done"
 }
 
