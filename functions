@@ -13,13 +13,37 @@ fi
 
 executeCommand()
 {
+    # Record command to be executed to the command file
+    echo "$@" >> $COMMANDS_FILE
+    echo "$ARCHCONFIG_CMD_PREFIX$@" >> $LOG_FILE
+
+    # Execute command
+    # Redirect stdout and stderr to screen and log file
     (eval "$@" 2>&1) | tee -a $LOG_FILE
     return ${PIPESTATUS[0]}
 }
 
 log()
 {
-    executeCommand "echo $@"
+    # Use msg with prefix to distinguish Archconfig logs
+    local msg="$ARCHCONFIG_LOG_PREFIX$@"
+
+    # Write message to screen and log file only ()
+    (echo "$msg" 2>&1) | tee -a $LOG_FILE
+    return ${PIPESTATUS[0]}
+}
+
+terminateScriptOnError()
+{
+    local error="$1"
+    local function="$2"
+    local msg="$3"
+
+    if [ $error -ne 0 ]; then
+        log "$function: $msg: $error"
+        log "Aborting script!"
+        exit 1
+    fi
 }
 
 uncommentVar ()
@@ -32,8 +56,8 @@ uncommentVar ()
 	local var="$1"
 	local file="$2"
 
-    #sed -i "s/^#\(${var}.*\)$/\1/" "${file}"
-    executeCommand 'sed -i "s/^#\(${var}.*\)$/\1/" "${file}"'
+    executeCommand "sed -i \"s/^#\(${var}.*\)$/\1/\" ${file}"
+    return $?
 }
 
 commentVar ()
@@ -46,8 +70,8 @@ commentVar ()
 	local var="$1"
 	local file="$2"
 
-    #sed -i "s/^\(${var}.*\)$/#\1/" "${file}"
-    executeCommand 'sed -i "s/^\(${var}.*\)$/#\1/" "${file}"'
+    executeCommand "sed -i \"s/^\(${var}.*\)$/#\1/\" ${file}"
+    return $?
 }
 
 archChroot()
@@ -58,6 +82,7 @@ archChroot()
     fi
 
     executeCommand arch-chroot $ROOT_PARTITION_MOUNT_POINT /bin/bash -c \""$@"\"
+    return $?
 }
 
 downloadFile()
@@ -70,8 +95,8 @@ downloadFile()
     local src=$1
     local dst=$2
 
-    #curl -so $dst --create-dirs $src
-    executeCommand 'curl -so $dst --create-dirs $src'
+    executeCommand "curl -so $dst --create-dirs $src"
+    return $?
 }
 
 backupFile()
@@ -83,14 +108,16 @@ backupFile()
 
     local original=$1
     local backup=$2
+    local retval=0
 
     # If original file exists, move it to backup dir
     if [ -e $original ]; then
         # File exists
         # Backup the file
-        #cp $original $backup
-        executeCommand 'cp $original $backup'
+        executeCommand "cp $original $backup"
+        retval=$?
     fi
+    return $retval
 }
 
 createLink()
@@ -102,13 +129,16 @@ createLink()
 
     local linkName=$1
     local linkTarget=$2
+    local retval=0
 
     # Check if target exists
     if [ -e $linkTarget ]; then
         # File exists
         # create symlink
-        executeCommand 'ln -s $linkTarget $linkName'
+        executeCommand "ln -s $linkTarget $linkName"
+        retval=$?
     fi
+    return $retval
 }
 
 installDotfile()
@@ -122,17 +152,47 @@ installDotfile()
     local url=$DOTFILES_REPOSITORY_RAW_URL/$dotfileName
     local downloadDst=$DOTFILES_DIR_PATH/$dotfileName
     local now=`date +"%Y%m%d_%H%M"`
+    local retval=0
 
     downloadFile $url $downloadDst
+    retval=$?
+    if [ $retval -ne 0 ]; then
+        log "$FUNCNAME: failed to download file: $retval"
+        return 2
+    fi
 
     # Check if backup dir exists
     if [ ! -d $DOTFILES_BACKUP_DIR ]; then
-        executeCommand 'mkdir -p $DOTFILES_BACKUP_DIR'
+        executeCommand "mkdir -p $DOTFILES_BACKUP_DIR"
+        retval=$?
+        if [ $retval -ne 0 ]; then
+            log "$FUNCNAME: failed to create dir: $retval"
+            return 3
+        fi
     fi
-    backupFile "$USER_HOME/$dotfileName" "$DOTFILES_BACKUP_DIR/$dotfileName"_"$now"
 
-    executeCommand 'rm -f $USER_HOME/$dotfileName'
+    backupFile "$USER_HOME/$dotfileName" "$DOTFILES_BACKUP_DIR/$dotfileName"_"$now"
+    retval=$?
+    if [ $retval -ne 0 ]; then
+        log "$FUNCNAME: failed to backup file: $retval"
+        return 4
+    fi
+
+    executeCommand "rm -f $USER_HOME/$dotfileName"
+    retval=$?
+    if [ $retval -ne 0 ]; then
+        log "$FUNCAME: failed to original dotfile: $retval"
+        return 5
+    fi
+
     createLink $USER_HOME/$dotfileName $downloadDst
+    retval=$?
+    if [ $retval -ne 0 ]; then
+        log "$FUNCAME: failed to create link: $retval"
+        return 6
+    fi
+
+    return $retval
 }
 
 installNestedDotfile()
@@ -147,21 +207,55 @@ installNestedDotfile()
     local url=$DOTFILES_REPOSITORY_RAW_URL/$dotfilePath/$dotfileName
     local downloadDst=$DOTFILES_DIR_PATH/$dotfilePath/$dotfileName
     local now=`date +"%Y%m%d_%H%M"`
+    local retval=0
 
     downloadFile $url $downloadDst
+    retval=$?
+    if [ $retval -ne 0 ]; then
+        log "$FUNCNAME: failed to download file: $retval"
+        return 2
+    fi
 
     # Check if backup dir exists
     if [ ! -d $DOTFILES_BACKUP_DIR ]; then
-        executeCommand 'mkdir -p $DOTFILES_BACKUP_DIR'
+        executeCommand "mkdir -p $DOTFILES_BACKUP_DIR"
+        retval=$?
+        if [ $retval -ne 0 ]; then
+            log "$FUNCNAME: failed to create dir: $retval"
+            return 3
+        fi
     fi
-    backupFile "$USER_HOME/$dotfilePath/$dotfileName" "$DOTFILES_BACKUP_DIR/$dotfilePath/$dotfileName"_"$now"
 
-    executeCommand 'rm -f $USER_HOME/$dotfilePath/$dotfileName'
+    backupFile "$USER_HOME/$dotfilePath/$dotfileName" "$DOTFILES_BACKUP_DIR/$dotfilePath/$dotfileName"_"$now"
+    retval=$?
+    if [ $retval -ne 0 ]; then
+        log "$FUNCNAME: failed to backup file: $retval"
+        return 4
+    fi
+
+    executeCommand "rm -f $USER_HOME/$dotfilePath/$dotfileName"
+    retval=$?
+    if [ $retval -ne 0 ]; then
+        log "$FUNCNAME: failed to remove dotfile: $retval"
+        return 5
+    fi
 
     if [ ! -d $USER_HOME/$dotfilePath ]; then
-        executeCommand 'mkdir -p $USER_HOME/$dotfilePath'
+        executeCommand "mkdir -p $USER_HOME/$dotfilePath"
+        retval=$?
+        if [ $retval -ne 0 ]; then
+            log "$FUNCNAME: failed to create dir: $retval"
+            return 6
+        fi
     fi
 
     createLink $USER_HOME/$dotfilePath/$dotfileName $downloadDst
+    retval=$?
+    if [ $retval -ne 0 ]; then
+        log "$FUNCNAME: failed to create ling: $retval"
+        return 7
+    fi
+
+    return $retval
 }
 

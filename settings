@@ -162,6 +162,7 @@ XINITRC_DOTFILE=".xinitrc"
 
 ### ### Xorg additional
 
+#XORG_ADDITIONAL_PACKAGES="mesa"
 XORG_ADDITIONAL_PACKAGES=""
 
 ### ### Video drivers
@@ -206,6 +207,18 @@ ELINKS_PACKAGES="elinks"
 GIT_PACKAGES="git"
 GIT_DOTFILE=".gitconfig"
 
+### ### ### ### VirtualBox
+
+### ### Guest utils
+
+VIRTUALBOX_GUEST_UTILS_PACKAGES="virtualbox-guest-utils"
+
+# Modules to be loaded during startup (modprobe)
+VIRTUALBOX_GUEST_UTILS_MODULES="vboxguest vboxsf vboxvideo"
+
+# Configuration file for loading modules during startup
+VIRTUALBOX_GUEST_UTILS_MODULES_FILE="/etc/modules-load.d/virtualbox.conf"
+
 ### ### ### ### Misc config
 
 # VGA mode to be used for console after boot
@@ -241,7 +254,7 @@ DOTFILES_REPOSITORY_PROTOCOL="https"
 DOTFILES_REPOSITORY_RAW_ADDRESS="raw.github.com"
 DOTFILES_REPOSITORY_USER_NAME="lypant"
 DOTFILES_REPOSITORY_REPO_NAME="dotfiles"
-# TODO Change to 'monolith branch, when prepared'
+# TODO Change to 'monolith' branch, when prepared
 DOTFILES_REPOSITORY_BRANCH_NAME="simplified"
 DOTFILES_REPOSITORY_RAW_URL="$DOTFILES_REPOSITORY_PROTOCOL://$DOTFILES_REPOSITORY_RAW_ADDRESS/$DOTFILES_REPOSITORY_USER_NAME/$DOTFILES_REPOSITORY_REPO_NAME/$DOTFILES_REPOSITORY_BRANCH_NAME"
 
@@ -250,8 +263,21 @@ DOTFILES_DIR_NAME="dotfiles"
 DOTFILES_DIR_PATH="$USER_HOME/$DOTFILES_DIR_NAME"
 DOTFILES_BACKUP_DIR="$DOTFILES_DIR_PATH/backup"
 
+
+### ### ### ### Archconfig logs
+
+ARCHCONFIG_LOG_PREFIX="AC:  "
+ARCHCONFIG_CMD_PREFIX="CMD: "
+
 ### ### ### ### LiveCD
+
+### ### Mirrors
 
 # Number of mirrors to be found by rankmirrors
 MIRROR_COUNT=5
+MIRROR_LIST_FILE="/etc/pacman.d/mirrorlist"
+MIRROR_LIST_FILE_BACKUP="/etc/pacman.d/mirrorlist.original"
 
+# Used by alternative method downloading mirror list for selected country
+MIRROR_COUNTRY="PL"
+MIRROR_LIST_URL="https://www.archlinux.org/mirrorlist/?country=$MIRROR_COUNTRY"
