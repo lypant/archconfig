@@ -2,7 +2,6 @@
 
 # Set log file name
 LOG_FILE="`pwd`/archconfig_install.log"
-COMMANDS_FILE="`pwd`/archconfig_install_commands.log"
 
 # Required files - settings and functions
 ARCHCONFIG_SETTINGS_FILE="settings"
@@ -119,7 +118,7 @@ downloadMirrorList()
     uncommentVar "Server" $MIRROR_LIST_FILE
     terminateScriptOnError "$?" "$FUNCNAME" "failed to uncomment servers"
 
-    log "Downloading mirror list..."
+    log "Downloading mirror list...done"
 }
 
 # Base system

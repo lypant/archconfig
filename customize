@@ -2,7 +2,6 @@
 
 # Set log file name
 LOG_FILE=`pwd`/"archconfig_customize.log"
-COMMANDS_FILE="`pwd`/archconfig_customize_commands.log"
 
 # Required files - settings and functions
 ARCHCONFIG_SETTINGS_FILE="settings"

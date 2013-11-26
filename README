@@ -4,16 +4,7 @@ curl -L https://github.com/lypant/archconfig/tarball/simplified | tar xz
 T.B.C.
 
 TODO LIST:
-- Check dwm installation - problems with git email type etc - probably caused by not configured git (probably dotfiles need to be set up earlier)
-    - Several possibilities:
-        1. Set up root credentials and commit as root
-        2. Set up dotfiles for regular user and commit as regular user
-        3. Set up local regular user credenrials and commit as regular user
-    So far - option 1. taken
 - When copying log file after install - not complete log file is being copied, since after copy operation few logs are added. Think about better solution.
-- Determine and use consistent policy with executeCommand calls. Probably all commands should be surrounded with single quotation marks, e.g. '<command>'
-- Think if generating separate command files is necessary - maybe log files containing files anyway would be enough - commands can be grepped from log file
-- Think about replacing mirrors ranking with faster solution
 
 # To set custom video mode for terminal (available under vga=864 or vesa 360) run in host's terminal VBoxManage setextradata "<guest_name>" "CustomVideoMode1" "1680x1050x24"
 
