@@ -289,6 +289,9 @@ setVirtualboxSharedFolder()
     startService "vboxservice"
     terminateScriptOnError "$?" "$FUNCNAME" "failed to start vboxservice"
 
+    # Wait a moment for a started service to do its job
+    executeCommand "sleep 5"
+
     # Create link for easy access
     createLink "/media/sf_$VIRTUALBOX_SHARED_FOLDER_NAME" "$USER_HOME/$VIRTUALBOX_SHARED_FOLDER_NAME"
     terminateScriptOnError "$?" "$FUNCNAME" "failed to create link to shared folder"
