@@ -126,8 +126,8 @@ createLink()
         return 1
     fi
 
-    local linkName=$1
-    local linkTarget=$2
+    local linkTarget=$1
+    local linkName=$2
     local retval=0
 
     # Check if target exists
@@ -184,7 +184,7 @@ installDotfile()
         return 5
     fi
 
-    createLink $USER_HOME/$dotfileName $downloadDst
+    createLink $downloadDst $USER_HOME/$dotfileName
     retval=$?
     if [ $retval -ne 0 ]; then
         log "$FUNCAME: failed to create link: $retval"
