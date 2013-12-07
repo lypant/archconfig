@@ -193,6 +193,9 @@ VIRTUALBOX_GUEST_UTILS_MODULES="vboxguest vboxsf vboxvideo"
 # Configuration file for loading modules during startup
 VIRTUALBOX_GUEST_UTILS_MODULES_FILE="/etc/modules-load.d/virtualbox.conf"
 
+# Shared folder(s)
+$VIRTUALBOX_SHARED_FOLDER_NAME="Shared"
+
 ### ### ### ### Misc config
 
 # VGA mode to be used for console after boot

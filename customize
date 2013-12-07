@@ -268,6 +268,30 @@ installVirtualboxGuestAdditions()
     log "Installing virtualbox guest additions...done"
 }
 
+# Shared folder
+setVirtualboxSharedFolder()
+{
+    log "Setting virtualbox shared folder..."
+
+    # Create /media folder
+    executeCommand "mkdir /media"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to create /media dir"
+
+    # Add user to vboxsf group
+    executeCommand "gpasswd -a $USER_NAME vboxsf"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to add user to vboxsf group"
+
+    # Enable vboxservice service
+    enableService "vboxservice"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to enable vboxservice"
+
+    # Create link for easy access
+    createLink "/media/sf_$VIRTUALBOX_SHARED_FOLDER_NAME" "$USER_HOME/$VIRTUALBOX_SHARED_FOLDER_NAME"
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to create link to shared folder"
+
+    log "Setting virtualbox shared folder...done"
+}
+
 # Misc config
 
 setConsoleVideoMode()
@@ -365,6 +389,7 @@ configurePacman
 
 # VirtualBox
 installVirtualboxGuestAdditions
+setVirtualboxSharedFolder
 
 # Basic tools
 installVim
