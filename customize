@@ -108,6 +108,18 @@ installVim()
     log "Installing vim...done"
 }
 
+# dvtm
+
+installDvtm()
+{
+    log "Installing dvtm..."
+
+    installPackage $DVTM_PACKAGES
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to install dvtm"
+
+    log "Installing dvtm...done"
+}
+
 # Sound
 
 installAlsa()
@@ -402,6 +414,8 @@ setVirtualboxSharedFolder
 installVim
 installDotfile $DOTFILE_VIM
 installNestedDotfile $DOTFILE_VIM_COLORS_SOLARIZED_PATH $DOTFILE_VIM_COLORS_SOLARIZED_FILE
+
+installDvtm
 
 # Sound
 installAlsa
