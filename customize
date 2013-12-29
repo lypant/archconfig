@@ -388,6 +388,67 @@ changeHomeOwnership()
     log "Changing home dir ownership...done"
 }
 
+installBashrcDotfile()
+{
+    log "Installing bashrc dotfile..."
+
+    installDotfile $DOTFILE_BASHRC
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to install bashrc dotfile"
+
+    log "Installing bashrc dotfile...done"
+}
+
+installBashprofileDotfile()
+{
+    log "Installing bash_profile dotfile..."
+
+    installDotfile $DOTFILE_BASH_PROFILE
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to install bash_profile dotfile"
+
+    log "Installing bash_profile dotfile...done"
+}
+
+installVimrcDotfile()
+{
+    log "Installing vimrc dotfile..."
+
+    installDotfile $DOTFILE_VIM
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to install vimrc dotfile"
+
+    log "Installing vimrc dotfile...done"
+}
+
+installVimSolarizedDotfile()
+{
+    log "Installing solarized.vim dotfile..."
+
+    installNestedDotfile $DOTFILE_VIM_COLORS_SOLARIZED_PATH $DOTFILE_VIM_COLORS_SOLARIZED_FILE
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to install solarized.vim dotfile"
+
+    log "Installing solarized.vim dotfile...done"
+}
+
+installGitconfigDotfile()
+{
+    log "Installing gitconfig dotfile..."
+
+    installDotfile $GIT_DOTFILE
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to install gitconfig dotfile"
+
+    log "Installing gitconfig dotfile...done"
+}
+
+installXinitrcDotfile()
+{
+    log "Installing xinitrc dotfile..."
+
+    installDotfile $XINITRC_DOTFILE
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to install xinitrc dotfile"
+
+    log "Installing xinitrc dotfile...done"
+}
+
+
 ################################################################################
 
 # Regular user
@@ -397,8 +458,8 @@ setRegularUserPassword
 setSudoers
 
 # TODO: Create own functions with logs for dotfiles
-installDotfile $DOTFILE_BASHRC
-installDotfile $DOTFILE_BASH_PROFILE
+installBashrcDotfile
+installBashprofileDotfile
 
 # Preparations
 updatePackageList
@@ -412,8 +473,8 @@ setVirtualboxSharedFolder
 
 # Basic tools
 installVim
-installDotfile $DOTFILE_VIM
-installNestedDotfile $DOTFILE_VIM_COLORS_SOLARIZED_PATH $DOTFILE_VIM_COLORS_SOLARIZED_FILE
+installVimrcDotfile
+installVimSolarizedDotfile
 
 installDvtm
 
@@ -431,8 +492,7 @@ installDmenu
 
 # Development etc
 installGit
-# TODO Think about moving it into installGit function - here should be only function calls without params
-installDotfile $GIT_DOTFILE
+installGitconfigDotfile
 
 # Dwm (requires Xorg and git)
 installDwm
@@ -445,7 +505,7 @@ useEarlyTerminalFont    # Image needs to be recreated afterwards
 recreateImage
 
 # Install xinitrc dotfile
-installDotfile $XINITRC_DOTFILE
+installXinitrcDotfile
 
 # Make sure all in user's home is owned by the user, not root
 changeHomeOwnership

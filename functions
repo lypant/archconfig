@@ -128,7 +128,7 @@ createLink()
 
     local linkTarget=$1
     local linkName=$2
-    local retval=0
+    local retval=2
 
     # Check if target exists
     if [ -e $linkTarget ]; then
@@ -248,10 +248,11 @@ installNestedDotfile()
         fi
     fi
 
-    createLink $USER_HOME/$dotfilePath/$dotfileName $downloadDst
+    #createLink $USER_HOME/$dotfilePath/$dotfileName $downloadDst
+    createLink $downloadDst $USER_HOME/$dotfilePath/$dotfileName
     retval=$?
     if [ $retval -ne 0 ]; then
-        log "$FUNCNAME: failed to create ling: $retval"
+        log "$FUNCNAME: failed to create link: $retval"
         return 7
     fi
 
