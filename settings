@@ -121,6 +121,10 @@ DOTFILE_BASHRC=".bashrc"
 
 DOTFILE_BASH_PROFILE=".bash_profile"
 
+### dir_colors
+
+DOTFILE_DIR_COLORS=".dir_colors_solarized"
+
 ### ### ### ### Basic tools
 
 ### ### vim
@@ -150,8 +154,8 @@ ALSA_PACKAGES="alsa-utils"
 ### ### Xorg basic
 
 XORG_BASIC_PACKAGES="xorg-server xorg-server-utils xorg-xinit"
-XINITRC_DOTFILE=".xinitrc"
-XRESOURCES_DOTFILE=".Xresources"
+DOTFILE_XINITRC=".xinitrc"
+DOTFILE_XRESOURCES=".Xresources"
 
 ### ### Xorg additional
 
@@ -186,7 +190,7 @@ DMENU_PACKAGES="dmenu"
 ### ### Version control
 
 GIT_PACKAGES="git"
-GIT_DOTFILE=".gitconfig"
+DOTFILE_GIT=".gitconfig"
 
 ### ### ### ### VirtualBox
 
@@ -245,7 +249,6 @@ DOTFILES_REPOSITORY_RAW_URL="$DOTFILES_REPOSITORY_PROTOCOL://$DOTFILES_REPOSITOR
 DOTFILES_DIR_NAME="dotfiles"
 DOTFILES_DIR_PATH="$USER_HOME/$DOTFILES_DIR_NAME"
 DOTFILES_BACKUP_DIR="$DOTFILES_DIR_PATH/backup"
-
 
 ### ### ### ### Archconfig logs
 

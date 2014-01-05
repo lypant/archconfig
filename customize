@@ -432,7 +432,7 @@ installGitconfigDotfile()
 {
     log "Installing gitconfig dotfile..."
 
-    installDotfile $GIT_DOTFILE
+    installDotfile $DOTFILE_GIT
     terminateScriptOnError "$?" "$FUNCNAME" "failed to install gitconfig dotfile"
 
     log "Installing gitconfig dotfile...done"
@@ -442,7 +442,7 @@ installXinitrcDotfile()
 {
     log "Installing xinitrc dotfile..."
 
-    installDotfile $XINITRC_DOTFILE
+    installDotfile $DOTFILE_XINITRC
     terminateScriptOnError "$?" "$FUNCNAME" "failed to install xinitrc dotfile"
 
     log "Installing xinitrc dotfile...done"
@@ -452,10 +452,20 @@ installXresourcesDotfile()
 {
     log "Installing Xresources dotfile..."
 
-    installDotfile $XRESOURCES_DOTFILE
+    installDotfile $DOTFILE_XRESOURCES
     terminateScriptOnError "$?" "$FUNCNAME" "failed to install Xresources dotfile"
 
     log "Installing Xresources dotfile...done"
+}
+
+installDircolorsDotfile()
+{
+    log "Installing dir_colors dotfile..."
+
+    installDotfile $DOTFILE_DIR_COLORS
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to install dir_colors dotfile"
+
+    log "Installing dir_colors dotfile...done"
 }
 
 ################################################################################
@@ -469,6 +479,7 @@ setSudoers
 # TODO: Create own functions with logs for dotfiles
 installBashrcDotfile
 installBashprofileDotfile
+installDircolorsDotfile
 
 # Preparations
 updatePackageList
