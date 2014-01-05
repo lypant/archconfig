@@ -151,6 +151,7 @@ ALSA_PACKAGES="alsa-utils"
 
 XORG_BASIC_PACKAGES="xorg-server xorg-server-utils xorg-xinit"
 XINITRC_DOTFILE=".xinitrc"
+XRESOURCES_DOTFILE=".Xresources"
 
 ### ### Xorg additional
 

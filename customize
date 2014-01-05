@@ -448,6 +448,15 @@ installXinitrcDotfile()
     log "Installing xinitrc dotfile...done"
 }
 
+installXresourcesDotfile()
+{
+    log "Installing Xresources dotfile..."
+
+    installDotfile $XRESOURCES_DOTFILE
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to install Xresources dotfile"
+
+    log "Installing Xresources dotfile...done"
+}
 
 ################################################################################
 
@@ -504,8 +513,9 @@ disableSyslinuxBootMenu
 useEarlyTerminalFont    # Image needs to be recreated afterwards
 recreateImage
 
-# Install xinitrc dotfile
+# Install X-related dotfiles
 installXinitrcDotfile
+installXresourcesDotfile
 
 # Make sure all in user's home is owned by the user, not root
 changeHomeOwnership
