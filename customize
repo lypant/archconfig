@@ -120,6 +120,18 @@ installDvtm()
     log "Installing dvtm...done"
 }
 
+# Midnight Commander
+
+installMc()
+{
+    log "Installing mc..."
+
+    installPackage $MC_PACKAGES
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to install mc"
+
+    log "Installing mc...done"
+}
+
 # Sound
 
 installAlsa()
@@ -468,6 +480,16 @@ installDircolorsDotfile()
     log "Installing dir_colors dotfile...done"
 }
 
+installMcSolarizedDotfile()
+{
+    log "Installing Midnight Commander solarized dotfile..."
+
+    installNestedDotfile $DOTFILE_MC_COLORS_SOLARIZED_PATH $DOTFILE_MC_COLORS_SOLARIZED_FILE
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to install Midnight Commander solarized dotfile"
+
+    log "Installing Midnight Commander solarized dotfile...done"
+}
+
 ################################################################################
 
 # Regular user
@@ -497,6 +519,9 @@ installVimrcDotfile
 installVimSolarizedDotfile
 
 installDvtm
+
+installMc
+installMcSolarizedDotfile
 
 # Sound
 installAlsa

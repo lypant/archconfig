@@ -145,6 +145,17 @@ DOTFILE_VIM_COLORS_SOLARIZED_FILE="solarized.vim"
 
 DVTM_PACKAGES="dvtm"
 
+### ### Midnight Commander
+
+### Packages
+
+MC_PACKAGES="mc"
+
+### Dotfiles
+
+DOTFILE_MC_COLORS_SOLARIZED_PATH=".config/mc"
+DOTFILE_MC_COLORS_SOLARIZED_FILE="mc_solarized.ini"
+
 ### ### ### ### Sound
 
 ALSA_PACKAGES="alsa-utils"
