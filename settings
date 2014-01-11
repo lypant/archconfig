@@ -156,6 +156,11 @@ MC_PACKAGES="mc"
 DOTFILE_MC_COLORS_SOLARIZED_PATH=".config/mc"
 DOTFILE_MC_COLORS_SOLARIZED_FILE="mc_solarized.ini"
 
+### Scripts
+
+SCRIPTS_PATH="bin"
+SCRIPT_VIEWER_FILE="viewer.sh"
+
 ### ### ### ### Sound
 
 ALSA_PACKAGES="alsa-utils"

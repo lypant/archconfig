@@ -490,6 +490,16 @@ installMcSolarizedDotfile()
     log "Installing Midnight Commander solarized dotfile...done"
 }
 
+installViewerScript()
+{
+    log "Installing viewer script..."
+
+    installNestedDotfile $SCRIPTS_PATH $SCRIPT_VIEWER_FILE
+    terminateScriptOnError "$?" "$FUNCNAME" "failed to install viewer script"
+
+    log "Installing viewer script...done"
+}
+
 ################################################################################
 
 # Regular user
@@ -498,10 +508,10 @@ addRegularUser
 setRegularUserPassword
 setSudoers
 
-# TODO: Create own functions with logs for dotfiles
 installBashrcDotfile
 installBashprofileDotfile
 installDircolorsDotfile
+installViewerScript
 
 # Preparations
 updatePackageList
